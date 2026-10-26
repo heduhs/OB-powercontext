@@ -28,7 +28,7 @@ from __future__ import annotations
 
 import math
 import re
-from collections.abc import Callable, Sequence
+from collections.abc import Callable, Mapping, Sequence
 from dataclasses import dataclass
 
 from powercontext.artifacts import ArtifactRef
@@ -93,6 +93,7 @@ class EvidenceSpan:
     start: int
     end: int
     text: str
+    index: int = 0
 
 
 def select_evidence_spans(
@@ -106,27 +107,33 @@ def select_evidence_spans(
 
     Ranking is IDF-weighted query coverage, so a rare term in the query outweighs a common
     one, and spans that merely repeat a frequent word do not crowd out the real evidence.
-    Packing is greedy by score; once scored spans are exhausted the remaining budget is
-    filled with the leftover text in reading order, because unused bytes are wasted
-    evidence rather than prudence.
+
+    Each citation costs a fixed number of bytes regardless of how much prose it carries, so
+    the best answer is not a handful of isolated sentences: the top-ranked sentence is grown
+    outwards into its neighbours, which delivers far more literal text per citation and can
+    cover evidence that spans a sentence boundary. Once ranked seeds are exhausted, whatever
+    budget is left is filled with the remaining text in reading order — unused bytes are
+    wasted evidence rather than prudence.
     """
 
     if not candidates or max_bytes <= 0:
         return ()
 
-    spans = _candidate_spans(candidates)
+    grouped = _candidate_spans(candidates)
+    spans = tuple(span for group in grouped.values() for span in group)
     if not spans:
         return ()
 
     ranked = _rank(query, spans)
     selected: list[EvidenceSpan] = []
-    for span in ranked:
+    for seed in ranked:
         if len(selected) >= _MAX_FRAGMENTS:
             break
-        if any(_overlaps(span, chosen) for chosen in selected):
+        if any(_overlaps(seed, chosen) for chosen in selected):
             continue
-        if measure((*selected, span)) <= max_bytes:
-            selected.append(span)
+        grown = _grow(seed, grouped, selected, max_bytes, measure)
+        if measure((*selected, grown)) <= max_bytes:
+            selected.append(grown)
 
     if len(selected) < _MAX_FRAGMENTS:
         for span in spans:
@@ -140,20 +147,80 @@ def select_evidence_spans(
     return tuple(sorted(selected, key=lambda span: (span.candidate.rank, span.start)))
 
 
-def _candidate_spans(candidates: Sequence[EvidenceCandidate]) -> tuple[EvidenceSpan, ...]:
+def _grow(
+    seed: EvidenceSpan,
+    grouped: Mapping[int, Sequence[EvidenceSpan]],
+    selected: Sequence[EvidenceSpan],
+    max_bytes: int,
+    measure: Callable[[Sequence[EvidenceSpan]], int],
+) -> EvidenceSpan:
+    """Extend one seed sentence over its neighbours while the whole output still fits."""
+
+    group = grouped[seed.candidate.rank]
+    span = seed
+    left = seed.index - 1
+    right = seed.index + 1
+    while left >= 0 or right < len(group):
+        if right < len(group):
+            neighbour = group[right]
+            right += 1
+        else:
+            neighbour = group[left]
+            left -= 1
+        if any(_overlaps(neighbour, chosen) for chosen in selected):
+            continue
+        merged = _merge(span, neighbour)
+        if measure((*selected, merged)) <= max_bytes:
+            span = merged
+        elif left >= 0:
+            # The right edge is saturated; keep trying the left one.
+            neighbour = group[left]
+            left -= 1
+            merged = _merge(span, neighbour)
+            if measure((*selected, merged)) <= max_bytes:
+                span = merged
+    return span
+
+
+def _merge(left: EvidenceSpan, right: EvidenceSpan) -> EvidenceSpan:
+    start = min(left.start, right.start)
+    end = max(left.end, right.end)
+    return EvidenceSpan(
+        candidate=left.candidate,
+        start=start,
+        end=end,
+        text=left.candidate.text[start:end],
+        index=min(left.index, right.index),
+    )
+
+
+def _candidate_spans(
+    candidates: Sequence[EvidenceCandidate],
+) -> dict[int, tuple[EvidenceSpan, ...]]:
     """Split every candidate into literal sentence spans, preserving exact offsets."""
 
-    collected: list[EvidenceSpan] = []
+    grouped: dict[int, tuple[EvidenceSpan, ...]] = {}
     seen_text: set[str] = set()
     for candidate in candidates:
+        local: list[EvidenceSpan] = []
         for start, end in _sentence_bounds(candidate.text):
             literal = candidate.text[start:end]
             key = literal.strip().lower()
             if not key or key in seen_text:
                 continue
             seen_text.add(key)
-            collected.append(EvidenceSpan(candidate=candidate, start=start, end=end, text=literal))
-    return tuple(collected)
+            local.append(
+                EvidenceSpan(
+                    candidate=candidate,
+                    start=start,
+                    end=end,
+                    text=literal,
+                    index=len(local),
+                )
+            )
+        if local:
+            grouped[candidate.rank] = tuple(local)
+    return grouped
 
 
 def _sentence_bounds(text: str) -> tuple[tuple[int, int], ...]:
