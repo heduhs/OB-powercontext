@@ -47,7 +47,7 @@
   {
     "step": "step6-state-readback",
     "ok": true,
-    "detail": "1 entries for TASK-001"
+    "detail": "3 entries for TASK-001"
   },
   {
     "step": "step7-context-reflects-v13",

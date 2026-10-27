@@ -105,6 +105,12 @@ code { background: #0d1430; border: 1px solid var(--line); border-radius: 6px; p
 .pill { font-size: .74rem; padding: 3px 10px; border-radius: 999px; border: 1px solid var(--line); color: var(--muted); }
 .pill.due { color: var(--warn); border-color: #4a3f1f; }
 
+/* screenshots */
+.shots { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 16px; }
+.shots figure { margin: 0; background: var(--card); border: 1px solid var(--line); border-radius: var(--radius); overflow: hidden; }
+.shots img { width: 100%; display: block; }
+.shots figcaption { padding: 10px 14px; color: var(--muted); font-size: .86rem; border-top: 1px solid var(--line); }
+
 /* cards */
 .cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 16px; }
 .card { background: var(--card); border: 1px solid var(--line); border-radius: var(--radius); padding: 22px; }

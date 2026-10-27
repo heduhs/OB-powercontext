@@ -1,0 +1,28 @@
+code version (git HEAD): 150ceccf7e3b679edef6a438d2b2829e191000a0
+=== target tests ===
+$ C:\Users\DELL-PC\Documents\Qoder\2026-10-27\d11d1fd7\.venv-seekdb\Scripts\python.exe -m pytest tests/test_orders_pagination.py -v --tb=short
+exit code: 0
+============================= test session starts =============================
+platform win32 -- Python 3.12.10, pytest-9.1.1, pluggy-1.7.0
+rootdir: C:\Users\DELL-PC\Documents\Qoder\2026-10-27\d11d1fd7\powercontext-work\minimax\demo_project
+configfile: pytest.ini
+plugins: anyio-4.15.1
+collected 9 items
+
+tests\test_orders_pagination.py .........                                [100%]
+
+============================== 9 passed in 0.08s ==============================
+
+=== regression tests ===
+$ C:\Users\DELL-PC\Documents\Qoder\2026-10-27\d11d1fd7\.venv-seekdb\Scripts\python.exe -m pytest tests/test_orders_regression.py -v --tb=short
+exit code: 0
+============================= test session starts =============================
+platform win32 -- Python 3.12.10, pytest-9.1.1, pluggy-1.7.0
+rootdir: C:\Users\DELL-PC\Documents\Qoder\2026-10-27\d11d1fd7\powercontext-work\minimax\demo_project
+configfile: pytest.ini
+plugins: anyio-4.15.1
+collected 21 items
+
+tests\test_orders_regression.py .....................                    [100%]
+
+============================= 21 passed in 0.10s ==============================
