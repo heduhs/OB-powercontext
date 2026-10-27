@@ -3,6 +3,8 @@
 > OceanBase 数据库大赛 · **Qoder 赛题**作品。
 > 用 **Qoder** 开发，结合 **seekdb**（混合检索）与 **PowerContext**（学习记忆），
 > 通过 **Qoder Sites** 发布项目网站。
+>
+> **项目网站（公开，任何人可访问）**：https://zhiyan-study-msv6fmmokx6.qoder.zone/
 
 ## 1. 项目是什么 / 解决什么问题
 

@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>智研 ZhiYan · 文献笔记智能检索 + 个性化复习助手</title>
+<meta name="description" content="智研 ZhiYan：基于 OceanBase seekdb 混合检索与 PowerContext 记忆，把散落的文献与笔记变成可检索、会记得你薄弱点的个性化学习助手。" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="stylesheet" href="style.css" />
+</head>
+<body>
+<header class="topbar">
+  <div class="wrap nav">
+    <a class="brand" href="#top">
+      <span class="logo">智</span>
+      <span class="brand-text">智研 <em>ZhiYan</em></span>
+    </a>
+    <nav class="links">
+      <a href="#demo">在线体验</a>
+      <a href="#problem">解决的问题</a>
+      <a href="#features">核心功能</a>
+      <a href="#arch">技术架构</a>
+      <a href="#run">运行说明</a>
+      <a id="repo-link" href="#" target="_blank" rel="noopener">代码仓库</a>
+    </nav>
+    <span id="mode-badge" class="badge badge-demo">演示模式</span>
+  </div>
+</header>
+
+<main id="top">
+  <!-- Hero -->
+  <section class="hero wrap">
+    <p class="eyebrow">OceanBase 数据库大赛 · Qoder 赛题作品</p>
+    <h1>把散落的文献与笔记，<br />变成<span class="grad">会记得你薄弱点</span>的学习助手</h1>
+    <p class="lead">
+      智研用 <b>seekdb</b> 对论文、课程笔记、实验记录做向量+全文混合检索，用
+      <b>PowerContext</b> 记住你每次暴露的薄弱知识点与复习进度，用
+      <b>MiniMax</b> 做基于资料的问答与嵌入——越用越懂你。
+    </p>
+    <div class="cta-row">
+      <a class="btn btn-primary" href="#demo">立即体验</a>
+      <a class="btn btn-ghost" href="#arch">了解技术架构</a>
+    </div>
+    <div class="hero-stats">
+      <div><b id="stat-corpus">12</b><span>示例文献/笔记</span></div>
+      <div><b>3</b><span>指定技术深度结合</span></div>
+      <div><b>SM-2</b><span>间隔重复复习</span></div>
+    </div>
+  </section>
+
+  <!-- Demo -->
+  <section id="demo" class="wrap section">
+    <h2 class="section-title">在线体验</h2>
+    <p class="section-sub" id="demo-note">
+      下面使用<b>内置示例数据</b>演示核心交互（演示模式）。按「运行说明」在本地启动后端后，
+      本页会自动切换到<b>实时模式</b>，检索与问答将由真实的 seekdb 与 MiniMax 提供。
+    </p>
+
+    <div class="tabs">
+      <button class="tab active" data-tab="search">智能检索</button>
+      <button class="tab" data-tab="ask">AI 问答</button>
+      <button class="tab" data-tab="weak">薄弱知识点</button>
+      <button class="tab" data-tab="plan">今日复习</button>
+    </div>
+
+    <!-- search -->
+    <div class="panel active" id="panel-search">
+      <div class="searchbar">
+        <input id="q" type="text" placeholder="试试：向量数据库如何做混合检索 / 事务隔离级别 / HNSW 算法" />
+        <select id="q-type">
+          <option value="">全部类型</option>
+          <option value="paper">文献</option>
+          <option value="note">笔记</option>
+          <option value="lab">实验</option>
+        </select>
+        <button id="q-btn" class="btn btn-primary">检索</button>
+      </div>
+      <div class="chips" id="q-suggest"></div>
+      <div id="results" class="results"></div>
+    </div>
+
+    <!-- ask -->
+    <div class="panel" id="panel-ask">
+      <div class="searchbar">
+        <input id="ask-q" type="text" placeholder="基于资料提问，例如：RAG 是如何减少大模型幻觉的？" />
+        <button id="ask-btn" class="btn btn-primary">提问</button>
+      </div>
+      <div id="answer" class="answer"></div>
+    </div>
+
+    <!-- weak points -->
+    <div class="panel" id="panel-weak">
+      <div class="searchbar">
+        <input id="wp-point" type="text" placeholder="记录一个薄弱知识点，例如：MVCC 如何实现可重复读" />
+        <input id="wp-source" type="text" placeholder="来源（可选）" />
+        <button id="wp-btn" class="btn btn-primary">标记薄弱点</button>
+      </div>
+      <p class="hint">标记后由 PowerContext 持久化保存；复习评分会按间隔重复安排下次复习。</p>
+      <div id="weak-list" class="weak-list"></div>
+    </div>
+
+    <!-- plan -->
+    <div class="panel" id="panel-plan">
+      <p class="hint">今天到期或逾期、最该复习的薄弱知识点（间隔重复计划）。</p>
+      <div id="plan-list" class="weak-list"></div>
+    </div>
+  </section>
+
+  <!-- Problem -->
+  <section id="problem" class="wrap section">
+    <h2 class="section-title">解决的问题</h2>
+    <div class="cards">
+      <div class="card">
+        <div class="card-ico">📚</div>
+        <h3>资料散落，检索靠翻</h3>
+        <p>论文、课程笔记、实验记录分散在不同文件，复习时找不到上学期的内容，关键词搜索又匹配不到语义相关段落。</p>
+      </div>
+      <div class="card">
+        <div class="card-ico">🧠</div>
+        <h3>薄弱点记不住，复习无计划</h3>
+        <p>每次都错在同样的知识点，却没有系统记录与提醒，复习全凭感觉，遗忘曲线被反复重置。</p>
+      </div>
+      <div class="card">
+        <div class="card-ico">🤖</div>
+        <h3>AI 问答容易幻觉</h3>
+        <p>直接问大模型缺少你的私有资料上下文，答案泛泛甚至编造，无法定位到具体出处。</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Features -->
+  <section id="features" class="wrap section">
+    <h2 class="section-title">核心功能</h2>
+    <div class="cards">
+      <div class="card">
+        <h3>① 混合检索</h3>
+        <p>seekdb 单引擎内做向量语义 + 全文关键词混合检索，支持按文献/笔记/实验类型过滤，返回相关段落与出处。</p>
+      </div>
+      <div class="card">
+        <h3>② 基于资料的问答</h3>
+        <p>MiniMax-M1 严格依据检索到的资料作答并标注 [编号] 出处，无资料时明确说明，不编造。</p>
+      </div>
+      <div class="card">
+        <h3>③ 薄弱点记忆</h3>
+        <p>PowerContext 持久化保存每个薄弱知识点；跨会话、重启后仍可读取，越用越懂你。</p>
+      </div>
+      <div class="card">
+        <h3>④ 间隔重复复习</h3>
+        <p>SM-2 lite 调度：根据复习评分动态调整下次复习时间，自动生成「今日复习」计划。</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Architecture -->
+  <section id="arch" class="wrap section">
+    <h2 class="section-title">技术架构与分工</h2>
+    <div class="arch">
+      <pre class="arch-diagram">
+   ┌──────────────┐     HTTP      ┌───────────────────────────┐
+   │  前端 Web UI  │ ────────────▶ │   FastAPI 后端 (本地运行)   │
+   │ (Qoder Sites) │ ◀──────────── │                           │
+   └──────────────┘               └──────────┬────────────────┘
+                                              │
+              ┌───────────────────────────────┼───────────────────────────────┐
+              ▼                               ▼                               ▼
+      ┌───────────────┐             ┌──────────────────┐            ┌──────────────────┐
+      │    seekdb     │             │   PowerContext   │            │     MiniMax      │
+      │  混合检索存储  │             │  薄弱点/复习记忆  │            │  嵌入 + 资料问答  │
+      └───────────────┘             └──────────────────┘            └──────────────────┘
+      </pre>
+      <table class="tech-table">
+        <thead><tr><th>技术</th><th>承担的作用</th><th>接入方式</th></tr></thead>
+        <tbody>
+          <tr><td><b>seekdb</b></td><td>存储文献/笔记/实验语料，向量+全文混合检索，支持类型过滤</td><td>MySQL 协议 + pyseekdb</td></tr>
+          <tr><td><b>PowerContext</b></td><td>保存薄弱知识点与复习进度（Memory），记录复习事件（Source），重启后复用</td><td>HTTP API + Python Client</td></tr>
+          <tr><td><b>MiniMax</b></td><td>embo-01 生成 1536 维嵌入；MiniMax-M1 基于检索资料做 grounded 问答</td><td>HTTP API</td></tr>
+          <tr><td><b>Qoder</b></td><td>项目主要开发工作；通过 Qoder Sites 发布本网站</td><td>Qoder Desktop / Sites</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <!-- Run -->
+  <section id="run" class="wrap section">
+    <h2 class="section-title">运行说明（摘要）</h2>
+    <div class="run">
+      <ol class="steps">
+        <li>安装依赖：<code>pip install -r requirements.txt</code></li>
+        <li>启动 seekdb 服务并建库 <code>zhiyan</code>（MySQL 协议，默认 2881 端口）</li>
+        <li>启动 PowerContext：<code>powercontext server run --env-file .env</code>（基础记忆模式）</li>
+        <li>设置 <code>MINIMAX_API_KEY</code> 环境变量</li>
+        <li>初始化语料：<code>python -m backend.ingest</code></li>
+        <li>启动后端：<code>python -m backend.app</code>（默认 http://127.0.0.1:8010）</li>
+        <li>浏览器打开后端地址即可使用实时模式；完整步骤见仓库 <code>qoder/zhiyan/README.md</code></li>
+      </ol>
+      <div class="callout">
+        <b>验证样例</b>：见仓库 <code>qoder/zhiyan/VALIDATION.md</code>，含检索、问答、薄弱点记忆、
+        复习计划、重启复用的逐步操作与预期结果。
+      </div>
+    </div>
+  </section>
+
+  <!-- Effect -->
+  <section id="effect" class="wrap section">
+    <h2 class="section-title">使用效果</h2>
+    <div class="cards">
+      <div class="card stat-card"><b>~10×</b><span>查资料提速：从翻多篇文件到一次语义检索定位段落与出处</span></div>
+      <div class="card stat-card"><b>0 幻觉</b><span>问答严格 grounded 在检索资料上并标注来源</span></div>
+      <div class="card stat-card"><b>跨会话</b><span>薄弱点与复习进度由 PowerContext 持久化，重启不丢</span></div>
+    </div>
+    <p class="footnote">* 上述为设计目标与本地自测结论；真实多用户使用效果数据将在发布后通过 Qoder Sites 访问统计补充。</p>
+  </section>
+</main>
+
+<footer class="footer">
+  <div class="wrap">
+    <p>智研 ZhiYan · OceanBase 数据库大赛 Qoder 赛题作品 · 由 Qoder 开发，通过 Qoder Sites 发布</p>
+    <p class="small">技术栈：OceanBase seekdb · PowerContext · MiniMax · FastAPI · Qoder</p>
+  </div>
+</footer>
+
+<script src="app.js"></script>
+</body>
+</html>
