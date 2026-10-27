@@ -152,13 +152,30 @@ def _extract_json(text: str) -> dict:
 
 
 def run_tests(project_root: Path, python_exe: str, target: str) -> subprocess.CompletedProcess:
-    return subprocess.run(
-        [python_exe, "-m", "pytest", target, "-v", "--tb=short"],
+    cmd = [python_exe, "-m", "pytest", target, "-v", "--tb=short"]
+    proc = subprocess.run(
+        cmd,
         cwd=project_root,
         capture_output=True,
         text=True,
         timeout=300,
     )
+    proc.sdd_command = cmd  # carried into the test log for traceability
+    return proc
+
+
+def _code_version(project_root: Path) -> str:
+    try:
+        out = subprocess.run(
+            ["git", "rev-parse", "HEAD"],
+            cwd=project_root,
+            capture_output=True,
+            text=True,
+            timeout=30,
+        )
+        return out.stdout.strip() or "unknown"
+    except Exception:  # noqa: BLE001
+        return "unknown"
 
 
 def apply_and_verify(
@@ -207,9 +224,13 @@ def apply_and_verify(
         for path, old in backups.items():
             path.write_text(old, encoding="utf-8")
 
+    code_version = _code_version(root)
     log = (
-        f"=== target tests (exit {target_proc.returncode}) ===\n{target_proc.stdout}\n"
-        f"=== regression tests (exit {regression_proc.returncode}) ===\n{regression_proc.stdout}"
+        f"code version (git HEAD): {code_version}\n"
+        f"=== target tests ===\n$ {' '.join(target_proc.sdd_command)}\n"
+        f"exit code: {target_proc.returncode}\n{target_proc.stdout}\n"
+        f"=== regression tests ===\n$ {' '.join(regression_proc.sdd_command)}\n"
+        f"exit code: {regression_proc.returncode}\n{regression_proc.stdout}"
     )
     result = EditResult(
         ok=target_ok and regression_ok,
@@ -227,6 +248,7 @@ def apply_and_verify(
             {
                 "task": task,
                 "model": settings.minimax_model,
+                "code_version": code_version,
                 "elapsed_seconds": round(elapsed, 1),
                 "prompt_messages": messages,
                 "raw_response": raw,

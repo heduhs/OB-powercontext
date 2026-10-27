@@ -3,8 +3,8 @@
 本项目（智研 ZhiYan）的**主要开发工作在 Qoder 中完成**（Qoder Desktop 会话）。
 下文按时间线记录 Qoder 在需求拆解、编码、调试、部署各环节承担的工作。
 
-> **Qoder 账号 UID**：`{{请填写你的 Qoder UID}}`
-> （用于核对站点归属与使用记录；在 Qoder 个人设置中可查看。）
+> **Qoder 账号 UID**：`01a17cfb-436f-77ff-a53e-25c86fb6f9c3`
+> （用于核对站点归属与使用记录；与已发布站点 zhiyan-study-msv6fmmokx6.qoder.zone 的 ownerUid 一致。）
 
 ## 开发时间线（Qoder 会话内）
 
@@ -39,6 +39,12 @@
 - 站点内容：项目简介、解决的问题、核心功能、技术架构与分工、交互演示（演示模式）、
   运行说明摘要、使用效果、代码仓库链接。
 - 已验证：未登录状态可打开（HTTP 200），演示模式交互正常；本地有后端时自动切实时模式。
+
+## 开发证据
+
+- **对话日志**：`records/qoder-conversation-log.md`（本会话真实逐轮摘录，含会话 ID 与 UID）
+- **窗口截图**：`records/qoder-screenshots/qoder-session-dev.png`（Qoder Desktop 会话实况）
+- **站点归属**：已发布站点 ownerUid 与上述 UID 一致，可在 Qoder 侧核对使用记录
 
 ## 复核方式
 
