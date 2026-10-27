@@ -213,6 +213,11 @@ from powercontext.builtin.runtime.models import (
     SubmitSourceObservation,
     TopicMemoryFlushResult,
 )
+from powercontext.builtin.runtime.context_pack import (
+    CONTEXT_PACK_CHUNK_BYTES,
+    ContextPack,
+    ContextPackDelta,
+)
 from powercontext.builtin.runtime.prepared_code import PreparedCodeCandidate, code_candidates
 from powercontext.builtin.runtime.prepared_context import (
     PreparedContextBuild,
@@ -846,6 +851,25 @@ class ScopedContextApplication:
             if authorize_scopes is not None:
                 await authorize_scopes((self.scope_id, *scope.context_references))
             return await self._prepare(request, scope)
+
+    async def prepare_incremental(
+        self,
+        request: PrepareContextRequest,
+        /,
+        *,
+        base_pack: ContextPack | None = None,
+    ) -> ContextPack | ContextPackDelta:
+        """Prepare this round's context as a pack, or as a delta against ``base_pack``.
+
+        The bytes are exactly what plain ``prepare`` produces; only the transport
+        form changes.  A receiver holding ``base_pack`` can rebuild the target pack
+        from the returned delta alone.
+        """
+        prepared = await self.prepare(request)
+        pack = ContextPack.from_content(prepared.content or "", chunk_bytes=CONTEXT_PACK_CHUNK_BYTES)
+        if base_pack is None:
+            return pack
+        return ContextPackDelta.between(base_pack, pack)
 
     async def _prepare(self, request: PrepareContextRequest, scope: ScopeDescriptor, /) -> PreparedContext:
         build, effort = await self._prepare_build(request, scope)
@@ -2683,7 +2707,17 @@ class ScopedTopicMemoryApplication:
                         "unit": "topic-memory",
                     },
                 )
-        return result
+        return await self._without_unsupported_topics(result)
+
+    async def _without_unsupported_topics(self, result: TopicMemorySearchResult) -> TopicMemorySearchResult:
+        """Drop Topic revisions whose registered evidence no longer supports them."""
+        excluded = await self._runtime.lifecycle.excluded_topics(self.scope_id)
+        if not excluded:
+            return result
+        hits = tuple(hit for hit in result.hits if hit.artifact_ref.artifact_id not in excluded)
+        if len(hits) == len(result.hits):
+            return result
+        return result.model_copy(update={"hits": hits})
 
     async def _search_with_embedding(
         self,
@@ -2778,7 +2812,12 @@ class ScopedTopicMemoryApplication:
         if not 1 <= limit <= 100:
             raise InvalidRuntimeRequestError("topic-memory-browse-limit")
         async with self._runtime._scoped_operation(self.scope_id):
-            return await self._runtime._topic_memory_browse(self.scope_id, limit=limit, after=after)
+            items = await self._runtime._topic_memory_browse(self.scope_id, limit=limit, after=after)
+        excluded = await self._runtime.lifecycle.excluded_topics(self.scope_id)
+        if not excluded:
+            return items
+        kept = tuple(item for item in items if item.artifact_ref.artifact_id not in excluded)
+        return kept if len(kept) != len(items) else items
 
     async def flush(self) -> TopicMemoryFlushResult:
         if not self._runtime._topic_memory_processing_available or self._runtime._topic_memory_flush is None:
@@ -3027,6 +3066,7 @@ class BuiltinRuntime:
         remote_ingestion: RemoteIngestion | None = None,
         dream_service: DreamService | None = None,
         generation_concurrency: int = 4,
+        database: Any = None,
     ) -> None:
         if source_window_limit < 1:
             raise _RuntimeConfigurationError("source_window_limit")
@@ -3079,6 +3119,8 @@ class BuiltinRuntime:
         self.scopes = scope_application
         self._readiness = RuntimeReadinessChecks() if readiness is None else readiness
         self._clock = _utc_now if clock is None else clock
+        self._database = database
+        self._source_lifecycle: Any = None
         self._tracing = tracing
         self._scheduled_source_runner = scheduled_source_runner
         self._scheduled_experience_runner = scheduled_experience_runner
@@ -3427,6 +3469,20 @@ class BuiltinRuntime:
         if authorizer is not None:
             service.configure_authorization(lambda ref: authorizer(scope, ref), self._review_authorization_context)
         return service
+
+    @property
+    def database(self) -> Any:
+        if self._database is None:
+            raise _RuntimeStateError("database")
+        return self._database
+
+    @property
+    def lifecycle(self) -> Any:
+        if self._source_lifecycle is None:
+            from powercontext.builtin.runtime.source_lifecycle import SourceLifecycleRegistry
+
+            self._source_lifecycle = SourceLifecycleRegistry(self)
+        return self._source_lifecycle
 
     def _records(self) -> RecordService:
         if self._record_service is None:
