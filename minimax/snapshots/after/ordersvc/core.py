@@ -94,15 +94,18 @@ class OrderService:
         """Return orders matching the filters, ordered by created_on then order_id.
 
         Date bounds are inclusive on both ends (SPEC-001 §Query rules).
-        
-        Pagination (PS-1..PS-5):
-        - page is 1-based, defaults to None (full results)
-        - page_size defaults to None (full results)
-        - page < 1 or page_size < 1 raises OrderError
-        - page beyond available pages returns empty list
+        Optional pagination: page (1-based) and page_size default to returning all results.
         """
         if status is not None and status not in VALID_STATUSES:
             raise OrderError(f"invalid status filter: {status}")
+
+        # Validate pagination parameters if either is provided
+        if page is not None or page_size is not None:
+            if page is None or page_size is None:
+                raise OrderError("both page and page_size must be provided for pagination")
+            if page < 1 or page_size < 1:
+                raise OrderError("page and page_size must be positive integers")
+
         results = []
         for order in self._orders.values():
             if status is not None and order.status != status:
@@ -114,12 +117,10 @@ class OrderService:
             results.append(order)
         results.sort(key=lambda o: (o.created_on, o.order_id))
 
-        # Apply pagination after filtering (PS-5)
+        # Apply pagination if both page and page_size are provided
         if page is not None and page_size is not None:
-            if page < 1 or page_size < 1:
-                raise OrderError("page and page_size must be >= 1")
-            start = (page - 1) * page_size
-            end = start + page_size
-            results = results[start:end]
+            start_idx = (page - 1) * page_size
+            end_idx = start_idx + page_size
+            results = results[start_idx:end_idx]
 
         return results
