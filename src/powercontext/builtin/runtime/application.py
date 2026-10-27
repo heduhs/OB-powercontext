@@ -166,6 +166,7 @@ from powercontext.builtin.runtime._scope_cache import (
     ScopeCacheObserver,
     ScopeEvictor,
 )
+from powercontext.builtin.runtime.count_trigger import SourceCountTrigger
 from powercontext.builtin.runtime.decision_model import DecisionModel
 from powercontext.builtin.runtime.errors import InvalidRuntimeRequestError, TopicMemoryProcessingUnavailableError
 from powercontext.builtin.runtime.models import (
@@ -493,6 +494,7 @@ class ScopedSourceApplication:
                             span.set_attributes({_MEMORY_CAPTURE_SOURCE_COUNT: 1})
             except BaseValueConflictError as error:
                 raise SourceConflictError("identity", error.identity) from None
+            self._runtime._notify_count_trigger(self.scope_id)
             return SourceReceipt(
                 source_ref=SourceRef(source_type=record.source_type, source_id=record.source_id),
                 sequence=record.position,
@@ -568,7 +570,9 @@ class ScopedRecordApplication:
         /,
     ) -> ArtifactCreated:
         async with self._runtime._scope_operation(self.scope_id), self._runtime._locked(self.scope_id):
-            return await self._runtime._records().create_artifact(self.scope_id, family, write)
+            created = await self._runtime._records().create_artifact(self.scope_id, family, write)
+        self._runtime._notify_count_trigger(self.scope_id)
+        return created
 
     async def get_artifact(self, family: str, artifact_id: str, /) -> ArtifactRecord:
         async with self._runtime._scope_operation(self.scope_id):
@@ -3067,6 +3071,8 @@ class BuiltinRuntime:
         dream_service: DreamService | None = None,
         generation_concurrency: int = 4,
         database: Any = None,
+        memory_source_count_threshold: int | None = None,
+        topic_memory_source_count_threshold: int | None = None,
     ) -> None:
         if source_window_limit < 1:
             raise _RuntimeConfigurationError("source_window_limit")
@@ -3121,6 +3127,11 @@ class BuiltinRuntime:
         self._clock = _utc_now if clock is None else clock
         self._database = database
         self._source_lifecycle: Any = None
+        self._count_trigger = SourceCountTrigger(
+            self,
+            memory_threshold=memory_source_count_threshold,
+            topic_threshold=topic_memory_source_count_threshold,
+        )
         self._tracing = tracing
         self._scheduled_source_runner = scheduled_source_runner
         self._scheduled_experience_runner = scheduled_experience_runner
@@ -3310,6 +3321,7 @@ class BuiltinRuntime:
             async with self._lifecycle:
                 self._closing = True
                 await self._lifecycle.wait_for(lambda: self._active_operations == 0)
+            await self._count_trigger.close()
             if self.artifact_processing_supervisor is not None:
                 await self.artifact_processing_supervisor.close()
             async with self._processor_lock:
@@ -3403,6 +3415,13 @@ class BuiltinRuntime:
             finally:
                 self._generation_owners.remove(task)
 
+    def _notify_count_trigger(self, scope_id: str) -> None:
+        """Let count admission re-check this scope after new persisted work appears."""
+        trigger = self._count_trigger
+        if trigger is None or not trigger.configured or self._closing or self._closed:
+            return
+        trigger.notify(scope_id)
+
     @asynccontextmanager
     async def _context(
         self,
@@ -3411,6 +3430,7 @@ class BuiltinRuntime:
         generation_purpose: ModelUsagePurpose | None = None,
         embedding_purpose: ModelUsagePurpose | None = None,
     ) -> AsyncIterator[PowerContext[BuiltinSources, BuiltinArtifacts, BuiltinTriggers]]:
+        self._notify_count_trigger(scope_id)
         async with self._scoped_operation(
             scope_id,
             generation_purpose=generation_purpose,

@@ -199,6 +199,8 @@ class RuntimeConfig(BaseModel):
             raise ValueError(_RECALL_GATE_ROUND2_ORDER_ERROR)
         return self
 
+    memory_source_count_threshold: int | None = Field(default=None, strict=True, ge=1)
+    topic_memory_source_count_threshold: int | None = Field(default=None, strict=True, ge=1)
     schedule_seconds: float | None = Field(default=None, gt=0)
     memory_schedule_seconds: float | None = Field(default=None, gt=0)
     experience_schedule_seconds: float | None = Field(default=None, gt=0)

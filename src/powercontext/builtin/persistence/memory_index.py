@@ -57,6 +57,40 @@ def memory_channel_hits(
     )
 
 
+def memory_channel_hits_by_name(
+    rows: Iterable[Mapping[Any, Any]],
+    memories: tuple[ArtifactRef, ...],
+    /,
+) -> MemorySearchChannels:
+    """Split one native candidate statement into ordered ``fts`` and ``vector`` channels."""
+
+    requested = {memory.artifact_id: memory for memory in memories}
+    fts: list[tuple[float, MemoryChannelHit]] = []
+    vector: list[tuple[float, MemoryChannelHit]] = []
+    for row in rows:
+        artifact_id = str(row["memory_artifact_id"])
+        memory_ref = requested.get(artifact_id)
+        if memory_ref is None:
+            continue
+        hit = MemoryChannelHit(
+            memory_ref=memory_ref,
+            entry_id=str(row["entry_id"]),
+            entry_version_id=str(row["entry_version_id"]),
+            text=str(row["text"]),
+            distance=None if row.get("distance") is None else float(row["distance"]),
+        )
+        rank_key = float(row["rank_key"])
+        (fts if str(row["channel"]) == "fts" else vector).append((rank_key, hit))
+    # The statement returns both channels already ordered; re-sorting keeps that
+    # order independent of how the engine interleaves union branches.
+    fts.sort(key=lambda item: -item[0])
+    vector.sort(key=lambda item: item[0])
+    return MemorySearchChannels(
+        fts=tuple(hit for _, hit in fts),
+        vector=tuple(hit for _, hit in vector),
+    )
+
+
 class MemoryIndex(Protocol):
     """Optional query projection updated in the authoritative write transaction."""
 
@@ -247,6 +281,16 @@ class CompositeMemoryIndex:
         request: MemorySearchRequest,
         /,
     ) -> MemorySearchChannels:
+        if request.mode == "hybrid":
+            # A backend that can answer both channels with one native statement owns
+            # the whole hybrid candidate query; nothing else may run besides it.
+            for index in self.indexes:
+                native_hybrid = getattr(index, "search_hybrid", None)
+                if native_hybrid is None:
+                    continue
+                channels = await native_hybrid(connection, scope_id, request)
+                if channels is not None:
+                    return channels
         fts: tuple[MemoryChannelHit, ...] = ()
         vector: tuple[MemoryChannelHit, ...] = ()
         for index in self.indexes:
