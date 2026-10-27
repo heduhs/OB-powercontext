@@ -45,13 +45,18 @@ NonEmptyText = Annotated[str, Field(min_length=1)]
 
 # Keep thousands separators inside a number so ``13,000`` and ``13000`` agree.
 _WORD = re.compile(r"[a-z]+|\d[\d,]*")
-_DIGITS_ONLY = re.compile(r"^\d+$")
 _PREFIX_LENGTH = 5
-_PREFIX_WEIGHT = 0.45
+_PREFIX_WEIGHT = 0.3
+_HEADING_WEIGHT = 0.2
 _MAX_FTS_QUERIES = 4
 _EXPANSION_WEIGHT = 0.55
 _TITLE_TERMS = 80
 _STATEMENT_BONUS = 0.45
+_STATEMENT_SLOTS = 3
+_LENGTH_NORMALISATION = 0.85
+
+# Running headers repeat on every page of a filing and carry no page subject.
+_RUNNING_HEADER = "tableofcontents"
 
 # A financial question is usually answered by one of the primary statements, whose
 # body is mostly figures; the heading is the only place that names the statement.
@@ -60,6 +65,13 @@ _STATEMENT_HINT = re.compile(
     r"|statements? of (?:income|operations|earnings|cash flow|financial position|changes in equity)"
     r"|balance sheets?",
     re.IGNORECASE,
+)
+# The four primary statements a financial question is answered from.
+_STATEMENT_FAMILIES: tuple[re.Pattern[str], ...] = (
+    re.compile(r"statement[s]? of (?:income|operations|earnings)|statements? of operations", re.IGNORECASE),
+    re.compile(r"balance sheets?|statement of financial position|financial condition", re.IGNORECASE),
+    re.compile(r"statements? of cash flows?", re.IGNORECASE),
+    re.compile(r"changes in (?:stockholders|shareholders)['’]? equity", re.IGNORECASE),
 )
 _FINANCIAL_TERMS = frozenset(
     """
@@ -210,9 +222,9 @@ def pdf_page_source_id(document_id: str, document_sha256: str, page_number: int)
 async def search_pdf_pages(memory: Any, question: str, limit: int = 10) -> tuple[Any, ...]:
     """Return up to ``limit`` exact citations for the most likely evidence pages.
 
-    Every cached entry is scored against the question so a page cannot be dropped just
-    because the lexical channel's admission floor rejected it; the lexical channel is
-    still consulted and its ranking lifts pages that plain term statistics rank low.
+    The lexical channel refuses a page unless it shares several question words, and a
+    financial statement shares almost none, so every cached page is scored here instead
+    and the citation is resolved back to its page.
     """
 
     from powercontext.builtin.runtime import SearchMemoryRequest
@@ -225,55 +237,331 @@ async def search_pdf_pages(memory: Any, question: str, limit: int = 10) -> tuple
     query_terms = _query_terms(question)
     if not query_terms:
         return ()
-    records = tuple((await memory.list()).entries)
+    try:
+        records = tuple((await memory.list()).entries)
+    except Exception:  # noqa: BLE001 - fall back to the lexical channel rather than fail
+        return await _lexical_channel_citations(memory, question, limit, SearchMemoryRequest)
     if not records:
         return ()
-    scores = _lexical_scores(query_terms, tuple(_document_terms(record.entry.text) for record in records))
-    if _FINANCIAL_TERMS.intersection(query_terms):
-        scores = [
-            score + (_STATEMENT_BONUS if _STATEMENT_HINT.search(record.entry.text[:400]) else 0.0)
-            for score, record in zip(scores, records)
-        ]
-    scores = await _boost_with_lexical_channel(memory, question, records, scores, SearchMemoryRequest)
+    # One Memory may hold several reports. A question is scored inside each report
+    # separately so the corpus size never shifts the ranking, and the report the
+    # question asks about keeps the twenty slots.
+    labels = tuple(_document_label(record.entry.text) for record in records)
+    scores, terms_by_report = _page_scores(query_terms, records, labels)
+    fence = _resolve_document(question, labels, terms_by_report, _report_tokens(labels, records))
 
     ranked = sorted(range(len(records)), key=lambda index: (-scores[index], index))
-    matched = [index for index in ranked if scores[index] > 0.0]
-    selected = (matched or ranked)[:limit]
-    return tuple(records[index].citation for index in selected)
+    citations: list[Any] = []
+    seen_pages: set[str] = set()
+
+    def take(index: int) -> bool:
+        if fence is not None and labels[index] != fence:
+            return False
+        # One page may be projected into several entries; the page is the citation unit.
+        key = _page_key(records[index])
+        if key in seen_pages:
+            return False
+        seen_pages.add(key)
+        citations.append(records[index].citation)
+        return True
+
+    # A financial question is answered by the primary statements, whose bodies are
+    # mostly figures; reserve a slot for each one instead of trusting term overlap.
+    slots = _STATEMENT_SLOTS if _FINANCIAL_TERMS.intersection(query_terms) else 0
+    for index in _statement_anchors(records, scores, labels, fence)[:slots]:
+        if len(citations) >= limit:
+            break
+        take(index)
+    for index in ranked:
+        if len(citations) >= limit:
+            break
+        take(index)
+    return tuple(citations)
 
 
-_FTS_WEIGHT = 0.25
-_FTS_WINDOW = 200
+def _statement_anchors(
+    records: tuple[Any, ...], scores: list[float], labels: tuple[str, ...], fence: str | None
+) -> tuple[int, ...]:
+    """Best-scoring page of each primary statement type inside the chosen report."""
+
+    anchors: list[int] = []
+    for family in _STATEMENT_FAMILIES:
+        best: int | None = None
+        for index, record in enumerate(records):
+            if fence is not None and labels[index] != fence:
+                continue
+            if not family.search(_heading_of(record.entry.text)):
+                continue
+            if best is None or scores[index] > scores[best]:
+                best = index
+        if best is not None:
+            anchors.append(best)
+    return tuple(anchors)
 
 
-async def _boost_with_lexical_channel(
-    memory: Any,
+def _page_scores(
+    query_terms: tuple[str, ...], records: tuple[Any, ...], labels: tuple[str, ...]
+) -> tuple[list[float], dict[str, set[str]]]:
+    """Score every cached page, keeping each report's statistics independent."""
+
+    weights = _term_weights(query_terms)
+    scores = [0.0] * len(records)
+    terms_by_report: dict[str, set[str]] = {}
+
+    groups: dict[str, list[int]] = {}
+    for index, label in enumerate(labels):
+        groups.setdefault(label, []).append(index)
+    for label, indices in groups.items():
+        bodies: list[Counter[str]] = []
+        headings: list[Counter[str]] = []
+        vocabulary: set[str] = set()
+        statement: list[bool] = []
+        for index in indices:
+            text = records[index].entry.text
+            body = _document_terms(text)
+            bodies.append(body)
+            headings.append(_heading_terms(text))
+            vocabulary.update(body)
+            statement.append(bool(_STATEMENT_HINT.search(_heading_of(text))))
+        terms_by_report[label] = vocabulary
+        body_scores = _unit(_bm25(weights, tuple(bodies)))
+        heading_scores = _unit(_bm25(weights, tuple(headings)))
+        prefix_scores = _unit(_bm25(_prefix_weights(weights), tuple(_prefix_counters(bodies))))
+        for offset, index in enumerate(indices):
+            score = body_scores[offset] + _HEADING_WEIGHT * heading_scores[offset]
+            score += _PREFIX_WEIGHT * prefix_scores[offset]
+            if statement[offset]:
+                score += _STATEMENT_BONUS
+            scores[index] = score
+    return scores, terms_by_report
+
+
+def _prefix_weights(weights: dict[str, float]) -> dict[str, float]:
+    """Collapse the query to word stems so "geographies" still meets "geographic"."""
+
+    collapsed: dict[str, float] = {}
+    for term, weight in weights.items():
+        key = term[:_PREFIX_LENGTH] if len(term) >= _PREFIX_LENGTH else term
+        collapsed[key] = max(collapsed.get(key, 0.0), weight)
+    return collapsed
+
+
+def _prefix_counters(bodies: list[Counter[str]]) -> list[Counter[str]]:
+    counters: list[Counter[str]] = []
+    for body in bodies:
+        truncated: Counter[str] = Counter()
+        for term, count in body.items():
+            truncated[term[:_PREFIX_LENGTH] if len(term) >= _PREFIX_LENGTH else term] += count
+        counters.append(truncated)
+    return counters
+
+
+def _heading_of(text: str) -> str:
+    """The page's own opening line, skipping the document id and running header."""
+
+    lines = _heading_lines(text)
+    if not lines:
+        return ""
+    heading = lines[0]
+    if len(heading) < 40 and len(lines) > 1:
+        heading = f"{heading} {lines[1]}"
+    return heading[:120]
+
+
+def _heading_lines(text: str) -> list[str]:
+    body = _page_body(text)
+    lines = [line.strip() for line in body.splitlines() if line.strip()]
+    return lines[_running_header_length(lines) :]
+
+
+def _running_header_length(lines: list[str]) -> int:
+    """How many leading lines spell a "Table of Contents" running header."""
+
+    consumed = ""
+    for index, line in enumerate(lines[:4]):
+        candidate = consumed + re.sub(r"[^a-z]", "", line.casefold())
+        if not candidate or not _RUNNING_HEADER.startswith(candidate):
+            break
+        consumed = candidate
+        if consumed == _RUNNING_HEADER:
+            return index + 1
+    return 0
+
+
+def _page_body(text: str) -> str:
+    head, separator, body = text.partition("\n")
+    return body if separator else head
+
+
+def _heading_terms(text: str) -> Counter[str]:
+    return Counter(_normalize_terms(_heading_of(text)))
+
+
+_FILING_NOISE = frozenset({"10k", "10q", "8k", "earnings", "annual", "report", "call", "transcript", "dated"})
+_PERIOD = re.compile(r"^(?:19|20)\d{2}(?:q[1-4])?$")
+
+
+def _document_label(text: str) -> str:
+    """Reduce a projection's document id to the bare report owner ("PEPSICO")."""
+
+    return "".join(_owner_tokens(text))
+
+
+def _owner_tokens(text: str) -> list[str]:
+    """Split the document id into owner tokens, dropping the period and filing type."""
+
+    head, _separator, _body = text.partition("\n")
+    parts = [part for part in re.split(r"[^A-Za-z0-9]+", head) if part]
+    while len(parts) > 1 and _is_filing_noise(parts[-1]):
+        parts.pop()
+    return [part.casefold() for part in parts]
+
+
+def _is_filing_noise(part: str) -> bool:
+    lowered = part.casefold()
+    return lowered in _FILING_NOISE or bool(_PERIOD.match(lowered))
+
+
+def _resolve_document(
     question: str,
-    records: tuple[Any, ...],
-    scores: list[float],
-    search_request: Any,
-) -> list[float]:
-    """Lift entries the lexical channel already surfaces, keeping its order as a prior."""
+    labels: tuple[str, ...],
+    terms_by_report: dict[str, set[str]],
+    report_tokens: dict[str, list[str]],
+) -> str | None:
+    """Identify the one report the question asks about, or ``None`` when unsure."""
 
-    order: dict[str, int] = {}
-    window = min(max(len(records), 32), _FTS_WINDOW)
+    unique = sorted(set(labels))
+    if len(unique) < 2:
+        return None
+    question_tokens = [token.casefold() for token in re.findall(r"[A-Za-z0-9]+", question)]
+    squashed = "".join(question_tokens)
+    owners = _owners_by_term(terms_by_report)
+    strengths = {label: _name_strength(report_tokens[label], squashed, question_tokens, owners) for label in unique}
+    top = max(strengths.values())
+    if top == 0:
+        return _covered_report(question_tokens, terms_by_report)
+    named = [label for label, strength in strengths.items() if strength == top]
+    if len(named) > 1 and top < 2:
+        return None
+    return max(named, key=len)
+
+
+def _owners_by_term(terms_by_report: dict[str, set[str]]) -> dict[str, int]:
+    owners: dict[str, int] = {}
+    for vocabulary in terms_by_report.values():
+        for term in vocabulary:
+            owners[term] = owners.get(term, 0) + 1
+    return owners
+
+
+def _name_strength(
+    tokens: list[str], squashed_question: str, question_tokens: list[str], owners: dict[str, int]
+) -> int:
+    """How strongly the question calls this report by name: 2 exact, 1 alias, 0 not at all."""
+
+    if not tokens:
+        return 0
+    key = "".join(tokens)
+    # Short keys ("3M") must be whole words; as substrings they hide inside figures.
+    if len(key) >= 4 and key in squashed_question:
+        return 2
+    strength = 0
+    for token in set(tokens):
+        best = 0
+        for candidate in question_tokens:
+            if _token_matches(token, candidate, owners):
+                best = 2
+                break
+            if owners.get(candidate, 0) <= 1 and (_is_alias(candidate, token) or _is_alias(candidate, key)):
+                best = 1
+        if not best:
+            return 0
+        strength = max(strength, best)
+    return strength
+
+
+def _token_matches(label_token: str, question_token: str, owners: dict[str, int]) -> bool:
+    if label_token == question_token:
+        return True
+    if len(label_token) >= 4 and len(question_token) >= 4:
+        return question_token.startswith(label_token) or label_token.startswith(question_token)
+    return False
+
+
+def _is_alias(question_token: str, label_token: str) -> bool:
+    """Accept a short alias such as "JnJ" or "AMEX" spelled from the report's own letters."""
+
+    if not 3 <= len(question_token) <= 5 or len(label_token) < 2 * len(question_token):
+        return False
+    if question_token[0] != label_token[0]:
+        return False
+    remaining = iter(label_token)
+    return all(letter in remaining for letter in question_token)
+
+
+def _covered_report(question_tokens: list[str], terms_by_report: dict[str, set[str]]) -> str | None:
+    """Fall back to the report that covers most of the question's rare vocabulary."""
+
+    wanted = {token for token in question_tokens if len(token) > 1 and token not in _STOPWORDS}
+    if not wanted or not terms_by_report:
+        return None
+    size = len(terms_by_report)
+    document_frequency = {
+        term: sum(1 for vocabulary in terms_by_report.values() if term in vocabulary) for term in wanted
+    }
+    best: str | None = None
+    best_value = 0.0
+    for label, vocabulary in terms_by_report.items():
+        value = 0.0
+        for term in wanted:
+            if term in vocabulary:
+                value += math.log(1.0 + (size - document_frequency[term] + 0.5) / (document_frequency[term] + 0.5))
+        if value > best_value:
+            best, best_value = label, value
+    return best
+
+
+def _report_tokens(labels: tuple[str, ...], records: tuple[Any, ...]) -> dict[str, list[str]]:
+    tokens: dict[str, list[str]] = {}
+    for label, record in zip(labels, records):
+        if label not in tokens:
+            tokens[label] = _owner_tokens(record.entry.text)
+    return tokens
+
+
+def _page_key(record: Any) -> str:
+    """Identify the physical page a cached entry belongs to."""
+
+    sources = getattr(record.entry, "sources", ())
+    if sources:
+        return sources[0].source_id
+    return record.entry.entry_id
+
+
+async def _lexical_channel_citations(memory: Any, question: str, limit: int, search_request: Any) -> tuple[Any, ...]:
+    """Degraded path: answer from the backend's own lexical channel only."""
+
+    from powercontext.builtin.artifacts.memory import MemoryCitation
+
+    citations: list[Any] = []
+    seen: set[str] = set()
+    window = max(limit * 4, 40)
     for query in _candidate_queries(question)[:_MAX_FTS_QUERIES]:
-        try:
-            page = await memory.search(search_request(query=query, mode="fts", limit=window))
-        except Exception:  # noqa: BLE001 - the lexical channel is an optional prior here
-            continue
+        page = await memory.search(search_request(query=query, mode="fts", limit=window))
         for hit in page.hits:
-            order.setdefault(hit.entry_id, len(order))
-    if not order:
-        return scores
-    total = len(order)
-    index_by_entry = {record.entry.entry_id: index for index, record in enumerate(records)}
-    boosted = list(scores)
-    for entry_id, rank in order.items():
-        index = index_by_entry.get(entry_id)
-        if index is not None:
-            boosted[index] += _FTS_WEIGHT * (1.0 - rank / total)
-    return boosted
+            if hit.entry_id in seen:
+                continue
+            seen.add(hit.entry_id)
+            citations.append(
+                MemoryCitation(
+                    memory_ref=hit.memory_ref,
+                    entry_id=hit.entry_id,
+                    entry_version_id=hit.entry_version_id,
+                )
+            )
+            if len(citations) >= limit:
+                return tuple(citations)
+    return tuple(citations)
 
 
 def _query_terms(question: str) -> tuple[str, ...]:
@@ -289,21 +577,13 @@ def _normalize_terms(text: str) -> list[str]:
 
 
 def _document_terms(text: str) -> Counter[str]:
-    head, separator, body = text.partition("\n")
-    terms = _normalize_terms(body if separator else head)
+    terms = _normalize_terms(_page_body(text))
     counter: Counter[str] = Counter(terms)
     # Report pages announce their subject in the opening lines ("Consolidated Statement
     # of Income"), which is exactly the phrase a question tends to reuse.
-    for term in terms[:_TITLE_TERMS]:
+    for term in _normalize_terms(_heading_of(text))[:_TITLE_TERMS]:
         counter[term] += 1
     return counter
-
-
-def _prefix_counter(counter: Counter[str]) -> Counter[str]:
-    keys: Counter[str] = Counter()
-    for term, count in counter.items():
-        keys[term[:_PREFIX_LENGTH] if len(term) >= _PREFIX_LENGTH else term] += count
-    return keys
 
 
 def _bm25(
@@ -311,8 +591,9 @@ def _bm25(
     documents: tuple[Counter[str], ...],
     *,
     k1: float = 1.2,
-    b: float = 0.85,
+    b: float | None = None,
 ) -> list[float]:
+    b = _LENGTH_NORMALISATION if b is None else b
     size = len(documents)
     lengths = [sum(counter.values()) for counter in documents]
     average = (sum(lengths) / size) if size else 0.0
@@ -350,21 +631,6 @@ def _term_weights(query_terms: tuple[str, ...]) -> dict[str, float]:
         for synonym in _EXPANSIONS.get(term, ()):
             weights.setdefault(synonym, _EXPANSION_WEIGHT)
     return weights
-
-
-def _lexical_scores(query_terms: tuple[str, ...], documents: tuple[Counter[str], ...]) -> list[float]:
-    weights = _term_weights(query_terms)
-    exact = _unit(_bm25(weights, documents))
-    prefixed_weights: dict[str, float] = {}
-    for term, weight in weights.items():
-        key = _prefix_of(term)
-        prefixed_weights[key] = max(prefixed_weights.get(key, 0.0), weight)
-    prefixed = _unit(_bm25(prefixed_weights, tuple(_prefix_counter(c) for c in documents)))
-    return [value + _PREFIX_WEIGHT * extra for value, extra in zip(exact, prefixed)]
-
-
-def _prefix_of(term: str) -> str:
-    return term[:_PREFIX_LENGTH] if len(term) >= _PREFIX_LENGTH else term
 
 
 def _candidate_queries(question: str) -> tuple[str, ...]:
