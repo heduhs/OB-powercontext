@@ -1,0 +1,23 @@
+{
+  "service": "PowerContext 1.4.1 (HTTP, 127.0.0.1:8000)",
+  "scope_id": "scp_7sb3sp5hmm4qbmtz3r7qc1d7cf",
+  "scope_title": "SDD 上下文管理任务状态",
+  "memory_kind": "sdd-task-state",
+  "task_id": "TASK-001",
+  "entries_after_restart": [
+    {
+      "task_id": "TASK-001",
+      "reason": "task completed",
+      "status": "done",
+      "summary": "Added optional `page` (1-based) and `page_size` parameters to `list_orders` method, implementing pagination rules PS-1 through PS-5 while preserving all existing filtering and ordering behavior.",
+      "changed_files": [
+        "ordersvc/core.py"
+      ],
+      "target_tests_passed": true,
+      "regression_tests_passed": true,
+      "_state": "active",
+      "_ref": "art_f9da56f3b6f1435d9e872e62a3e3091d"
+    }
+  ],
+  "note": "模块重启后从空进程重新读取，证明状态被持久化并可复用"
+}

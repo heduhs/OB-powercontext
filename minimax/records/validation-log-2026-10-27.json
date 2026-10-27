@@ -1,0 +1,57 @@
+[
+  {
+    "step": "step0-reset",
+    "ok": true,
+    "detail": "demo project restored to pre-change state"
+  },
+  {
+    "step": "step1-import",
+    "ok": true,
+    "detail": "{\n  \"ingested\": 32,\n  \"by_kind\": {\n    \"spec\": 21,\n    \"code\": 5,\n    \"test\": 6\n  },\n  \"provider\": \"minimax\"\n}"
+  },
+  {
+    "step": "step2-target-tests-fail-before",
+    "ok": true,
+    "detail": "exit=1, FAILED tests/test_orders_pagination.py::TestPagination::test_pagination_combines_with_filters"
+  },
+  {
+    "step": "step2b-regression-pass-before",
+    "ok": true,
+    "detail": "exit=0"
+  },
+  {
+    "step": "step3-reimport-v12",
+    "ok": true,
+    "detail": "spec v1.2 imported"
+  },
+  {
+    "step": "step3-context-has-ps-rules",
+    "ok": true,
+    "detail": "spec hits: ['CS-3', 'CS-4', 'PS-1', 'PS-3', 'PS-4', 'PS-5', 'QS-1', 'QS-4']"
+  },
+  {
+    "step": "step4-minimax-edit",
+    "ok": true,
+    "detail": "changed=['ordersvc/core.py'], summary=Added optional `page` (1-based) and `page_size` parameters to `list_orders` method, implementing pagination rules PS-1 t"
+  },
+  {
+    "step": "step5-target-tests-pass-after",
+    "ok": true,
+    "detail": "exit=0"
+  },
+  {
+    "step": "step5b-regression-pass-after",
+    "ok": true,
+    "detail": "exit=0"
+  },
+  {
+    "step": "step6-state-readback",
+    "ok": true,
+    "detail": "1 entries for TASK-001"
+  },
+  {
+    "step": "step7-context-reflects-v13",
+    "ok": true,
+    "detail": "PS-6 present in retrieved context"
+  }
+]

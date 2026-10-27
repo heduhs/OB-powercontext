@@ -1,0 +1,41 @@
+{
+  "engine": "OceanBase seekdb v1.3.0 (MySQL protocol, 127.0.0.1:2881)",
+  "database": "sddctx",
+  "collection": "sddctx_materials",
+  "embedding": "MiniMax embo-01 (1536-dim), hybrid vector+fulltext in seekdb",
+  "total_chunks": 37,
+  "sample_query": "为订单查询接口 list_orders 增加分页参数 page 和 page_size，不能破坏既有查询和状态机行为",
+  "sql_equivalent": "SELECT ... FROM sddctx_materials WHERE kind='spec' ORDER BY hybrid_score(query_embedding, MATCH(text)) LIMIT 5",
+  "top_hits": [
+    {
+      "symbol": "QS-4",
+      "source": "specs/SPEC-001-order-query.md",
+      "distance": 0.1788,
+      "text": "[QS-4] (查询规则（Query rules）) `status` 过滤值必须是合法状态之一，否则抛出 `OrderError`。"
+    },
+    {
+      "symbol": "PS-1",
+      "source": "specs/SPEC-001-order-query.md",
+      "distance": 0.1902,
+      "text": "[PS-1] (分页规则（Pagination rules，v1.2 新增）) `list_orders` 接受可选参数 `page`（1-based）与 `page_size`；"
+    },
+    {
+      "symbol": "CS-4",
+      "source": "specs/SPEC-001-order-query.md",
+      "distance": 0.2134,
+      "text": "[CS-4] (创建规则（Creation rules）) 新订单初始状态必须为 `draft`。"
+    },
+    {
+      "symbol": "PS-3",
+      "source": "specs/SPEC-001-order-query.md",
+      "distance": 0.2275,
+      "text": "[PS-3] (分页规则（Pagination rules，v1.2 新增）) 末页不足 `page_size` 时返回剩余条目；`page` 超出总页数时返回空列表，不报错。"
+    },
+    {
+      "symbol": "QS-5",
+      "source": "specs/SPEC-001-order-query.md",
+      "distance": 0.2313,
+      "text": "[QS-5] (查询规则（Query rules）) 多个过滤条件同时给出时，取交集（AND 语义）。"
+    }
+  ]
+}
