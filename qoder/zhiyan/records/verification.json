@@ -1,0 +1,487 @@
+{
+  "started_at": "2026-10-28T12:56:28+00:00",
+  "project": "智研 ZhiYan",
+  "seekdb": {
+    "engine": "5.7.25-OceanBase seekdb-v1.3.0.0",
+    "ingest": {
+      "ingested": 48,
+      "stored": 48,
+      "dim": 1536,
+      "embedding": {
+        "backend": "minimax",
+        "model": "embo-01",
+        "dim": null,
+        "note": "真实语义嵌入，需要 MINIMAX_API_KEY"
+      }
+    },
+    "indexes": [
+      {
+        "name": "PRIMARY",
+        "column": "doc_id",
+        "type": "BTREE"
+      },
+      {
+        "name": "ftx",
+        "column": "text_body",
+        "type": "FULLTEXT"
+      },
+      {
+        "name": "vidx",
+        "column": "embedding",
+        "type": "VECTOR"
+      }
+    ],
+    "documents": 48,
+    "ddl": "create table if not exists zhiyan_docs(\n  doc_id varchar(64) primary key,\n  title varchar(512),\n  section varchar(512),\n  doc_type varchar(32),\n  tags varchar(512),\n  text_body varchar(4000) not null,\n  source_url varchar(512),\n  embedding vector(1536) not null,\n  fulltext index ftx (text_body) with parser ik,\n  vector index vidx (embedding) with (distance=cosine, type=hnsw)\n)"
+  },
+  "hybrid": {
+    "per_query": [
+      {
+        "id": "q01",
+        "kind": "keyword",
+        "query": "HNSW 召回率 efSearch 参数扫描",
+        "expect": [
+          "doc-03",
+          "doc-09",
+          "doc-46",
+          "doc-25"
+        ],
+        "vector": 0.0,
+        "fulltext": 1.0,
+        "hybrid": 0.5
+      },
+      {
+        "id": "q02",
+        "kind": "keyword",
+        "query": "PagedAttention KV Cache 显存碎片",
+        "expect": [
+          "doc-01"
+        ],
+        "vector": 1.0,
+        "fulltext": 1.0,
+        "hybrid": 1.0
+      },
+      {
+        "id": "q03",
+        "kind": "keyword",
+        "query": "BM25 概率相关性 关键词打分",
+        "expect": [
+          "doc-15",
+          "doc-38"
+        ],
+        "vector": 0.5,
+        "fulltext": 0.5,
+        "hybrid": 0.5
+      },
+      {
+        "id": "q04",
+        "kind": "keyword",
+        "query": "RRF 倒数排名融合 混合检索",
+        "expect": [
+          "doc-26",
+          "doc-39",
+          "doc-12"
+        ],
+        "vector": 0.3333,
+        "fulltext": 1.0,
+        "hybrid": 1.0
+      },
+      {
+        "id": "q05",
+        "kind": "keyword",
+        "query": "两阶段提交 协调者 原子性",
+        "expect": [
+          "doc-18",
+          "doc-35"
+        ],
+        "vector": 0.5,
+        "fulltext": 0.5,
+        "hybrid": 1.0
+      },
+      {
+        "id": "q06",
+        "kind": "keyword",
+        "query": "LSM 树 写放大 分层合并",
+        "expect": [
+          "doc-13",
+          "doc-27"
+        ],
+        "vector": 1.0,
+        "fulltext": 1.0,
+        "hybrid": 1.0
+      },
+      {
+        "id": "q07",
+        "kind": "keyword",
+        "query": "MVCC 快照隔离 版本可见性",
+        "expect": [
+          "doc-05",
+          "doc-17",
+          "doc-31"
+        ],
+        "vector": 1.0,
+        "fulltext": 0.6667,
+        "hybrid": 1.0
+      },
+      {
+        "id": "q08",
+        "kind": "keyword",
+        "query": "LoRA 低秩 参数高效微调",
+        "expect": [
+          "doc-21"
+        ],
+        "vector": 0.0,
+        "fulltext": 1.0,
+        "hybrid": 1.0
+      },
+      {
+        "id": "q09",
+        "kind": "semantic",
+        "query": "怎样让模型不要自己编造答案",
+        "expect": [
+          "doc-02",
+          "doc-10"
+        ],
+        "vector": 0.0,
+        "fulltext": 1.0,
+        "hybrid": 1.0
+      },
+      {
+        "id": "q10",
+        "kind": "semantic",
+        "query": "生成式服务为什么要排队才能返回",
+        "expect": [
+          "doc-43",
+          "doc-22"
+        ],
+        "vector": 0.0,
+        "fulltext": 0.5,
+        "hybrid": 0.5
+      },
+      {
+        "id": "q11",
+        "kind": "semantic",
+        "query": "内存表写满之后后台怎样重写磁盘文件",
+        "expect": [
+          "doc-13",
+          "doc-27"
+        ],
+        "vector": 0.5,
+        "fulltext": 1.0,
+        "hybrid": 1.0
+      },
+      {
+        "id": "q12",
+        "kind": "semantic",
+        "query": "优化器为什么选错了索引，怎么查出来",
+        "expect": [
+          "doc-28",
+          "doc-45",
+          "doc-16"
+        ],
+        "vector": 0.3333,
+        "fulltext": 0.6667,
+        "hybrid": 0.6667
+      }
+    ],
+    "average_recall_at_5": {
+      "vector": 0.4305,
+      "fulltext": 0.8194,
+      "hybrid": 0.8472
+    },
+    "gain_over_best_leg": 0.0278,
+    "fusion_sweep": [
+      {
+        "fuse": "rrf",
+        "w_vec": 0.0,
+        "recall_at_5": 0.8194
+      },
+      {
+        "fuse": "rrf",
+        "w_vec": 0.25,
+        "recall_at_5": 0.7847
+      },
+      {
+        "fuse": "rrf",
+        "w_vec": 0.5,
+        "recall_at_5": 0.7639
+      },
+      {
+        "fuse": "rrf",
+        "w_vec": 0.75,
+        "recall_at_5": 0.6736
+      },
+      {
+        "fuse": "rrf",
+        "w_vec": 1.0,
+        "recall_at_5": 0.4305
+      },
+      {
+        "fuse": "weighted",
+        "w_vec": 0.0,
+        "recall_at_5": 0.8194
+      },
+      {
+        "fuse": "weighted",
+        "w_vec": 0.25,
+        "recall_at_5": 0.8472
+      },
+      {
+        "fuse": "weighted",
+        "w_vec": 0.5,
+        "recall_at_5": 0.7639
+      },
+      {
+        "fuse": "weighted",
+        "w_vec": 0.75,
+        "recall_at_5": 0.6458
+      },
+      {
+        "fuse": "weighted",
+        "w_vec": 1.0,
+        "recall_at_5": 0.4305
+      }
+    ],
+    "best": {
+      "fuse": "weighted",
+      "w_vec": 0.25,
+      "recall_at_5": 0.8472
+    },
+    "shipped_default": {
+      "fuse": "weighted",
+      "w_vec": 0.25,
+      "recall_at_5": 0.8472
+    },
+    "textbook_rrf_050": {
+      "fuse": "rrf",
+      "w_vec": 0.5,
+      "recall_at_5": 0.7639
+    },
+    "fusion_example": [
+      {
+        "doc_id": "doc-09",
+        "title": "实验记录：向量检索性能对比",
+        "section": "实验2 HNSW vs IVF",
+        "type": "lab",
+        "tags": [
+          "实验",
+          "向量检索",
+          "HNSW",
+          "IVF"
+        ],
+        "text": "在 100万条 768维向量上对比 HNSW 与 IVF-PQ：HNSW 召回率95%时QPS约3000，内存占用高；IVF-PQ 召回率92%时QPS约5000，内存占用低但召回略差。结论：内存充足且追求召回选HNSW，海量数据且容忍精度损失选IVF-PQ。",
+        "source_url": "",
+        "score": 0.907221,
+        "vector_rank": 4,
+        "fulltext_rank": 1,
+        "vector_similarity": 0.8387,
+        "fulltext_relevance": 5.3978,
+        "matched_by": [
+          "vector",
+          "fulltext"
+        ]
+      },
+      {
+        "doc_id": "doc-40",
+        "title": "检索系统课程笔记",
+        "section": "第6讲 召回与精排",
+        "type": "note",
+        "tags": [
+          "检索",
+          "召回",
+          "精排"
+        ],
+        "text": "召回要在百万候选里几毫秒挑出几百条，只能用能预先建好索引的轻量打分；精排只面对几十条，可以把问题与文档拼在一起送进模型逐对判断，慢一点也不影响响应。两级目标不同：召回追求别漏(看 Recall@K)，精排负责把最合适的顶到前面(看 nDCG、MRR)。精排只能在召回给出的集合里排序，上游漏掉的内容再强的下游也救不回来，因此要多路召回互补。",
+        "source_url": "",
+        "score": 0.330621,
+        "vector_rank": 2,
+        "fulltext_rank": 5,
+        "vector_similarity": 0.8733,
+        "fulltext_relevance": 1.4993,
+        "matched_by": [
+          "vector",
+          "fulltext"
+        ]
+      },
+      {
+        "doc_id": "doc-03",
+        "title": "Efficient and Robust Approximate Nearest Neighbor Search Using HNSW",
+        "section": "核心思想",
+        "type": "paper",
+        "tags": [
+          "ANN",
+          "HNSW",
+          "向量索引"
+        ],
+        "text": "HNSW 是基于多层可导航小世界图的近似最近邻算法。上层稀疏用于长距离快速逼近，底层稠密用于精确检索。构建时每个新节点从最高层贪心下降插入，复杂度 O(log N)。在召回率与延迟的权衡上优于多数基于树和量化的方法。",
+        "source_url": "",
+        "score": 0.292937,
+        "vector_rank": 8,
+        "fulltext_rank": 2,
+        "vector_similarity": 0.7788,
+        "fulltext_relevance": 2.3591,
+        "matched_by": [
+          "vector",
+          "fulltext"
+        ]
+      },
+      {
+        "doc_id": "doc-47",
+        "title": "实验记录：向量量化与召回损失",
+        "section": "实验7 量化对比",
+        "type": "lab",
+        "tags": [
+          "实验",
+          "向量量化",
+          "召回率"
+        ],
+        "text": "同一 50 万条 768 维集合分别用 float32、int8 标量量化与乘积量化(m=96、每段 256 中心)建索引：内存由约 1.5GB 降到 0.5GB 再降到不足 0.1GB，Recall@100 由 1.0 降到约 0.95、再到约 0.72。补一层重排、用原始向量精排前 1000 条后，压缩方案的 Recall@10 回到 0.9 以上，但延迟相应上升。示例记录。",
+        "source_url": "",
+        "score": 0.25,
+        "vector_rank": 1,
+        "fulltext_rank": null,
+        "vector_similarity": 0.8876,
+        "fulltext_relevance": null,
+        "matched_by": [
+          "vector"
+        ]
+      },
+      {
+        "doc_id": "doc-07",
+        "title": "机器学习课程笔记",
+        "section": "第3讲 梯度下降",
+        "type": "note",
+        "tags": [
+          "机器学习",
+          "优化",
+          "梯度下降"
+        ],
+        "text": "梯度下降沿损失函数负梯度方向更新参数。批量梯度下降(BGD)用全量数据，稳定但慢；随机梯度下降(SGD)每次一个样本，快但震荡；小批量(mini-batch)折中。学习率过大发散、过小收敛慢，常用学习率衰减或 Adam 自适应优化器。",
+        "source_url": "",
+        "score": 0.203301,
+        "vector_rank": null,
+        "fulltext_rank": 3,
+        "vector_similarity": null,
+        "fulltext_relevance": 2.0795,
+        "matched_by": [
+          "fulltext"
+        ]
+      }
+    ],
+    "explain": {
+      "vector_plan": "==============================================================\n|ID|OPERATOR         |NAME             |EST.ROWS|EST.TIME(us)|\n--------------------------------------------------------------\n|0 |VECTOR INDEX SCAN|zhiyan_docs(vidx)|48      |127         |\n==============================================================\nOutputs & filters:\n-------------------------------------\n  0 - output([zhiyan_docs.doc_id]), filter(nil), rowset=256\n      access([zhiyan_docs.doc_id]), partitions(p0)\n      is_index_back=true, is_global_index=false, \n      range_key([zhiyan_docs.__vid_1793192192198277], [zhiyan_docs.__type_23_1793192192198315]), range(MIN,MIN ; MAX,MAX)always true",
+      "fulltext_plan": "===============================================================\n|ID|OPERATOR           |NAME            |EST.ROWS|EST.TIME(us)|\n---------------------------------------------------------------\n|0 |TEXT RETRIEVAL SCAN|zhiyan_docs(ftx)|20      |131         |\n===============================================================\nOutputs & filters:\n-------------------------------------\n  0 - output([zhiyan_docs.doc_id]), filter(nil), rowset=256\n      access([zhiyan_docs.doc_id]), partitions(p0)\n      is_index_back=true, is_global_index=false, \n      calc_relevance=true, match_expr(MATCH(zhiyan_docs.text_body) AGAINST('HNSW 索引参数')), \n      pushdown_match_filter(MATCH(zhiyan_docs.text_body) AGAINST('HNSW 索引参数')), \n      sort_keys([MATCH(zhiyan_docs.text_body) AGAINST('HNSW 索引参数'), DESC]), limit(5), offset(nil), with_ties(false)",
+      "single_sql_rrf": [
+        {
+          "doc_id": "doc-46",
+          "rrf": 0.03132
+        },
+        {
+          "doc_id": "doc-09",
+          "rrf": 0.03132
+        },
+        {
+          "doc_id": "doc-45",
+          "rrf": 0.03128
+        },
+        {
+          "doc_id": "doc-28",
+          "rrf": 0.03009
+        },
+        {
+          "doc_id": "doc-04",
+          "rrf": 0.02838
+        }
+      ],
+      "indexes": [
+        {
+          "name": "PRIMARY",
+          "column": "doc_id",
+          "type": "BTREE"
+        },
+        {
+          "name": "ftx",
+          "column": "text_body",
+          "type": "FULLTEXT"
+        },
+        {
+          "name": "vidx",
+          "column": "embedding",
+          "type": "VECTOR"
+        }
+      ],
+      "engine": "5.7.25-OceanBase seekdb-v1.3.0.0"
+    }
+  },
+  "answer": {
+    "question": "RAG 是如何减少大模型幻觉的？",
+    "answer": "RAG 通过将大模型的参数化记忆与可检索的外部知识库相结合来减少幻觉。具体过程是：检索器首先用 DPR 将问题与文档编码为稠密向量，通过最大内积搜索找出 Top-K 相关文档，然后生成器以这些检索到的文档为条件生成答案。由于答案生成有真实文档作为依据，而非仅依赖模型自身的参数知识，从而在知识密集型任务上显著减少幻觉的产生[1]。",
+    "citations": [
+      {
+        "index": 1,
+        "title": "Retrieval-Augmented Generation for Knowledge-Intensive NLP",
+        "section": "方法"
+      },
+      {
+        "index": 2,
+        "title": "Efficient Memory Management for LLM Serving with PagedAttention",
+        "section": "摘要"
+      },
+      {
+        "index": 3,
+        "title": "Serving Large Language Models at Scale: Iteration-Level Scheduling and Prefill-Decode Separation",
+        "section": "系统"
+      }
+    ],
+    "engine": "MiniMax-M1",
+    "retrieved": [
+      {
+        "doc_id": "doc-02",
+        "title": "Retrieval-Augmented Generation for Knowledge-Intensive NLP"
+      },
+      {
+        "doc_id": "doc-01",
+        "title": "Efficient Memory Management for LLM Serving with PagedAttention"
+      },
+      {
+        "doc_id": "doc-22",
+        "title": "Serving Large Language Models at Scale: Iteration-Level Scheduling and Prefill-Decode Separation"
+      }
+    ]
+  },
+  "memory": {
+    "service": "PowerContext",
+    "scope_id": "scp_2tw6qh3vxsd5v96msfjm89padz",
+    "written": "验证用薄弱点 205811",
+    "cross_process_read": {
+      "found": true,
+      "pid": 20984,
+      "total_weak_points": 10,
+      "version": 1,
+      "review_count": 0,
+      "next_review": "2026-10-28"
+    },
+    "after_review": {
+      "id": "2b921327229f8506",
+      "point": "验证用薄弱点 205811",
+      "source": "verify.py",
+      "note": "自动验证写入",
+      "version": 2,
+      "review_count": 1,
+      "interval_days": 1,
+      "ease": 2.6,
+      "next_review": "2026-10-29",
+      "created_at": "2026-10-28",
+      "last_quality": 5,
+      "last_review": "2026-10-28"
+    },
+    "inventory": {
+      "weak_points": 10,
+      "due_today": 3,
+      "mastered": 0,
+      "scope_id": "scp_2tw6qh3vxsd5v96msfjm89padz"
+    },
+    "probe_returncode": 0
+  },
+  "finished_at": "2026-10-28T12:58:17+00:00"
+}

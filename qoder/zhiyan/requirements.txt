@@ -1,10 +1,18 @@
-# ZhiYan backend dependencies (Python 3.11+)
+# ZhiYan backend dependencies (Python 3.11+, verified on 3.12)
+#
+# Required — the project runs end-to-end with only these (no API key needed):
 fastapi>=0.110
 uvicorn>=0.27
 pydantic>=2.0
-pyseekdb>=1.4.0
 pymysql>=1.1
-powercontext==1.4.1
+powercontext>=1.4.1
+
+# Optional — only for the PowerContext server's own CLI/telemetry stack
 opentelemetry-api
 opentelemetry-sdk
-pydantic-settings
+
+# Optional — semantic embeddings / grounded answers when you set
+# ZHIYAN_EMBED_BACKEND=minimax (or openai). No extra package is needed: the
+# client is stdlib urllib. Retrieval no longer depends on pyseekdb, it speaks
+# MySQL wire protocol to seekdb directly so both the vector and fulltext legs
+# are explicit SQL.

@@ -1,5 +1,11 @@
 __pycache__/
 *.pyc
-server.log
 .env
-records/*.log
+server.log
+
+# Qoder Sites local descriptor: contains per-account directory bindings, keep local
+*.qoder.site
+
+# Evidence logs ARE deliverables (they back every number in README/VALIDATION),
+# so only scratch/noise logs are excluded.
+records/*.out

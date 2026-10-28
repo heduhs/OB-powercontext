@@ -143,3 +143,23 @@ code { background: #0d1430; border: 1px solid var(--line); border-radius: 6px; p
   .hero { padding-top: 48px; }
   .result .score { margin-left: 0; }
 }
+
+/* ---------- retrieval benchmark ---------- */
+.bench-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(320px,1fr));gap:18px;margin-top:14px}
+.bench-card{background:var(--card,#fff);border:1px solid var(--line,#e6e6ef);border-radius:14px;padding:16px 18px}
+.bench-card h4{margin:0 0 10px;font-size:15px}
+table.bench{width:100%;border-collapse:collapse;font-size:14px}
+table.bench th,table.bench td{text-align:left;padding:7px 6px;border-bottom:1px solid var(--line,#eee)}
+table.bench td:last-child{text-align:right;font-variant-numeric:tabular-nums;font-weight:600}
+table.bench tr.best td{color:var(--brand,#4b5bd6)}
+table.bench tr.best td:last-child::after{content:" ★";font-size:11px}
+.bench-note{font-size:13px;line-height:1.7;margin:10px 0 0;color:var(--muted,#555)}
+.bench-foot{font-size:13px;line-height:1.8;margin-top:16px;color:var(--muted,#555)}
+
+/* ---------- per-leg retrieval transparency ---------- */
+.legs{display:inline-flex;gap:6px;align-items:center;margin-left:8px;font-size:12px}
+.leg{padding:2px 7px;border-radius:999px;border:1px solid var(--line,#ddd);font-variant-numeric:tabular-nums}
+.leg-v{background:#eef2ff;color:#3730a3;border-color:#c7d2fe}
+.leg-f{background:#ecfdf5;color:#065f46;border-color:#a7f3d0}
+.leg-both{background:#fff7ed;color:#9a3412;border-color:#fed7aa}
+select#q-mode{min-width:150px}

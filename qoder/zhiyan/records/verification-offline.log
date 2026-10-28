@@ -1,0 +1,62 @@
+==============================================================================
+ZhiYan 端到端验证
+时间：2026-10-28T13:41:56+00:00
+embedding 后端：local    答案引擎：extractive(离线)
+==============================================================================
+
+[1] seekdb 引擎：5.7.25-OceanBase seekdb-v1.3.0.0  库：zhiyan
+[1] 重建表并导入语料 …
+    语料 48 篇，向量维度 256
+    索引：[('PRIMARY', 'BTREE'), ('ftx', 'FULLTEXT'), ('vidx', 'VECTOR')]
+
+[2] 三种检索模式对比（top_k=5）
+query kind       vector  fulltext  hybrid
+q01   keyword       0.5       1.0    0.75
+q02   keyword       1.0       1.0     1.0
+q03   keyword       1.0       0.5     0.5
+q04   keyword       1.0       1.0     1.0
+q05   keyword       1.0       0.5     0.5
+q06   keyword       1.0       1.0     1.0
+q07   keyword    0.6667    0.6667  0.6667
+q08   keyword       0.0       1.0     1.0
+q09   semantic      0.0       1.0     1.0
+q10   semantic      0.5       0.5     0.5
+q11   semantic      0.5       1.0     1.0
+q12   semantic   0.3333    0.6667  0.6667
+avg                0.625    0.8194  0.7986
+    混合检索(w_vec=0.25) recall@5 = 0.7986，最好单腿 = 0.8194，增益 = -0.0208
+
+[2b] 融合方式 × 权重扫描（w_vec：0=纯全文，1=纯向量）
+    rrf        w=0.0:0.8194  w=0.25:0.7569  w=0.5:0.7986  w=0.75:0.625  w=1.0:0.625
+    weighted   w=0.0:0.8194  w=0.25:0.7986  w=0.5:0.7778  w=0.75:0.6944  w=1.0:0.625
+    本项目默认融合：weighted w_vec=0.25 -> recall@5=0.7986
+    教科书默认 RRF w=0.5 -> 0.7986（同样的两腿，配置不同差 0.0）
+    纯全文基线 -> 0.8194；纯向量 -> 0.625；本次扫描最优 -> rrf w=0.0 = 0.8194
+    默认配置不是本次扫描的最优，相对最好单腿增益 -0.0208
+    结论：混合检索不是免费的增益。融合方式与权重必须用带标注的查询集扫出来，
+          选错组合会低于最好单腿；本项目据此选定默认融合配置。
+
+[3] RRF 融合明细（可见两腿名次，说明两路各自贡献了什么）
+    doc-09 v=3 f=1 by=vector+fulltext score=0.935139
+    doc-02 v=1 f=4 by=vector+fulltext score=0.360582
+    doc-46 v=2 f=6 by=vector+fulltext score=0.269853
+    doc-03 v=None f=2 by=fulltext score=0.24936
+    doc-07 v=None f=3 by=fulltext score=0.203301
+
+[3] explain 向量腿计划：['|0 |VECTOR INDEX SCAN|zhiyan_docs(vidx)|48      |127         |']
+[3] explain 全文腿计划：['|0 |TEXT RETRIEVAL SCAN|zhiyan_docs(ftx)|20      |131         |']
+[3] 单条 SQL 的 RRF 融合结果：[{'doc_id': 'doc-02', 'rrf': 0.03252}, {'doc_id': 'doc-46', 'rrf': 0.03105}, {'doc_id': 'doc-45', 'rrf': 0.03054}, {'doc_id': 'doc-32', 'rrf': 0.02996}, {'doc_id': 'doc-04', 'rrf': 0.02904}]
+
+[4] 基于检索结果的问答（引擎：extractive）
+    RAG 将参数化记忆（预训练 seq2seq 模型）与非参数化记忆（可检索的稠密向量索引）结合。 [1]
+    检索器用 DPR 将问题与文档编码为稠密向量，按最大内积搜索取 Top-K 文档，生成器以这些文档为条件生成答案，从而在知识密集型任务上减少幻觉。 [1]
+    多头注意力让模型在不同子空间关注不同位置的信息。 [2]
+    实践减少死锁的办法：统一以相同顺序访问表与行、缩短事务、别把人工等待夹在事务里。 [3]
+    引用出处：[(1, 'Retrieval-Augmented Gene'), (2, 'Attention Is All You Nee'), (3, '数据库课程笔记')]
+
+[5] PowerContext 记忆：写入 → 跨进程读回 → 复习重排
+    scope=scp_2tw6qh3vxsd5v96msfjm89padz
+    写入：验证用薄弱点 214205
+    另一进程读回：found=True version=1
+    复习评分 5 后：复习次数=1 下次复习=2026-10-29 版本=2
+    今日应复习：['B+树与B树的区别', 'HNSW 的 ef_search 参数含义', '缩放点积注意力为何除以根号d']

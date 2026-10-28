@@ -1,0 +1,3 @@
+seekdb 导入 48 篇，库内现有 48 篇，向量维度 256
+embedding: local / char-ngram-hashing
+索引: [{'name': 'PRIMARY', 'column': 'doc_id', 'type': 'BTREE'}, {'name': 'ftx', 'column': 'text_body', 'type': 'FULLTEXT'}, {'name': 'vidx', 'column': 'embedding', 'type': 'VECTOR'}]

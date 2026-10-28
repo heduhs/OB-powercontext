@@ -17,10 +17,12 @@
     </a>
     <nav class="links">
       <a href="#demo">在线体验</a>
+      <a href="#bench">检索实测</a>
       <a href="#shots">演示截图</a>
       <a href="#problem">解决的问题</a>
       <a href="#features">核心功能</a>
       <a href="#arch">技术架构</a>
+      <a href="#usage">使用效果</a>
       <a href="#run">运行说明</a>
       <a id="repo-link" href="#" target="_blank" rel="noopener">代码仓库</a>
     </nav>
@@ -43,7 +45,7 @@
       <a class="btn btn-ghost" href="#arch">了解技术架构</a>
     </div>
     <div class="hero-stats">
-      <div><b id="stat-corpus">12</b><span>示例文献/笔记</span></div>
+      <div><b id="stat-corpus">__CORPUS__</b><span>示例文献/笔记/实验</span></div>
       <div><b>3</b><span>指定技术深度结合</span></div>
       <div><b>SM-2</b><span>间隔重复复习</span></div>
     </div>
@@ -68,6 +70,11 @@
     <div class="panel active" id="panel-search">
       <div class="searchbar">
         <input id="q" type="text" placeholder="试试：向量数据库如何做混合检索 / 事务隔离级别 / HNSW 算法" />
+        <select id="q-mode" title="检索模式（仅实时模式生效）">
+          <option value="hybrid">混合检索（向量+全文）</option>
+          <option value="vector">仅向量召回</option>
+          <option value="fulltext">仅全文召回</option>
+        </select>
         <select id="q-type">
           <option value="">全部类型</option>
           <option value="paper">文献</option>
@@ -77,6 +84,7 @@
         <button id="q-btn" class="btn btn-primary">检索</button>
       </div>
       <div class="chips" id="q-suggest"></div>
+      <p class="hint" id="leg-hint">实时模式下每条结果会标出它在<b>向量腿</b>与<b>全文腿</b>各自的名次与融合分数——这就是"两种检索确实都在起作用"的可核对证据。</p>
       <div id="results" class="results"></div>
     </div>
 
@@ -144,8 +152,10 @@
     <h2 class="section-title">核心功能</h2>
     <div class="cards">
       <div class="card">
-        <h3>① 混合检索</h3>
-        <p>seekdb 单引擎内做向量语义 + 全文关键词混合检索，支持按文献/笔记/实验类型过滤，返回相关段落与出处。</p>
+        <h3>① 混合检索（可核对两腿贡献）</h3>
+        <p>seekdb 单引擎内：HNSW 向量腿走 <code>approx</code> 近邻扫描，中文全文腿走 <code>ik</code> 分词的
+        <code>match against</code>，再做融合；支持按文献/笔记/实验类型过滤。融合方式与权重由带标注的查询集扫出来，
+        结果里能看到每条命中分别来自哪条腿。</p>
       </div>
       <div class="card">
         <h3>② 基于资料的问答</h3>
@@ -160,6 +170,44 @@
         <p>SM-2 lite 调度：根据复习评分动态调整下次复习时间，自动生成「今日复习」计划。</p>
       </div>
     </div>
+  </section>
+
+  <!-- Verification results (numbers injected by scripts/build_site.py from records/verification.json) -->
+  <section id="bench" class="wrap section">
+    <h2 class="section-title">检索质量实测</h2>
+    <p class="section-sub">
+      混合检索不是"加了就一定更好"。下面是在 <b>seekdb v1.3.0.0</b> 上，用
+      <b>48 篇语料 + 12 条人工标注查询</b>（每条列出全部应命中文档）实测的 recall@5，
+      可用 <code>python scripts/verify.py</code> 复现。
+    </p>
+    <div class="bench-grid">
+      <div class="bench-card">
+        <h4>语义 embedding（MiniMax embo-01，1536 维）</h4>
+        <table class="bench">
+          <thead><tr><th>召回方式</th><th>recall@5</th></tr></thead>
+          <tbody>
+            <tr><td>仅向量</td><td>__SEM_VECTOR__</td></tr>
+            <tr><td>仅全文（ik 分词）</td><td>__SEM_FULLTEXT__</td></tr>
+            <tr class="best"><td>混合（本项目默认：加权融合 w=0.25）</td><td>__SEM_HYBRID__</td></tr>
+            <tr><td>混合（教科书 RRF w=0.5）</td><td>__SEM_RRF50__</td></tr>
+          </tbody>
+        </table>
+        <p class="bench-note">混合比最好单腿 <b>__SEM_GAIN__</b>；而权重给错（RRF 0.5）会<b>低于</b>纯全文。这就是必须先评测再定融合配置的原因。</p>
+      </div>
+      <div class="bench-card">
+        <h4>离线词法向量（零依赖，无需 API Key）</h4>
+        <table class="bench">
+          <thead><tr><th>召回方式</th><th>recall@5</th></tr></thead>
+          <tbody>
+            <tr><td>仅向量</td><td>__OFF_VECTOR__</td></tr>
+            <tr><td>仅全文（ik 分词）</td><td>__OFF_FULLTEXT__</td></tr>
+            <tr><td>混合（默认配置）</td><td>__OFF_HYBRID__</td></tr>
+          </tbody>
+        </table>
+        <p class="bench-note">诚实结论：用字符 n-gram 哈希当 embedding 时向量腿没有语义泛化能力，混合<b>没有增益</b>（__OFF_GAIN__）。混合检索的收益来自<b>语义</b>向量，不来自"多接一路"。</p>
+      </div>
+    </div>
+    <p class="bench-foot">另有 <code>explain</code> 取证：向量腿计划为 <code>VECTOR INDEX SCAN</code>、全文腿为 <code>TEXT RETRIEVAL SCAN</code>（两路都真的走了索引，不是全表算）；PowerContext 侧记录了"写入 → 另一进程读回 → 复习重排"的跨进程复用证据。详见代码仓库 <code>qoder/zhiyan/records/</code>。</p>
   </section>
 
   <!-- Architecture -->
@@ -182,9 +230,9 @@
       <table class="tech-table">
         <thead><tr><th>技术</th><th>承担的作用</th><th>接入方式</th></tr></thead>
         <tbody>
-          <tr><td><b>seekdb</b></td><td>存储文献/笔记/实验语料，向量+全文混合检索，支持类型过滤</td><td>MySQL 协议 + pyseekdb</td></tr>
+          <tr><td><b>seekdb</b></td><td>存储文献/笔记/实验语料；HNSW 向量腿 + ik 中文全文腿 + 融合排序，支持类型过滤</td><td>MySQL 协议（PyMySQL 原生 SQL，单条 DDL 建两种索引）</td></tr>
           <tr><td><b>PowerContext</b></td><td>保存薄弱知识点与复习进度（Memory），记录复习事件（Source），重启后复用</td><td>HTTP API + Python Client</td></tr>
-          <tr><td><b>MiniMax</b></td><td>embo-01 生成 1536 维嵌入；MiniMax-M1 基于检索资料做 grounded 问答</td><td>HTTP API</td></tr>
+          <tr><td><b>MiniMax</b></td><td>可选增强：embo-01 生成 1536 维语义嵌入；MiniMax-M1 基于检索资料做 grounded 问答。不配置时自动退回离线向量与抽取式回答</td><td>HTTP API</td></tr>
           <tr><td><b>Qoder</b></td><td>项目主要开发工作；通过 Qoder Sites 发布本网站</td><td>Qoder Desktop / Sites</td></tr>
         </tbody>
       </table>
@@ -197,29 +245,35 @@
     <div class="run">
       <ol class="steps">
         <li>安装依赖：<code>pip install -r requirements.txt</code></li>
-        <li>启动 seekdb 服务并建库 <code>zhiyan</code>（MySQL 协议，默认 2881 端口）</li>
-        <li>启动 PowerContext：<code>powercontext server run --env-file .env</code>（基础记忆模式）</li>
-        <li>设置 <code>MINIMAX_API_KEY</code> 环境变量</li>
-        <li>初始化语料：<code>python -m backend.ingest</code></li>
-        <li>启动后端：<code>python -m backend.app</code>（默认 http://127.0.0.1:8010）</li>
-        <li>浏览器打开后端地址即可使用实时模式；完整步骤见仓库 <code>qoder/zhiyan/README.md</code></li>
+        <li>启动 seekdb（MySQL 协议，默认 2881）：<code>docker run -d -p 2881:2881 oceanbase/seekdb:latest</code></li>
+        <li>启动 PowerContext：<code>powercontext server run --env-file .env</code></li>
+        <li>初始化语料并自检：<code>python scripts/verify.py</code>（<b>无需任何 API Key</b>，离线跑通全链路并输出实测报告）</li>
+        <li>启动后端：<code>python -m backend.app</code>（默认 http://127.0.0.1:8010，打开即实时模式）</li>
+        <li>可选增强：设置 <code>MINIMAX_API_KEY</code> 并加 <code>ZHIYAN_EMBED_BACKEND=minimax</code>，用真语义嵌入复跑第 4 步</li>
+        <li>完整步骤与依赖版本见仓库 <code>qoder/zhiyan/README.md</code></li>
       </ol>
       <div class="callout">
-        <b>验证样例</b>：见仓库 <code>qoder/zhiyan/VALIDATION.md</code>，含检索、问答、薄弱点记忆、
-        复习计划、重启复用的逐步操作与预期结果。
+        <b>验证样例</b>：见仓库 <code>qoder/zhiyan/VALIDATION.md</code>，含混合检索、两腿名次核对、
+        薄弱点记忆、复习计划、<b>跨进程复用</b>的逐步操作与预期结果；实测输出在
+        <code>qoder/zhiyan/records/verification*.log</code>。
       </div>
     </div>
   </section>
 
-  <!-- Effect -->
-  <section id="effect" class="wrap section">
+  <!-- Usage -->
+  <section id="usage" class="wrap section">
     <h2 class="section-title">使用效果</h2>
     <div class="cards">
-      <div class="card stat-card"><b>~10×</b><span>查资料提速：从翻多篇文件到一次语义检索定位段落与出处</span></div>
-      <div class="card stat-card"><b>0 幻觉</b><span>问答严格 grounded 在检索资料上并标注来源</span></div>
-      <div class="card stat-card"><b>跨会话</b><span>薄弱点与复习进度由 PowerContext 持久化，重启不丢</span></div>
+      <div class="card stat-card"><b>__PV__</b><span>本站点访问次数 PV（Qoder Sites 平台侧统计，__WINDOW__）</span></div>
+      <div class="card stat-card"><b>__UV__</b><span>独立访客 UV（平台侧估算，非自建埋点）</span></div>
+      <div class="card stat-card"><b>__CORPUS__</b><span>内置示例文献/笔记/实验条目</span></div>
+      <div class="card stat-card"><b>__RECALL__</b><span>混合检索 recall@5（语义嵌入，实测）</span></div>
     </div>
-    <p class="footnote">* 上述为设计目标与本地自测结论；真实多用户使用效果数据将在发布后通过 Qoder Sites 访问统计补充。</p>
+    <p class="footnote">
+      * PV/UV 取自 Qoder Sites 的站点访问统计（发布后持续累积，数值以平台实时统计为准）；
+      recall@5 取自 <code>scripts/verify.py</code> 在 seekdb v1.3.0.0 上的实测报告，两者均可复核。
+      项目目前处于评审期，真实多人使用与提效对比数据将在评审周期内按同一口径补充。
+    </p>
   </section>
 </main>
 
@@ -230,6 +284,7 @@
   </div>
 </footer>
 
+<script src="corpus.js"></script>
 <script src="app.js"></script>
 </body>
 </html>
