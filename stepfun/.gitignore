@@ -1,0 +1,6 @@
+app/node_modules/
+app/.data/
+app/models/
+app/vendor/
+app/server.log
+*.log

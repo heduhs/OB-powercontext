@@ -1,0 +1,1 @@
+MySQL-Compatible ACID Embeddable。Built on the proven OceanBase SQL engine. Works as an embedded library, a single-node server, or in the OceanBase distributed cluster. Full ACID, real-time writes, and the entire MySQL ecosystem out of the box. · --

@@ -1,0 +1,24 @@
+{
+  "name": "stepfun-edgekb",
+  "private": true,
+  "version": "1.0.0",
+  "type": "module",
+  "description": "端侧向量化 + seekdb 混合检索的迷你知识库（seekdb × 阶跃星辰 赛题）",
+  "engines": {
+    "node": ">=20"
+  },
+  "scripts": {
+    "setup": "node scripts/fetch-assets.mjs --dtypes fp32,fp16,q8 --vendor",
+    "assets": "node scripts/fetch-assets.mjs --dtypes fp32,fp16,q8 --vendor",
+    "corpus": "node scripts/build-corpus.mjs",
+    "start": "node server.mjs",
+    "dev": "node --watch server.mjs",
+    "db:server": "node scripts/start-seekdb.mjs",
+    "smoke": "node scripts/browser-run.mjs --task smoke",
+    "degrade": "node scripts/browser-run.mjs --task degrade",
+    "bench": "node scripts/browser-run.mjs --task eval"
+  },
+  "dependencies": {
+    "seekdb": "1.4.0"
+  }
+}

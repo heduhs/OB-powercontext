@@ -1,0 +1,1 @@
+Agent 需要的不只是快——还需要后悔药。性能讲完了。但做过 Agent 的人都知道，还有一个痛点：Agent 需要试探性地修改数据（改 memory、跑实验、可能写坏表），**你需要一个安全的沙箱和回滚机制。** 大多数向量数据库没有这个概念。seekdb 直接在内核实现了 Copy-on-Write： 这是内核级 COW，不是应用层的 snapshot/restore。fork 秒级完成，不复制数据，每个沙箱是完整可写的数据库（表结构、向量索引、自增列全部正常）。三种冲突策略（FAIL / THEIRS / OURS）让你精确控制 Agent 的修改有多少可以被信任。同时支持 FORK DATABASE 和 FORK TABLE 两种粒度。 · --

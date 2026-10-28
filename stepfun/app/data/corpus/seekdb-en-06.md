@@ -1,0 +1,1 @@
+Installation。Choose your platform: ☁️ Cloud (Zero Install) One curl, a running database — no signup, no credit card. Free for 7 days. Learn more → 🐍 Python (Recommended for AI/ML) 🐳 Docker (Quick Testing) Please refer to the document of this docker image for details. 📦 Binary (Standalone) See deployment docs for DEB/RPM offline install and configuration details.

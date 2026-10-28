@@ -1,0 +1,1 @@
+更多示例。完整的 Python SDK 指南 — 连接模式、嵌入函数、元数据过滤 — 请参见 pyseekdb 用户指南。 🤖 Agent 记忆模式（持续写入 + 即时检索） Agent 的经典循环：写入一条观察，毫秒后检索相关上下文，周而复始。seekdb 的异步索引流水线确保在持续并发下读写两端均保持高吞吐。 🗄️ SQL — Schema + 混合搜索 Python 开发者可通过 SQLAlchemy 或任何 MySQL 驱动来访问。

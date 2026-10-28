@@ -1,0 +1,79 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>EdgeKB · 性能与检索质量评测</title>
+<link rel="stylesheet" href="/styles.css" />
+</head>
+<body>
+<header class="bar">
+  <div class="brand">
+    <span class="logo">📊</span>
+    <div>
+      <h1>评测：量化 × 后端 × 优化</h1>
+      <p>同一设备 / 同一语料 / 同一查询集，只改变被考察变量 · 全部向量在浏览器本地计算</p>
+    </div>
+  </div>
+  <div class="badges">
+    <span id="env" class="badge">环境检测中…</span>
+    <a class="badge link" href="/">← 返回应用</a>
+  </div>
+</header>
+
+<main>
+  <section class="card">
+    <h2>1 · 评测配置</h2>
+    <div class="grid" id="cfg-box"></div>
+    <div class="row">
+      <label class="inline">topK <input id="topk" type="number" min="1" max="20" value="10" /></label>
+      <label class="inline">批大小 <input id="batch" type="number" min="1" max="64" value="16" /></label>
+      <label class="inline">查询重复次数 <input id="repeat" type="number" min="1" max="10" value="3" /></label>
+      <label class="inline"><input id="do-ablation" type="checkbox" checked /> 附带优化项消融</label>
+      <button id="btn-run" class="primary">开始评测</button>
+      <button id="btn-stop">中止</button>
+    </div>
+    <p class="muted">每个配置都会在 seekdb 中建立独立 collection，检索走数据库内的 hybrid search（RRF）。</p>
+  </section>
+
+  <section class="card">
+    <h2>2 · 运行日志</h2>
+    <pre id="log" style="max-height:260px">尚未开始</pre>
+    <progress id="progress" max="100" value="0"></progress>
+  </section>
+
+  <section class="card">
+    <h2>3 · 体积与压缩比</h2>
+    <div id="sizes"></div>
+  </section>
+
+  <section class="card">
+    <h2>4 · 检索质量（同一查询集，文档级标注）</h2>
+    <div id="quality"></div>
+  </section>
+
+  <section class="card">
+    <h2>5 · 性能（分阶段计时，中位数）</h2>
+    <div id="perf"></div>
+  </section>
+
+  <section class="card">
+    <h2>6 · 检索模式对比 · 优化消融</h2>
+    <div id="modes"></div>
+    <div id="ablation"></div>
+  </section>
+
+  <section class="card">
+    <h2>7 · 保存证据</h2>
+    <div class="row">
+      <input id="record-name" type="text" size="34" />
+      <button id="btn-save" class="primary">写入 records/*.json</button>
+      <span id="save-status" class="muted"></span>
+    </div>
+    <p class="muted">保存完整原始数据（含每条查询的排名、每批耗时、环境信息），供技术说明引用与复核。</p>
+  </section>
+</main>
+
+<script type="module" src="/eval.js"></script>
+</body>
+</html>

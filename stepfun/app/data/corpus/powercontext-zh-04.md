@@ -1,0 +1,1 @@
+Handoff —— 当前状态不是整段对话记录。Handoff 用一个四步循环记录工作接续： handoff_current_work 抓取一个已经检查过的边界，返回一份临时的 Prepared Handoff。只有在你希望留下里程碑时，提交它才会生成持久的 Revision。接收方解析这份 Handoff 并记录确认回执；任务结果则作为 Source 证据保存最终状态与检查项。Handoff Report 会把每个选定 Scope 中最新的一份 Handoff Revision 投影出来供查看与导出——只读，且从不改写 Memory。

@@ -1,0 +1,1 @@
+Copy-on-Write Sandboxes for Agent Exploration。FORK DATABASE snapshots an entire database in seconds — no data copy. Agents experiment freely (write, query, even break tables); then MERGE TABLE commits the work back, or DROP DATABASE discards it. Kernel-level COW, not application-layer save/restore. Source: tools/deploy/mysql_test/test_suite/fork_table/

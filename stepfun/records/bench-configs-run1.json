@@ -1,0 +1,3044 @@
+{
+  "kind": "edgekb-benchmark",
+  "started_at": "2026-10-27T20:53:47.975Z",
+  "environment": {
+    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/156.0.0.0 Safari/537.36",
+    "platform": "Win32",
+    "hardwareConcurrency": 8,
+    "deviceMemoryGB": 4,
+    "isSecureContext": true,
+    "crossOriginIsolated": true,
+    "sharedArrayBuffer": true,
+    "webgpu": {
+      "f16": true,
+      "vendor": "amd",
+      "architecture": "gcn-5",
+      "description": ""
+    },
+    "seekdb": {
+      "connected": true,
+      "mode": "server",
+      "database": "stepfun_kb",
+      "serverVersion": "5.7.25-OceanBase seekdb-v1.3.0.0",
+      "dimension": 512,
+      "distance": "cosine",
+      "analyzer": "ik",
+      "collections": []
+    },
+    "app": {
+      "dbMode": "server",
+      "database": "stepfun_kb",
+      "dimension": 512,
+      "distance": "cosine",
+      "analyzer": "ik",
+      "ikMode": "smart",
+      "maxBatchRows": 500,
+      "server": "127.0.0.1:8630",
+      "seekdbSdkVersion": "1.4.0",
+      "node": "v22.20.0"
+    },
+    "chunking": {
+      "size": 320,
+      "overlap": 48
+    },
+    "transformers_js": "4.3.2 (/vendor 或 jsDelivr)"
+  },
+  "corpus": {
+    "documents": 51,
+    "chunks": 98
+  },
+  "runs": [
+    {
+      "config": {
+        "key": "fp16_webgpu",
+        "label": "FP16 + WebGPU",
+        "dtype": "fp16",
+        "device": "webgpu",
+        "on": true
+      },
+      "session": {
+        "device": "webgpu",
+        "dtype": "fp16",
+        "threads": 1,
+        "loadMs": 11807,
+        "buildMs": 7177,
+        "source": "local /models",
+        "notes": [],
+        "dimension": 512
+      },
+      "collection": "kb_eval_fp16_webgpu",
+      "sizes": {
+        "model": "Xenova/bge-small-zh-v1.5",
+        "core": [
+          {
+            "file": "Xenova/bge-small-zh-v1.5/onnx/model_fp16.onnx",
+            "bytes": 47497427
+          }
+        ],
+        "coreBytes": 47497427,
+        "sharedBytes": 550930,
+        "totalBytes": 48048357
+      },
+      "corpus": {
+        "documents": 51,
+        "chunks": 98,
+        "chars": 20899
+      },
+      "timing": {
+        "model_load_ms": 11807,
+        "embed_total_ms": 6525,
+        "embed_first_batch_ms": 1863.17,
+        "embed_warm_batch_ms": 814.99,
+        "chunks_per_s": 15,
+        "chars_per_s": 3217,
+        "write_ms": 3103,
+        "refresh_ms": 762.36,
+        "search_ms_p50": {
+          "hybrid": 22.01,
+          "vector": 7.7,
+          "text": 17.79
+        },
+        "search_ms_p95": {
+          "hybrid": 41.97000000067055,
+          "vector": 10.654999999329448,
+          "text": 34.00999999977648
+        },
+        "e2e_first_ms": 717.64,
+        "e2e_median_ms": 76.41,
+        "warm_search_only_ms": 20.88,
+        "total_ms": 27976
+      },
+      "quality": {
+        "hybrid": {
+          "queries": 30,
+          "corpus_chunks": null,
+          "recall@1": 0.4444,
+          "recall@3": 0.6833,
+          "recall@5": 0.7833,
+          "recall@10": 0.8222,
+          "ndcg@10": 0.7571,
+          "mrr": 0.7861,
+          "hit@1": 0.6667
+        },
+        "vector": {
+          "queries": 30,
+          "corpus_chunks": null,
+          "recall@1": 0.4278,
+          "recall@3": 0.5389,
+          "recall@5": 0.6667,
+          "recall@10": 0.8167,
+          "ndcg@10": 0.7,
+          "mrr": 0.7065,
+          "hit@1": 0.6
+        },
+        "text": {
+          "queries": 30,
+          "corpus_chunks": null,
+          "recall@1": 0.5444,
+          "recall@3": 0.7333,
+          "recall@5": 0.7889,
+          "recall@10": 0.8833,
+          "ndcg@10": 0.8119,
+          "mrr": 0.8398,
+          "hit@1": 0.7667
+        }
+      },
+      "perQuery": [
+        {
+          "id": "q01",
+          "text": "在浏览器里做向量化会不会把原始文档发到云端",
+          "gold": [
+            "edgeai-en-11",
+            "edgeai-zh-01"
+          ],
+          "ranked": [
+            "edgeai-zh-01",
+            "edgeai-zh-04",
+            "edgeai-zh-03",
+            "edgeai-zh-07",
+            "edgeai-zh-06",
+            "seekdb-zh-09",
+            "edgeai-zh-02",
+            "powercontext-zh-06",
+            "edgeai-zh-10",
+            "edgeai-zh-08"
+          ],
+          "recall5": 0.5,
+          "ndcg10": 0.5578858913022597,
+          "mrr": 1
+        },
+        {
+          "id": "q02",
+          "text": "怎样判断一次推理算的是端侧还是云端",
+          "gold": [
+            "edgeai-zh-01"
+          ],
+          "ranked": [
+            "edgeai-zh-01",
+            "seekdb-zh-07",
+            "seekdb-zh-09",
+            "seekdb-zh-06",
+            "edgeai-zh-07",
+            "edgeai-zh-08",
+            "seekdb-zh-08",
+            "edgeai-zh-06",
+            "edgeai-zh-10",
+            "seekdb-zh-05"
+          ],
+          "recall5": 1,
+          "ndcg10": 1,
+          "mrr": 1
+        },
+        {
+          "id": "q03",
+          "text": "WebGPU 后端需要哪个浏览器版本，不可用时怎么处理",
+          "gold": [
+            "edgeai-zh-02"
+          ],
+          "ranked": [
+            "edgeai-zh-02",
+            "powercontext-zh-06",
+            "powercontext-zh-11",
+            "edgeai-zh-04",
+            "seekdb-zh-10",
+            "powercontext-zh-02",
+            "powercontext-zh-03",
+            "powercontext-zh-09",
+            "edgeai-zh-10"
+          ],
+          "recall5": 1,
+          "ndcg10": 1,
+          "mrr": 1
+        },
+        {
+          "id": "q04",
+          "text": "INT8 和 FP16 量化能把模型压到多小，代价是什么",
+          "gold": [
+            "edgeai-zh-03",
+            "edgeai-en-12"
+          ],
+          "ranked": [
+            "edgeai-zh-03",
+            "powercontext-zh-08",
+            "edgeai-zh-04",
+            "edgeai-zh-06",
+            "powercontext-zh-10",
+            "edgeai-zh-02",
+            "seekdb-zh-08",
+            "seekdb-zh-06",
+            "edgeai-zh-01"
+          ],
+          "recall5": 0.5,
+          "ndcg10": 0.5578858913022597,
+          "mrr": 1
+        },
+        {
+          "id": "q05",
+          "text": "让模型文件从自己的服务器加载，不依赖外部 CDN",
+          "gold": [
+            "edgeai-zh-04"
+          ],
+          "ranked": [
+            "edgeai-zh-04",
+            "powercontext-zh-10",
+            "powercontext-zh-09",
+            "powercontext-zh-12",
+            "edgeai-zh-06",
+            "powercontext-zh-13",
+            "powercontext-zh-06",
+            "seekdb-zh-04",
+            "seekdb-zh-01",
+            "powercontext-zh-03"
+          ],
+          "recall5": 1,
+          "ndcg10": 1,
+          "mrr": 1
+        },
+        {
+          "id": "q06",
+          "text": "为什么批量编码比一条一条编码快很多",
+          "gold": [
+            "edgeai-zh-05"
+          ],
+          "ranked": [
+            "seekdb-zh-08",
+            "seekdb-zh-10",
+            "seekdb-zh-09",
+            "edgeai-zh-08",
+            "seekdb-zh-01",
+            "edgeai-zh-07",
+            "powercontext-zh-08",
+            "seekdb-zh-07",
+            "seekdb-zh-05",
+            "powercontext-zh-11"
+          ],
+          "recall5": 0,
+          "ndcg10": 0,
+          "mrr": 0
+        },
+        {
+          "id": "q07",
+          "text": "句子向量应该用哪种池化方式",
+          "gold": [
+            "edgeai-zh-06"
+          ],
+          "ranked": [
+            "edgeai-zh-06",
+            "edgeai-zh-07",
+            "edgeai-zh-08",
+            "seekdb-zh-07",
+            "seekdb-zh-01",
+            "powercontext-zh-08",
+            "edgeai-zh-01",
+            "edgeai-zh-03",
+            "powercontext-zh-07"
+          ],
+          "recall5": 1,
+          "ndcg10": 1,
+          "mrr": 1
+        },
+        {
+          "id": "q08",
+          "text": "为什么两路检索结果要在数据库里融合而不是客户端拼",
+          "gold": [
+            "edgeai-zh-07",
+            "seekdb-en-12"
+          ],
+          "ranked": [
+            "edgeai-zh-07",
+            "edgeai-zh-06",
+            "edgeai-zh-09",
+            "edgeai-zh-08",
+            "seekdb-zh-05",
+            "seekdb-zh-07",
+            "seekdb-zh-09",
+            "powercontext-zh-06",
+            "seekdb-zh-10"
+          ],
+          "recall5": 0.5,
+          "ndcg10": 0.5578858913022597,
+          "mrr": 1
+        },
+        {
+          "id": "q09",
+          "text": "刚刚导入的文档检索不到，是不是索引没刷新",
+          "gold": [
+            "edgeai-zh-08",
+            "seekdb-zh-02"
+          ],
+          "ranked": [
+            "edgeai-zh-08",
+            "edgeai-zh-09",
+            "seekdb-zh-05",
+            "seekdb-zh-09",
+            "seekdb-zh-02",
+            "edgeai-zh-10",
+            "edgeai-zh-07",
+            "powercontext-zh-13"
+          ],
+          "recall5": 1,
+          "ndcg10": 0.8728543373822445,
+          "mrr": 1
+        },
+        {
+          "id": "q10",
+          "text": "多个知识库并存时怎样保证结果不串库",
+          "gold": [
+            "edgeai-zh-09"
+          ],
+          "ranked": [
+            "edgeai-zh-09",
+            "seekdb-zh-03",
+            "seekdb-zh-09",
+            "edgeai-zh-10",
+            "powercontext-zh-04",
+            "edgeai-zh-07",
+            "edgeai-zh-06",
+            "powercontext-zh-05",
+            "seekdb-zh-10",
+            "powercontext-zh-02"
+          ],
+          "recall5": 1,
+          "ndcg10": 1,
+          "mrr": 1
+        },
+        {
+          "id": "q11",
+          "text": "有没有客观指标可以衡量检索质量",
+          "gold": [
+            "edgeai-zh-10"
+          ],
+          "ranked": [
+            "edgeai-zh-08",
+            "edgeai-zh-10",
+            "edgeai-zh-06",
+            "edgeai-zh-07",
+            "seekdb-zh-08",
+            "seekdb-zh-05",
+            "powercontext-zh-08",
+            "edgeai-zh-03",
+            "seekdb-zh-06",
+            "seekdb-zh-07"
+          ],
+          "recall5": 1,
+          "ndcg10": 0.7924812503605779,
+          "mrr": 0.5
+        },
+        {
+          "id": "q12",
+          "text": "How should I measure the size of a quantised model fairly?",
+          "gold": [
+            "edgeai-en-12"
+          ],
+          "ranked": [
+            "edgeai-en-11",
+            "edgeai-en-12",
+            "seekdb-en-11",
+            "seekdb-en-03",
+            "seekdb-en-09",
+            "seekdb-en-12",
+            "seekdb-en-05"
+          ],
+          "recall5": 1,
+          "ndcg10": 0.7924812503605779,
+          "mrr": 0.5
+        },
+        {
+          "id": "q13",
+          "text": "Does running embeddings in the browser expose my documents?",
+          "gold": [
+            "edgeai-en-11"
+          ],
+          "ranked": [
+            "seekdb-en-06",
+            "edgeai-en-11",
+            "edgeai-en-12",
+            "seekdb-en-05",
+            "seekdb-en-04",
+            "seekdb-en-09",
+            "seekdb-en-11",
+            "seekdb-en-12",
+            "seekdb-en-01",
+            "seekdb-en-10"
+          ],
+          "recall5": 1,
+          "ndcg10": 0.7924812503605779,
+          "mrr": 0.5
+        },
+        {
+          "id": "q14",
+          "text": "seekdb 用一条 SQL 完成向量与全文混合检索",
+          "gold": [
+            "seekdb-en-12",
+            "seekdb-zh-01"
+          ],
+          "ranked": [
+            "seekdb-zh-06",
+            "seekdb-zh-05",
+            "seekdb-zh-01",
+            "edgeai-zh-07",
+            "edgeai-zh-08",
+            "seekdb-zh-09",
+            "seekdb-zh-07",
+            "seekdb-en-14",
+            "edgeai-zh-06",
+            "seekdb-zh-10"
+          ],
+          "recall5": 0.5,
+          "ndcg10": 0.3808163652192575,
+          "mrr": 0.3333333333333333
+        },
+        {
+          "id": "q15",
+          "text": "持续写入的同时做检索，P99 延迟为什么不抖动",
+          "gold": [
+            "seekdb-zh-02",
+            "seekdb-en-03",
+            "seekdb-zh-09"
+          ],
+          "ranked": [
+            "seekdb-zh-08",
+            "seekdb-zh-02",
+            "seekdb-zh-06",
+            "seekdb-zh-05",
+            "edgeai-zh-08",
+            "seekdb-zh-09",
+            "seekdb-zh-07",
+            "powercontext-zh-05"
+          ],
+          "recall5": 0.3333333333333333,
+          "ndcg10": 0.5336385535324697,
+          "mrr": 0.5
+        },
+        {
+          "id": "q16",
+          "text": "FORK DATABASE 秒级快照让 Agent 放心试错",
+          "gold": [
+            "seekdb-zh-03",
+            "seekdb-en-04",
+            "seekdb-zh-10"
+          ],
+          "ranked": [
+            "seekdb-zh-03",
+            "seekdb-zh-10",
+            "seekdb-zh-06",
+            "seekdb-zh-01",
+            "seekdb-zh-02",
+            "seekdb-en-06",
+            "seekdb-en-04",
+            "seekdb-en-14",
+            "powercontext-zh-06"
+          ],
+          "recall5": 0.6666666666666666,
+          "ndcg10": 0.9262223260571282,
+          "mrr": 1
+        },
+        {
+          "id": "q17",
+          "text": "seekdb 是不是开源的，由哪个团队维护",
+          "gold": [
+            "seekdb-zh-11",
+            "seekdb-en-14"
+          ],
+          "ranked": [
+            "seekdb-zh-07",
+            "seekdb-en-14",
+            "seekdb-zh-09",
+            "powercontext-zh-02",
+            "seekdb-zh-06",
+            "seekdb-zh-11",
+            "seekdb-zh-01",
+            "seekdb-zh-08",
+            "powercontext-zh-12"
+          ],
+          "recall5": 0.5,
+          "ndcg10": 0.7368568478295671,
+          "mrr": 0.5
+        },
+        {
+          "id": "q18",
+          "text": "seekdb 支持嵌入式和服务器两种部署形态吗",
+          "gold": [
+            "seekdb-en-05",
+            "seekdb-zh-01"
+          ],
+          "ranked": [
+            "seekdb-zh-01",
+            "seekdb-zh-06",
+            "powercontext-zh-10",
+            "powercontext-zh-13",
+            "seekdb-zh-09",
+            "powercontext-zh-07",
+            "seekdb-en-14",
+            "powercontext-zh-09",
+            "seekdb-zh-10",
+            "seekdb-zh-08"
+          ],
+          "recall5": 0.5,
+          "ndcg10": 0.5578858913022597,
+          "mrr": 1
+        },
+        {
+          "id": "q19",
+          "text": "一千万条七百六十八维向量的并发测试条件",
+          "gold": [
+            "seekdb-zh-08",
+            "seekdb-zh-07"
+          ],
+          "ranked": [
+            "seekdb-zh-08",
+            "powercontext-zh-08",
+            "seekdb-zh-02",
+            "seekdb-zh-07",
+            "seekdb-zh-09",
+            "edgeai-zh-07",
+            "edgeai-zh-10"
+          ],
+          "recall5": 1,
+          "ndcg10": 0.899952059437696,
+          "mrr": 1
+        },
+        {
+          "id": "q20",
+          "text": "PowerContext 里的 Memory 存的是什么",
+          "gold": [
+            "powercontext-zh-03",
+            "powercontext-zh-02"
+          ],
+          "ranked": [
+            "powercontext-zh-02",
+            "powercontext-zh-03",
+            "powercontext-zh-11",
+            "powercontext-zh-06",
+            "seekdb-zh-08",
+            "powercontext-zh-04",
+            "seekdb-zh-01",
+            "powercontext-zh-13"
+          ],
+          "recall5": 1,
+          "ndcg10": 1,
+          "mrr": 1
+        },
+        {
+          "id": "q21",
+          "text": "Handoff 为什么不是把整段对话都存下来",
+          "gold": [
+            "powercontext-zh-04"
+          ],
+          "ranked": [
+            "powercontext-zh-04",
+            "powercontext-zh-02",
+            "powercontext-zh-06",
+            "powercontext-zh-03",
+            "seekdb-zh-09",
+            "seekdb-zh-10",
+            "edgeai-zh-09",
+            "powercontext-zh-05",
+            "powercontext-zh-08"
+          ],
+          "recall5": 1,
+          "ndcg10": 1,
+          "mrr": 1
+        },
+        {
+          "id": "q22",
+          "text": "长对话记忆基准上的准确率是多少",
+          "gold": [
+            "powercontext-zh-08"
+          ],
+          "ranked": [
+            "powercontext-zh-08",
+            "seekdb-zh-06",
+            "powercontext-zh-10",
+            "powercontext-zh-09",
+            "powercontext-zh-13",
+            "powercontext-zh-04",
+            "seekdb-zh-05",
+            "powercontext-zh-02",
+            "edgeai-zh-03"
+          ],
+          "recall5": 1,
+          "ndcg10": 1,
+          "mrr": 1
+        },
+        {
+          "id": "q23",
+          "text": "安装 PowerContext 并运行配置向导",
+          "gold": [
+            "powercontext-zh-10",
+            "powercontext-zh-09"
+          ],
+          "ranked": [
+            "powercontext-zh-10",
+            "powercontext-zh-09",
+            "powercontext-zh-13",
+            "powercontext-zh-11",
+            "powercontext-zh-06",
+            "seekdb-zh-04",
+            "edgeai-zh-02",
+            "powercontext-zh-12",
+            "seekdb-zh-02"
+          ],
+          "recall5": 1,
+          "ndcg10": 1,
+          "mrr": 1
+        },
+        {
+          "id": "q24",
+          "text": "Try seekdb in thirty seconds without a server",
+          "gold": [
+            "seekdb-en-02",
+            "seekdb-en-13"
+          ],
+          "ranked": [
+            "seekdb-en-13",
+            "seekdb-en-11",
+            "seekdb-en-04",
+            "seekdb-en-14",
+            "seekdb-en-02",
+            "seekdb-en-05",
+            "seekdb-en-07",
+            "seekdb-en-10"
+          ],
+          "recall5": 1,
+          "ndcg10": 0.8728543373822445,
+          "mrr": 1
+        },
+        {
+          "id": "q25",
+          "text": "seekdb 与哪些 Agent 框架和生态做了集成",
+          "gold": [
+            "seekdb-en-08",
+            "seekdb-zh-05"
+          ],
+          "ranked": [
+            "seekdb-zh-07",
+            "seekdb-zh-06",
+            "seekdb-en-14",
+            "powercontext-zh-14",
+            "seekdb-zh-09",
+            "powercontext-zh-13",
+            "powercontext-zh-07",
+            "seekdb-zh-08",
+            "powercontext-zh-02"
+          ],
+          "recall5": 0,
+          "ndcg10": 0,
+          "mrr": 0
+        },
+        {
+          "id": "q26",
+          "text": "为什么用错误的基准去选向量数据库会踩坑",
+          "gold": [
+            "seekdb-zh-07",
+            "seekdb-zh-09"
+          ],
+          "ranked": [
+            "seekdb-zh-07",
+            "seekdb-zh-09",
+            "edgeai-zh-07",
+            "edgeai-zh-08",
+            "seekdb-zh-10",
+            "edgeai-zh-06",
+            "edgeai-zh-09",
+            "seekdb-zh-01"
+          ],
+          "recall5": 1,
+          "ndcg10": 1,
+          "mrr": 1
+        },
+        {
+          "id": "q27",
+          "text": "Copy-on-write sandbox lets agents explore freely",
+          "gold": [
+            "seekdb-en-04",
+            "seekdb-en-11"
+          ],
+          "ranked": [
+            "seekdb-en-04",
+            "seekdb-en-03",
+            "seekdb-en-01",
+            "seekdb-en-07",
+            "seekdb-en-11",
+            "seekdb-en-05",
+            "seekdb-en-14"
+          ],
+          "recall5": 1,
+          "ndcg10": 0.8728543373822445,
+          "mrr": 1
+        },
+        {
+          "id": "q28",
+          "text": "查询语句需要加前缀提示吗，文档和查询要不要一样",
+          "gold": [
+            "edgeai-zh-06"
+          ],
+          "ranked": [
+            "edgeai-zh-10",
+            "edgeai-zh-06",
+            "edgeai-zh-07",
+            "powercontext-zh-09",
+            "edgeai-zh-09",
+            "seekdb-zh-09",
+            "seekdb-zh-06",
+            "powercontext-zh-11",
+            "powercontext-zh-13",
+            "seekdb-zh-10"
+          ],
+          "recall5": 1,
+          "ndcg10": 0.7924812503605779,
+          "mrr": 0.5
+        },
+        {
+          "id": "q29",
+          "text": "写入数据之后事务提交了但索引还没建好",
+          "gold": [
+            "edgeai-zh-08",
+            "seekdb-zh-02"
+          ],
+          "ranked": [
+            "edgeai-zh-08",
+            "seekdb-zh-09",
+            "seekdb-zh-05",
+            "edgeai-zh-09",
+            "seekdb-zh-02",
+            "seekdb-zh-08",
+            "powercontext-zh-05",
+            "powercontext-zh-02",
+            "seekdb-zh-10"
+          ],
+          "recall5": 1,
+          "ndcg10": 0.8728543373822445,
+          "mrr": 1
+        },
+        {
+          "id": "q30",
+          "text": "怎么在界面上告诉用户当前用的是哪个推理后端",
+          "gold": [
+            "edgeai-zh-02",
+            "edgeai-zh-04"
+          ],
+          "ranked": [
+            "edgeai-zh-01",
+            "powercontext-zh-02",
+            "edgeai-zh-08",
+            "edgeai-zh-02",
+            "edgeai-zh-07",
+            "edgeai-zh-06",
+            "powercontext-zh-06",
+            "powercontext-zh-04",
+            "seekdb-zh-05"
+          ],
+          "recall5": 0.5,
+          "ndcg10": 0.3420661681354362,
+          "mrr": 0.25
+        }
+      ],
+      "evidence_sql": [
+        "SELECT ifnull(`_fts`.`_id`, `_vs`.`_id`) as `_id`, ifnull(`_fts`.`document`, `_vs`.`document`) as `document`, ifnull(`_fts`.`embedding`, `_vs`.`embedding`) as `embedding`, ifnull(`_fts`.`metadata`, `_vs`.`metadata`) as `metadata`, (ifnull(1 / (`_fts`.`_keyword_rank` + 60), 0) + ifnull(1 / (`_vs`.`_semantic_rank` + 60), 0)) as `_score` FROM ((SELECT *, RANK() over( ORDER BY `_keyword_score` DESC) as `_keyword_rank` FROM (SELECT /*+ opt_param('hidden_column_visible', 'true') */`__pk_increment`, `_id`, `document`, `embedding`, `metadata`, match(`document`) against('混合检索' in natural language mode) …",
+        "SELECT DBMS_HYBRID_SEARCH.GET_SQL('c$v2$e0d7d28e1de611b2b65100ff540de82a', @search_parm) as query_sql FROM dual",
+        "SET @search_parm = '{\\\"query\\\":{\\\"query_string\\\":{\\\"fields\\\":[\\\"document\\\"],\\\"query\\\":\\\"混合检索\\\"}},\\\"knn\\\":{\\\"field\\\":\\\"embedding\\\",\\\"k\\\":60,\\\"query_vector\\\":[<query vector>]},\\\"rank\\\":{\\\"rrf\\\":{\\\"rank_window_size\\\":60,\\\"rank_constant\\\":60}},\\\"size\\\":3}'"
+      ]
+    },
+    {
+      "config": {
+        "key": "q8_webgpu",
+        "label": "INT8(q8) + WebGPU",
+        "dtype": "q8",
+        "device": "webgpu",
+        "on": true
+      },
+      "session": {
+        "device": "webgpu",
+        "dtype": "q8",
+        "threads": 1,
+        "loadMs": 6013,
+        "buildMs": 3800,
+        "source": "local /models",
+        "notes": [],
+        "dimension": 512
+      },
+      "collection": "kb_eval_q8_webgpu",
+      "sizes": {
+        "model": "Xenova/bge-small-zh-v1.5",
+        "core": [
+          {
+            "file": "Xenova/bge-small-zh-v1.5/onnx/model_quantized.onnx",
+            "bytes": 24010842
+          }
+        ],
+        "coreBytes": 24010842,
+        "sharedBytes": 550930,
+        "totalBytes": 24561772
+      },
+      "corpus": {
+        "documents": 51,
+        "chunks": 98,
+        "chars": 20899
+      },
+      "timing": {
+        "model_load_ms": 6013,
+        "embed_total_ms": 36864,
+        "embed_first_batch_ms": 7666.76,
+        "embed_warm_batch_ms": 5387.31,
+        "chunks_per_s": 3,
+        "chars_per_s": 567,
+        "write_ms": 918,
+        "refresh_ms": 615.08,
+        "search_ms_p50": {
+          "hybrid": 19.3,
+          "vector": 6.91,
+          "text": 15.97
+        },
+        "search_ms_p95": {
+          "hybrid": 37.92499999888241,
+          "vector": 11.464999999850988,
+          "text": 24.18999999947846
+        },
+        "e2e_first_ms": 227.85,
+        "e2e_median_ms": 171.91,
+        "warm_search_only_ms": 19.18,
+        "total_ms": 51968
+      },
+      "quality": {
+        "hybrid": {
+          "queries": 30,
+          "corpus_chunks": null,
+          "recall@1": 0.5278,
+          "recall@3": 0.75,
+          "recall@5": 0.8,
+          "recall@10": 0.8556,
+          "ndcg@10": 0.8017,
+          "mrr": 0.8417,
+          "hit@1": 0.7667
+        },
+        "vector": {
+          "queries": 30,
+          "corpus_chunks": null,
+          "recall@1": 0.5111,
+          "recall@3": 0.5722,
+          "recall@5": 0.6833,
+          "recall@10": 0.8,
+          "ndcg@10": 0.7227,
+          "mrr": 0.7735,
+          "hit@1": 0.7
+        },
+        "text": {
+          "queries": 30,
+          "corpus_chunks": null,
+          "recall@1": 0.5444,
+          "recall@3": 0.7333,
+          "recall@5": 0.7889,
+          "recall@10": 0.8833,
+          "ndcg@10": 0.8119,
+          "mrr": 0.8398,
+          "hit@1": 0.7667
+        }
+      },
+      "perQuery": [
+        {
+          "id": "q01",
+          "text": "在浏览器里做向量化会不会把原始文档发到云端",
+          "gold": [
+            "edgeai-en-11",
+            "edgeai-zh-01"
+          ],
+          "ranked": [
+            "edgeai-zh-01",
+            "edgeai-zh-04",
+            "edgeai-zh-03",
+            "edgeai-zh-05",
+            "edgeai-zh-07",
+            "edgeai-zh-06",
+            "seekdb-zh-09",
+            "edgeai-zh-02",
+            "edgeai-zh-10",
+            "powercontext-zh-06"
+          ],
+          "recall5": 0.5,
+          "ndcg10": 0.5578858913022597,
+          "mrr": 1
+        },
+        {
+          "id": "q02",
+          "text": "怎样判断一次推理算的是端侧还是云端",
+          "gold": [
+            "edgeai-zh-01"
+          ],
+          "ranked": [
+            "edgeai-zh-01",
+            "powercontext-zh-11",
+            "edgeai-zh-05",
+            "seekdb-zh-07",
+            "seekdb-zh-09",
+            "seekdb-zh-06",
+            "edgeai-zh-07",
+            "edgeai-zh-08",
+            "seekdb-zh-08",
+            "edgeai-zh-06"
+          ],
+          "recall5": 1,
+          "ndcg10": 1,
+          "mrr": 1
+        },
+        {
+          "id": "q03",
+          "text": "WebGPU 后端需要哪个浏览器版本，不可用时怎么处理",
+          "gold": [
+            "edgeai-zh-02"
+          ],
+          "ranked": [
+            "edgeai-zh-02",
+            "powercontext-zh-06",
+            "edgeai-zh-05",
+            "powercontext-zh-11",
+            "powercontext-zh-10",
+            "edgeai-zh-04",
+            "powercontext-zh-02",
+            "seekdb-zh-10",
+            "powercontext-zh-09"
+          ],
+          "recall5": 1,
+          "ndcg10": 1,
+          "mrr": 1
+        },
+        {
+          "id": "q04",
+          "text": "INT8 和 FP16 量化能把模型压到多小，代价是什么",
+          "gold": [
+            "edgeai-zh-03",
+            "edgeai-en-12"
+          ],
+          "ranked": [
+            "edgeai-zh-03",
+            "powercontext-zh-08",
+            "edgeai-zh-04",
+            "edgeai-zh-06",
+            "powercontext-zh-10",
+            "edgeai-zh-05",
+            "edgeai-zh-02",
+            "seekdb-zh-08",
+            "seekdb-zh-06"
+          ],
+          "recall5": 0.5,
+          "ndcg10": 0.5578858913022597,
+          "mrr": 1
+        },
+        {
+          "id": "q05",
+          "text": "让模型文件从自己的服务器加载，不依赖外部 CDN",
+          "gold": [
+            "edgeai-zh-04"
+          ],
+          "ranked": [
+            "edgeai-zh-04",
+            "powercontext-zh-10",
+            "powercontext-zh-09",
+            "powercontext-zh-12",
+            "edgeai-zh-06",
+            "powercontext-zh-13",
+            "powercontext-zh-06",
+            "seekdb-zh-01",
+            "powercontext-zh-03"
+          ],
+          "recall5": 1,
+          "ndcg10": 1,
+          "mrr": 1
+        },
+        {
+          "id": "q06",
+          "text": "为什么批量编码比一条一条编码快很多",
+          "gold": [
+            "edgeai-zh-05"
+          ],
+          "ranked": [
+            "seekdb-zh-08",
+            "edgeai-zh-05",
+            "seekdb-zh-10",
+            "seekdb-zh-09",
+            "edgeai-zh-08",
+            "edgeai-zh-07",
+            "seekdb-zh-01",
+            "seekdb-zh-07",
+            "powercontext-zh-08",
+            "seekdb-zh-05"
+          ],
+          "recall5": 1,
+          "ndcg10": 0.7924812503605779,
+          "mrr": 0.5
+        },
+        {
+          "id": "q07",
+          "text": "句子向量应该用哪种池化方式",
+          "gold": [
+            "edgeai-zh-06"
+          ],
+          "ranked": [
+            "edgeai-zh-06",
+            "edgeai-zh-07",
+            "edgeai-zh-08",
+            "seekdb-zh-07",
+            "seekdb-zh-01",
+            "powercontext-zh-08",
+            "edgeai-zh-01",
+            "edgeai-zh-03",
+            "seekdb-zh-06"
+          ],
+          "recall5": 1,
+          "ndcg10": 1,
+          "mrr": 1
+        },
+        {
+          "id": "q08",
+          "text": "为什么两路检索结果要在数据库里融合而不是客户端拼",
+          "gold": [
+            "edgeai-zh-07",
+            "seekdb-en-12"
+          ],
+          "ranked": [
+            "edgeai-zh-07",
+            "edgeai-zh-06",
+            "edgeai-zh-09",
+            "edgeai-zh-08",
+            "seekdb-zh-05",
+            "seekdb-zh-07",
+            "seekdb-zh-09",
+            "powercontext-zh-06",
+            "seekdb-zh-10"
+          ],
+          "recall5": 0.5,
+          "ndcg10": 0.5578858913022597,
+          "mrr": 1
+        },
+        {
+          "id": "q09",
+          "text": "刚刚导入的文档检索不到，是不是索引没刷新",
+          "gold": [
+            "edgeai-zh-08",
+            "seekdb-zh-02"
+          ],
+          "ranked": [
+            "edgeai-zh-08",
+            "edgeai-zh-09",
+            "seekdb-zh-09",
+            "seekdb-zh-05",
+            "edgeai-zh-10",
+            "edgeai-zh-07",
+            "seekdb-zh-02",
+            "seekdb-zh-07",
+            "powercontext-zh-13"
+          ],
+          "recall5": 0.5,
+          "ndcg10": 0.8368288369533896,
+          "mrr": 1
+        },
+        {
+          "id": "q10",
+          "text": "多个知识库并存时怎样保证结果不串库",
+          "gold": [
+            "edgeai-zh-09"
+          ],
+          "ranked": [
+            "edgeai-zh-09",
+            "seekdb-zh-03",
+            "edgeai-zh-10",
+            "seekdb-zh-09",
+            "powercontext-zh-04",
+            "edgeai-zh-07",
+            "edgeai-zh-06",
+            "edgeai-zh-05",
+            "powercontext-zh-05",
+            "seekdb-zh-10"
+          ],
+          "recall5": 1,
+          "ndcg10": 1,
+          "mrr": 1
+        },
+        {
+          "id": "q11",
+          "text": "有没有客观指标可以衡量检索质量",
+          "gold": [
+            "edgeai-zh-10"
+          ],
+          "ranked": [
+            "edgeai-zh-10",
+            "edgeai-zh-08",
+            "edgeai-zh-06",
+            "edgeai-zh-07",
+            "seekdb-zh-08",
+            "seekdb-zh-05",
+            "powercontext-zh-08",
+            "edgeai-zh-03",
+            "seekdb-zh-06",
+            "seekdb-zh-07"
+          ],
+          "recall5": 1,
+          "ndcg10": 1,
+          "mrr": 1
+        },
+        {
+          "id": "q12",
+          "text": "How should I measure the size of a quantised model fairly?",
+          "gold": [
+            "edgeai-en-12"
+          ],
+          "ranked": [
+            "edgeai-en-11",
+            "edgeai-en-12",
+            "seekdb-en-11",
+            "seekdb-en-09",
+            "seekdb-en-03",
+            "seekdb-en-12",
+            "seekdb-en-05"
+          ],
+          "recall5": 1,
+          "ndcg10": 0.7924812503605779,
+          "mrr": 0.5
+        },
+        {
+          "id": "q13",
+          "text": "Does running embeddings in the browser expose my documents?",
+          "gold": [
+            "edgeai-en-11"
+          ],
+          "ranked": [
+            "seekdb-en-06",
+            "edgeai-en-12",
+            "edgeai-en-11",
+            "seekdb-en-04",
+            "seekdb-en-05",
+            "seekdb-en-09",
+            "seekdb-en-11",
+            "seekdb-en-12",
+            "seekdb-en-07",
+            "seekdb-en-01"
+          ],
+          "recall5": 1,
+          "ndcg10": 0.6826061944859853,
+          "mrr": 0.3333333333333333
+        },
+        {
+          "id": "q14",
+          "text": "seekdb 用一条 SQL 完成向量与全文混合检索",
+          "gold": [
+            "seekdb-en-12",
+            "seekdb-zh-01"
+          ],
+          "ranked": [
+            "seekdb-zh-06",
+            "seekdb-zh-05",
+            "seekdb-zh-01",
+            "seekdb-zh-11",
+            "edgeai-zh-07",
+            "seekdb-zh-09",
+            "edgeai-zh-08",
+            "seekdb-zh-07",
+            "seekdb-en-14",
+            "edgeai-zh-06"
+          ],
+          "recall5": 0.5,
+          "ndcg10": 0.3808163652192575,
+          "mrr": 0.3333333333333333
+        },
+        {
+          "id": "q15",
+          "text": "持续写入的同时做检索，P99 延迟为什么不抖动",
+          "gold": [
+            "seekdb-zh-02",
+            "seekdb-en-03",
+            "seekdb-zh-09"
+          ],
+          "ranked": [
+            "seekdb-zh-08",
+            "seekdb-zh-05",
+            "seekdb-zh-02",
+            "seekdb-zh-06",
+            "edgeai-zh-08",
+            "seekdb-zh-09",
+            "powercontext-zh-05",
+            "seekdb-zh-07"
+          ],
+          "recall5": 0.3333333333333333,
+          "ndcg10": 0.48924616000174176,
+          "mrr": 0.3333333333333333
+        },
+        {
+          "id": "q16",
+          "text": "FORK DATABASE 秒级快照让 Agent 放心试错",
+          "gold": [
+            "seekdb-zh-03",
+            "seekdb-en-04",
+            "seekdb-zh-10"
+          ],
+          "ranked": [
+            "seekdb-zh-03",
+            "seekdb-zh-10",
+            "seekdb-zh-06",
+            "seekdb-zh-01",
+            "seekdb-zh-02",
+            "seekdb-en-04",
+            "seekdb-en-06",
+            "seekdb-en-14",
+            "powercontext-zh-06"
+          ],
+          "recall5": 0.6666666666666666,
+          "ndcg10": 0.937664682824234,
+          "mrr": 1
+        },
+        {
+          "id": "q17",
+          "text": "seekdb 是不是开源的，由哪个团队维护",
+          "gold": [
+            "seekdb-zh-11",
+            "seekdb-en-14"
+          ],
+          "ranked": [
+            "seekdb-zh-11",
+            "seekdb-zh-07",
+            "seekdb-zh-09",
+            "seekdb-en-14",
+            "seekdb-zh-06",
+            "powercontext-zh-02",
+            "seekdb-zh-01",
+            "seekdb-zh-08",
+            "powercontext-zh-12"
+          ],
+          "recall5": 1,
+          "ndcg10": 0.899952059437696,
+          "mrr": 1
+        },
+        {
+          "id": "q18",
+          "text": "seekdb 支持嵌入式和服务器两种部署形态吗",
+          "gold": [
+            "seekdb-en-05",
+            "seekdb-zh-01"
+          ],
+          "ranked": [
+            "seekdb-zh-01",
+            "seekdb-zh-11",
+            "powercontext-zh-07",
+            "seekdb-zh-06",
+            "powercontext-zh-10",
+            "powercontext-zh-13",
+            "seekdb-zh-09",
+            "seekdb-zh-08",
+            "seekdb-en-14"
+          ],
+          "recall5": 0.5,
+          "ndcg10": 0.5578858913022597,
+          "mrr": 1
+        },
+        {
+          "id": "q19",
+          "text": "一千万条七百六十八维向量的并发测试条件",
+          "gold": [
+            "seekdb-zh-08",
+            "seekdb-zh-07"
+          ],
+          "ranked": [
+            "seekdb-zh-08",
+            "powercontext-zh-08",
+            "seekdb-zh-07",
+            "seekdb-zh-02",
+            "edgeai-zh-07",
+            "seekdb-zh-09",
+            "edgeai-zh-10"
+          ],
+          "recall5": 1,
+          "ndcg10": 0.9387022565215173,
+          "mrr": 1
+        },
+        {
+          "id": "q20",
+          "text": "PowerContext 里的 Memory 存的是什么",
+          "gold": [
+            "powercontext-zh-03",
+            "powercontext-zh-02"
+          ],
+          "ranked": [
+            "powercontext-zh-02",
+            "powercontext-zh-03",
+            "powercontext-zh-11",
+            "powercontext-zh-06",
+            "powercontext-zh-04",
+            "seekdb-zh-08",
+            "seekdb-zh-01"
+          ],
+          "recall5": 1,
+          "ndcg10": 1,
+          "mrr": 1
+        },
+        {
+          "id": "q21",
+          "text": "Handoff 为什么不是把整段对话都存下来",
+          "gold": [
+            "powercontext-zh-04"
+          ],
+          "ranked": [
+            "powercontext-zh-04",
+            "powercontext-zh-02",
+            "powercontext-zh-06",
+            "powercontext-zh-03",
+            "seekdb-zh-09",
+            "seekdb-zh-10",
+            "powercontext-zh-05",
+            "edgeai-zh-09",
+            "edgeai-zh-05"
+          ],
+          "recall5": 1,
+          "ndcg10": 1,
+          "mrr": 1
+        },
+        {
+          "id": "q22",
+          "text": "长对话记忆基准上的准确率是多少",
+          "gold": [
+            "powercontext-zh-08"
+          ],
+          "ranked": [
+            "powercontext-zh-08",
+            "seekdb-zh-06",
+            "powercontext-zh-10",
+            "powercontext-zh-09",
+            "powercontext-zh-13",
+            "powercontext-zh-04",
+            "seekdb-zh-05",
+            "powercontext-zh-02",
+            "edgeai-zh-03"
+          ],
+          "recall5": 1,
+          "ndcg10": 1,
+          "mrr": 1
+        },
+        {
+          "id": "q23",
+          "text": "安装 PowerContext 并运行配置向导",
+          "gold": [
+            "powercontext-zh-10",
+            "powercontext-zh-09"
+          ],
+          "ranked": [
+            "powercontext-zh-10",
+            "powercontext-zh-09",
+            "powercontext-zh-13",
+            "powercontext-zh-11",
+            "powercontext-zh-06",
+            "powercontext-zh-12",
+            "edgeai-zh-02"
+          ],
+          "recall5": 1,
+          "ndcg10": 1,
+          "mrr": 1
+        },
+        {
+          "id": "q24",
+          "text": "Try seekdb in thirty seconds without a server",
+          "gold": [
+            "seekdb-en-02",
+            "seekdb-en-13"
+          ],
+          "ranked": [
+            "seekdb-en-13",
+            "seekdb-en-11",
+            "seekdb-en-04",
+            "seekdb-en-14",
+            "seekdb-en-02",
+            "edgeai-en-11",
+            "seekdb-en-05"
+          ],
+          "recall5": 1,
+          "ndcg10": 0.8728543373822445,
+          "mrr": 1
+        },
+        {
+          "id": "q25",
+          "text": "seekdb 与哪些 Agent 框架和生态做了集成",
+          "gold": [
+            "seekdb-en-08",
+            "seekdb-zh-05"
+          ],
+          "ranked": [
+            "seekdb-zh-11",
+            "seekdb-zh-07",
+            "seekdb-zh-06",
+            "seekdb-en-14",
+            "powercontext-zh-14",
+            "seekdb-zh-09",
+            "powercontext-zh-07",
+            "powercontext-zh-13",
+            "seekdb-zh-08"
+          ],
+          "recall5": 0,
+          "ndcg10": 0,
+          "mrr": 0
+        },
+        {
+          "id": "q26",
+          "text": "为什么用错误的基准去选向量数据库会踩坑",
+          "gold": [
+            "seekdb-zh-07",
+            "seekdb-zh-09"
+          ],
+          "ranked": [
+            "seekdb-zh-07",
+            "seekdb-zh-09",
+            "edgeai-zh-07",
+            "seekdb-zh-10",
+            "edgeai-zh-08",
+            "edgeai-zh-06",
+            "edgeai-zh-09",
+            "seekdb-zh-11"
+          ],
+          "recall5": 1,
+          "ndcg10": 1,
+          "mrr": 1
+        },
+        {
+          "id": "q27",
+          "text": "Copy-on-write sandbox lets agents explore freely",
+          "gold": [
+            "seekdb-en-04",
+            "seekdb-en-11"
+          ],
+          "ranked": [
+            "seekdb-en-04",
+            "seekdb-en-11",
+            "seekdb-en-01",
+            "seekdb-en-07",
+            "seekdb-en-03",
+            "seekdb-en-12",
+            "seekdb-en-05"
+          ],
+          "recall5": 1,
+          "ndcg10": 1,
+          "mrr": 1
+        },
+        {
+          "id": "q28",
+          "text": "查询语句需要加前缀提示吗，文档和查询要不要一样",
+          "gold": [
+            "edgeai-zh-06"
+          ],
+          "ranked": [
+            "edgeai-zh-06",
+            "edgeai-zh-10",
+            "edgeai-zh-07",
+            "powercontext-zh-09",
+            "edgeai-zh-09",
+            "seekdb-zh-09",
+            "seekdb-zh-10",
+            "powercontext-zh-11",
+            "seekdb-zh-06",
+            "powercontext-zh-13"
+          ],
+          "recall5": 1,
+          "ndcg10": 1,
+          "mrr": 1
+        },
+        {
+          "id": "q29",
+          "text": "写入数据之后事务提交了但索引还没建好",
+          "gold": [
+            "edgeai-zh-08",
+            "seekdb-zh-02"
+          ],
+          "ranked": [
+            "edgeai-zh-08",
+            "seekdb-zh-09",
+            "seekdb-zh-05",
+            "edgeai-zh-09",
+            "seekdb-zh-08",
+            "seekdb-zh-02",
+            "powercontext-zh-05",
+            "powercontext-zh-02",
+            "seekdb-zh-07"
+          ],
+          "recall5": 0.5,
+          "ndcg10": 0.8526286304340865,
+          "mrr": 1
+        },
+        {
+          "id": "q30",
+          "text": "怎么在界面上告诉用户当前用的是哪个推理后端",
+          "gold": [
+            "edgeai-zh-02",
+            "edgeai-zh-04"
+          ],
+          "ranked": [
+            "edgeai-zh-01",
+            "powercontext-zh-02",
+            "edgeai-zh-08",
+            "edgeai-zh-02",
+            "edgeai-zh-07",
+            "powercontext-zh-11",
+            "edgeai-zh-06",
+            "powercontext-zh-06",
+            "seekdb-zh-05"
+          ],
+          "recall5": 0.5,
+          "ndcg10": 0.3420661681354362,
+          "mrr": 0.25
+        }
+      ],
+      "evidence_sql": [
+        "SELECT ifnull(`_fts`.`_id`, `_vs`.`_id`) as `_id`, ifnull(`_fts`.`document`, `_vs`.`document`) as `document`, ifnull(`_fts`.`embedding`, `_vs`.`embedding`) as `embedding`, ifnull(`_fts`.`metadata`, `_vs`.`metadata`) as `metadata`, (ifnull(1 / (`_fts`.`_keyword_rank` + 60), 0) + ifnull(1 / (`_vs`.`_semantic_rank` + 60), 0)) as `_score` FROM ((SELECT *, RANK() over( ORDER BY `_keyword_score` DESC) as `_keyword_rank` FROM (SELECT /*+ opt_param('hidden_column_visible', 'true') */`__pk_increment`, `_id`, `document`, `embedding`, `metadata`, match(`document`) against('混合检索' in natural language mode) …",
+        "SELECT DBMS_HYBRID_SEARCH.GET_SQL('c$v2$ffb7b9131de611b2b65100ff540de82a', @search_parm) as query_sql FROM dual",
+        "SET @search_parm = '{\\\"query\\\":{\\\"query_string\\\":{\\\"fields\\\":[\\\"document\\\"],\\\"query\\\":\\\"混合检索\\\"}},\\\"knn\\\":{\\\"field\\\":\\\"embedding\\\",\\\"k\\\":60,\\\"query_vector\\\":[<query vector>]},\\\"rank\\\":{\\\"rrf\\\":{\\\"rank_window_size\\\":60,\\\"rank_constant\\\":60}},\\\"size\\\":3}'"
+      ]
+    },
+    {
+      "config": {
+        "key": "fp32_wasm",
+        "label": "量化前基线 · fp32 + WASM",
+        "dtype": "fp32",
+        "device": "wasm",
+        "on": true
+      },
+      "session": {
+        "device": "wasm",
+        "dtype": "fp32",
+        "threads": 8,
+        "loadMs": 6449,
+        "buildMs": 5925,
+        "source": "local /models",
+        "notes": [],
+        "dimension": 512
+      },
+      "collection": "kb_eval_fp32_wasm",
+      "sizes": {
+        "model": "Xenova/bge-small-zh-v1.5",
+        "core": [
+          {
+            "file": "Xenova/bge-small-zh-v1.5/onnx/model.onnx",
+            "bytes": 94851877
+          }
+        ],
+        "coreBytes": 94851877,
+        "sharedBytes": 550930,
+        "totalBytes": 95402807
+      },
+      "corpus": {
+        "documents": 51,
+        "chunks": 98,
+        "chars": 20899
+      },
+      "timing": {
+        "model_load_ms": 6449,
+        "embed_total_ms": 23326,
+        "embed_first_batch_ms": 5295.62,
+        "embed_warm_batch_ms": 3516.1,
+        "chunks_per_s": 4,
+        "chars_per_s": 897,
+        "write_ms": 1647,
+        "refresh_ms": 519.86,
+        "search_ms_p50": {
+          "hybrid": 24.11,
+          "vector": 7.22,
+          "text": 17.52
+        },
+        "search_ms_p95": {
+          "hybrid": 70.20000000111759,
+          "vector": 17.010000001639128,
+          "text": 32.544999999925494
+        },
+        "e2e_first_ms": 197.19,
+        "e2e_median_ms": 126.04,
+        "warm_search_only_ms": 24.08,
+        "total_ms": 39185
+      },
+      "quality": {
+        "hybrid": {
+          "queries": 30,
+          "corpus_chunks": null,
+          "recall@1": 0.4278,
+          "recall@3": 0.7167,
+          "recall@5": 0.8,
+          "recall@10": 0.8222,
+          "ndcg@10": 0.7611,
+          "mrr": 0.7861,
+          "hit@1": 0.6667
+        },
+        "vector": {
+          "queries": 30,
+          "corpus_chunks": null,
+          "recall@1": 0.4278,
+          "recall@3": 0.5556,
+          "recall@5": 0.6833,
+          "recall@10": 0.7667,
+          "ndcg@10": 0.6768,
+          "mrr": 0.704,
+          "hit@1": 0.6
+        },
+        "text": {
+          "queries": 30,
+          "corpus_chunks": null,
+          "recall@1": 0.5444,
+          "recall@3": 0.7333,
+          "recall@5": 0.7889,
+          "recall@10": 0.8833,
+          "ndcg@10": 0.8119,
+          "mrr": 0.8398,
+          "hit@1": 0.7667
+        }
+      },
+      "perQuery": [
+        {
+          "id": "q01",
+          "text": "在浏览器里做向量化会不会把原始文档发到云端",
+          "gold": [
+            "edgeai-en-11",
+            "edgeai-zh-01"
+          ],
+          "ranked": [
+            "edgeai-zh-01",
+            "edgeai-zh-03",
+            "edgeai-zh-05",
+            "edgeai-zh-07",
+            "edgeai-zh-06",
+            "seekdb-zh-09",
+            "edgeai-zh-02",
+            "powercontext-zh-06",
+            "edgeai-zh-10",
+            "edgeai-zh-08"
+          ],
+          "recall5": 0.5,
+          "ndcg10": 0.5578858913022597,
+          "mrr": 1
+        },
+        {
+          "id": "q02",
+          "text": "怎样判断一次推理算的是端侧还是云端",
+          "gold": [
+            "edgeai-zh-01"
+          ],
+          "ranked": [
+            "edgeai-zh-01",
+            "powercontext-zh-11",
+            "edgeai-zh-05",
+            "seekdb-zh-07",
+            "seekdb-zh-09",
+            "seekdb-zh-06",
+            "edgeai-zh-07",
+            "edgeai-zh-08",
+            "seekdb-zh-08",
+            "edgeai-zh-06"
+          ],
+          "recall5": 1,
+          "ndcg10": 1,
+          "mrr": 1
+        },
+        {
+          "id": "q03",
+          "text": "WebGPU 后端需要哪个浏览器版本，不可用时怎么处理",
+          "gold": [
+            "edgeai-zh-02"
+          ],
+          "ranked": [
+            "edgeai-zh-02",
+            "powercontext-zh-10",
+            "powercontext-zh-06",
+            "powercontext-zh-11",
+            "edgeai-zh-05",
+            "powercontext-zh-02",
+            "seekdb-zh-10",
+            "powercontext-zh-03"
+          ],
+          "recall5": 1,
+          "ndcg10": 1,
+          "mrr": 1
+        },
+        {
+          "id": "q04",
+          "text": "INT8 和 FP16 量化能把模型压到多小，代价是什么",
+          "gold": [
+            "edgeai-zh-03",
+            "edgeai-en-12"
+          ],
+          "ranked": [
+            "edgeai-zh-03",
+            "powercontext-zh-08",
+            "edgeai-zh-06",
+            "powercontext-zh-10",
+            "edgeai-zh-05",
+            "edgeai-zh-02",
+            "seekdb-zh-08",
+            "seekdb-zh-06",
+            "edgeai-zh-01"
+          ],
+          "recall5": 0.5,
+          "ndcg10": 0.5578858913022597,
+          "mrr": 1
+        },
+        {
+          "id": "q05",
+          "text": "让模型文件从自己的服务器加载，不依赖外部 CDN",
+          "gold": [
+            "edgeai-zh-04"
+          ],
+          "ranked": [
+            "powercontext-zh-10",
+            "powercontext-zh-09",
+            "powercontext-zh-12",
+            "edgeai-zh-06",
+            "powercontext-zh-13",
+            "powercontext-zh-06",
+            "seekdb-zh-04",
+            "seekdb-zh-01",
+            "powercontext-zh-03",
+            "edgeai-zh-01"
+          ],
+          "recall5": 0,
+          "ndcg10": 0,
+          "mrr": 0
+        },
+        {
+          "id": "q06",
+          "text": "为什么批量编码比一条一条编码快很多",
+          "gold": [
+            "edgeai-zh-05"
+          ],
+          "ranked": [
+            "seekdb-zh-08",
+            "edgeai-zh-05",
+            "seekdb-zh-10",
+            "seekdb-zh-09",
+            "edgeai-zh-08",
+            "seekdb-zh-01",
+            "edgeai-zh-07",
+            "powercontext-zh-08",
+            "seekdb-zh-07",
+            "seekdb-zh-05"
+          ],
+          "recall5": 1,
+          "ndcg10": 0.7924812503605779,
+          "mrr": 0.5
+        },
+        {
+          "id": "q07",
+          "text": "句子向量应该用哪种池化方式",
+          "gold": [
+            "edgeai-zh-06"
+          ],
+          "ranked": [
+            "edgeai-zh-06",
+            "edgeai-zh-07",
+            "edgeai-zh-08",
+            "seekdb-zh-07",
+            "seekdb-zh-01",
+            "powercontext-zh-08",
+            "edgeai-zh-01",
+            "edgeai-zh-03",
+            "powercontext-zh-07"
+          ],
+          "recall5": 1,
+          "ndcg10": 1,
+          "mrr": 1
+        },
+        {
+          "id": "q08",
+          "text": "为什么两路检索结果要在数据库里融合而不是客户端拼",
+          "gold": [
+            "edgeai-zh-07",
+            "seekdb-en-12"
+          ],
+          "ranked": [
+            "edgeai-zh-07",
+            "edgeai-zh-09",
+            "edgeai-zh-08",
+            "seekdb-zh-05",
+            "seekdb-zh-07",
+            "seekdb-zh-09",
+            "seekdb-zh-10",
+            "powercontext-zh-11",
+            "powercontext-zh-08"
+          ],
+          "recall5": 0.5,
+          "ndcg10": 0.5578858913022597,
+          "mrr": 1
+        },
+        {
+          "id": "q09",
+          "text": "刚刚导入的文档检索不到，是不是索引没刷新",
+          "gold": [
+            "edgeai-zh-08",
+            "seekdb-zh-02"
+          ],
+          "ranked": [
+            "edgeai-zh-08",
+            "edgeai-zh-09",
+            "seekdb-zh-09",
+            "seekdb-zh-05",
+            "seekdb-zh-02",
+            "edgeai-zh-10",
+            "edgeai-zh-07",
+            "powercontext-zh-13",
+            "powercontext-zh-11"
+          ],
+          "recall5": 1,
+          "ndcg10": 0.8728543373822445,
+          "mrr": 1
+        },
+        {
+          "id": "q10",
+          "text": "多个知识库并存时怎样保证结果不串库",
+          "gold": [
+            "edgeai-zh-09"
+          ],
+          "ranked": [
+            "edgeai-zh-09",
+            "seekdb-zh-03",
+            "seekdb-zh-09",
+            "edgeai-zh-10",
+            "powercontext-zh-04",
+            "edgeai-zh-07",
+            "edgeai-zh-05",
+            "powercontext-zh-05",
+            "seekdb-zh-10",
+            "powercontext-zh-02"
+          ],
+          "recall5": 1,
+          "ndcg10": 1,
+          "mrr": 1
+        },
+        {
+          "id": "q11",
+          "text": "有没有客观指标可以衡量检索质量",
+          "gold": [
+            "edgeai-zh-10"
+          ],
+          "ranked": [
+            "edgeai-zh-08",
+            "edgeai-zh-10",
+            "edgeai-zh-07",
+            "seekdb-zh-08",
+            "seekdb-zh-05",
+            "powercontext-zh-08",
+            "edgeai-zh-03",
+            "seekdb-zh-06",
+            "seekdb-zh-07"
+          ],
+          "recall5": 1,
+          "ndcg10": 0.7924812503605779,
+          "mrr": 0.5
+        },
+        {
+          "id": "q12",
+          "text": "How should I measure the size of a quantised model fairly?",
+          "gold": [
+            "edgeai-en-12"
+          ],
+          "ranked": [
+            "edgeai-en-11",
+            "edgeai-en-12",
+            "seekdb-en-11",
+            "seekdb-en-03",
+            "seekdb-en-09",
+            "seekdb-en-12",
+            "seekdb-en-05"
+          ],
+          "recall5": 1,
+          "ndcg10": 0.7924812503605779,
+          "mrr": 0.5
+        },
+        {
+          "id": "q13",
+          "text": "Does running embeddings in the browser expose my documents?",
+          "gold": [
+            "edgeai-en-11"
+          ],
+          "ranked": [
+            "seekdb-en-06",
+            "edgeai-en-11",
+            "edgeai-en-12",
+            "seekdb-en-05",
+            "seekdb-en-04",
+            "seekdb-en-09",
+            "seekdb-en-11",
+            "seekdb-en-01",
+            "seekdb-en-12",
+            "seekdb-en-10"
+          ],
+          "recall5": 1,
+          "ndcg10": 0.7924812503605779,
+          "mrr": 0.5
+        },
+        {
+          "id": "q14",
+          "text": "seekdb 用一条 SQL 完成向量与全文混合检索",
+          "gold": [
+            "seekdb-en-12",
+            "seekdb-zh-01"
+          ],
+          "ranked": [
+            "seekdb-zh-06",
+            "seekdb-zh-05",
+            "seekdb-zh-01",
+            "seekdb-zh-11",
+            "edgeai-zh-07",
+            "edgeai-zh-08",
+            "seekdb-zh-09",
+            "seekdb-zh-07",
+            "seekdb-en-14",
+            "edgeai-zh-06"
+          ],
+          "recall5": 0.5,
+          "ndcg10": 0.3808163652192575,
+          "mrr": 0.3333333333333333
+        },
+        {
+          "id": "q15",
+          "text": "持续写入的同时做检索，P99 延迟为什么不抖动",
+          "gold": [
+            "seekdb-zh-02",
+            "seekdb-en-03",
+            "seekdb-zh-09"
+          ],
+          "ranked": [
+            "seekdb-zh-08",
+            "seekdb-zh-02",
+            "seekdb-zh-06",
+            "seekdb-zh-05",
+            "edgeai-zh-08",
+            "seekdb-zh-09",
+            "seekdb-zh-07",
+            "powercontext-zh-05"
+          ],
+          "recall5": 0.3333333333333333,
+          "ndcg10": 0.5336385535324697,
+          "mrr": 0.5
+        },
+        {
+          "id": "q16",
+          "text": "FORK DATABASE 秒级快照让 Agent 放心试错",
+          "gold": [
+            "seekdb-zh-03",
+            "seekdb-en-04",
+            "seekdb-zh-10"
+          ],
+          "ranked": [
+            "seekdb-zh-03",
+            "seekdb-zh-10",
+            "seekdb-zh-06",
+            "seekdb-zh-01",
+            "seekdb-zh-02",
+            "seekdb-en-06",
+            "seekdb-en-04",
+            "seekdb-en-14",
+            "powercontext-zh-06"
+          ],
+          "recall5": 0.6666666666666666,
+          "ndcg10": 0.9262223260571282,
+          "mrr": 1
+        },
+        {
+          "id": "q17",
+          "text": "seekdb 是不是开源的，由哪个团队维护",
+          "gold": [
+            "seekdb-zh-11",
+            "seekdb-en-14"
+          ],
+          "ranked": [
+            "seekdb-zh-11",
+            "seekdb-zh-07",
+            "seekdb-en-14",
+            "seekdb-zh-09",
+            "powercontext-zh-02",
+            "seekdb-zh-06",
+            "seekdb-zh-01",
+            "seekdb-zh-08"
+          ],
+          "recall5": 1,
+          "ndcg10": 0.9387022565215173,
+          "mrr": 1
+        },
+        {
+          "id": "q18",
+          "text": "seekdb 支持嵌入式和服务器两种部署形态吗",
+          "gold": [
+            "seekdb-en-05",
+            "seekdb-zh-01"
+          ],
+          "ranked": [
+            "seekdb-zh-01",
+            "seekdb-zh-06",
+            "seekdb-zh-11",
+            "powercontext-zh-10",
+            "powercontext-zh-13",
+            "seekdb-zh-09",
+            "powercontext-zh-07",
+            "seekdb-en-14",
+            "seekdb-zh-10",
+            "powercontext-zh-09"
+          ],
+          "recall5": 0.5,
+          "ndcg10": 0.5578858913022597,
+          "mrr": 1
+        },
+        {
+          "id": "q19",
+          "text": "一千万条七百六十八维向量的并发测试条件",
+          "gold": [
+            "seekdb-zh-08",
+            "seekdb-zh-07"
+          ],
+          "ranked": [
+            "seekdb-zh-08",
+            "powercontext-zh-08",
+            "seekdb-zh-02",
+            "seekdb-zh-07",
+            "seekdb-zh-09",
+            "edgeai-zh-07",
+            "edgeai-zh-10"
+          ],
+          "recall5": 1,
+          "ndcg10": 0.899952059437696,
+          "mrr": 1
+        },
+        {
+          "id": "q20",
+          "text": "PowerContext 里的 Memory 存的是什么",
+          "gold": [
+            "powercontext-zh-03",
+            "powercontext-zh-02"
+          ],
+          "ranked": [
+            "powercontext-zh-02",
+            "powercontext-zh-03",
+            "powercontext-zh-11",
+            "seekdb-zh-08",
+            "powercontext-zh-04",
+            "seekdb-zh-01",
+            "edgeai-zh-05"
+          ],
+          "recall5": 1,
+          "ndcg10": 1,
+          "mrr": 1
+        },
+        {
+          "id": "q21",
+          "text": "Handoff 为什么不是把整段对话都存下来",
+          "gold": [
+            "powercontext-zh-04"
+          ],
+          "ranked": [
+            "powercontext-zh-04",
+            "powercontext-zh-02",
+            "powercontext-zh-06",
+            "powercontext-zh-03",
+            "seekdb-zh-09",
+            "seekdb-zh-10",
+            "edgeai-zh-09",
+            "powercontext-zh-05",
+            "powercontext-zh-08"
+          ],
+          "recall5": 1,
+          "ndcg10": 1,
+          "mrr": 1
+        },
+        {
+          "id": "q22",
+          "text": "长对话记忆基准上的准确率是多少",
+          "gold": [
+            "powercontext-zh-08"
+          ],
+          "ranked": [
+            "powercontext-zh-08",
+            "seekdb-zh-06",
+            "powercontext-zh-10",
+            "powercontext-zh-09",
+            "powercontext-zh-13",
+            "powercontext-zh-04",
+            "seekdb-zh-05",
+            "powercontext-zh-02",
+            "edgeai-zh-06"
+          ],
+          "recall5": 1,
+          "ndcg10": 1,
+          "mrr": 1
+        },
+        {
+          "id": "q23",
+          "text": "安装 PowerContext 并运行配置向导",
+          "gold": [
+            "powercontext-zh-10",
+            "powercontext-zh-09"
+          ],
+          "ranked": [
+            "powercontext-zh-10",
+            "powercontext-zh-09",
+            "powercontext-zh-13",
+            "powercontext-zh-11",
+            "powercontext-zh-06",
+            "edgeai-zh-02",
+            "seekdb-zh-04"
+          ],
+          "recall5": 1,
+          "ndcg10": 1,
+          "mrr": 1
+        },
+        {
+          "id": "q24",
+          "text": "Try seekdb in thirty seconds without a server",
+          "gold": [
+            "seekdb-en-02",
+            "seekdb-en-13"
+          ],
+          "ranked": [
+            "seekdb-en-13",
+            "seekdb-en-11",
+            "seekdb-en-04",
+            "seekdb-en-14",
+            "seekdb-en-02",
+            "seekdb-en-05",
+            "seekdb-en-07"
+          ],
+          "recall5": 1,
+          "ndcg10": 0.8728543373822445,
+          "mrr": 1
+        },
+        {
+          "id": "q25",
+          "text": "seekdb 与哪些 Agent 框架和生态做了集成",
+          "gold": [
+            "seekdb-en-08",
+            "seekdb-zh-05"
+          ],
+          "ranked": [
+            "seekdb-zh-11",
+            "seekdb-zh-07",
+            "seekdb-zh-06",
+            "seekdb-en-14",
+            "powercontext-zh-14",
+            "seekdb-zh-09",
+            "powercontext-zh-07",
+            "powercontext-zh-13",
+            "seekdb-zh-08"
+          ],
+          "recall5": 0,
+          "ndcg10": 0,
+          "mrr": 0
+        },
+        {
+          "id": "q26",
+          "text": "为什么用错误的基准去选向量数据库会踩坑",
+          "gold": [
+            "seekdb-zh-07",
+            "seekdb-zh-09"
+          ],
+          "ranked": [
+            "seekdb-zh-07",
+            "seekdb-zh-09",
+            "edgeai-zh-07",
+            "edgeai-zh-08",
+            "seekdb-zh-10",
+            "edgeai-zh-09",
+            "seekdb-zh-11",
+            "seekdb-zh-01"
+          ],
+          "recall5": 1,
+          "ndcg10": 1,
+          "mrr": 1
+        },
+        {
+          "id": "q27",
+          "text": "Copy-on-write sandbox lets agents explore freely",
+          "gold": [
+            "seekdb-en-04",
+            "seekdb-en-11"
+          ],
+          "ranked": [
+            "seekdb-en-04",
+            "seekdb-en-11",
+            "seekdb-en-01",
+            "seekdb-en-03",
+            "seekdb-en-07",
+            "seekdb-en-05",
+            "seekdb-en-12"
+          ],
+          "recall5": 1,
+          "ndcg10": 1,
+          "mrr": 1
+        },
+        {
+          "id": "q28",
+          "text": "查询语句需要加前缀提示吗，文档和查询要不要一样",
+          "gold": [
+            "edgeai-zh-06"
+          ],
+          "ranked": [
+            "edgeai-zh-10",
+            "edgeai-zh-06",
+            "edgeai-zh-07",
+            "powercontext-zh-09",
+            "edgeai-zh-09",
+            "seekdb-zh-09",
+            "seekdb-zh-06",
+            "powercontext-zh-11",
+            "powercontext-zh-13",
+            "seekdb-zh-10"
+          ],
+          "recall5": 1,
+          "ndcg10": 0.7924812503605779,
+          "mrr": 0.5
+        },
+        {
+          "id": "q29",
+          "text": "写入数据之后事务提交了但索引还没建好",
+          "gold": [
+            "edgeai-zh-08",
+            "seekdb-zh-02"
+          ],
+          "ranked": [
+            "edgeai-zh-08",
+            "seekdb-zh-09",
+            "seekdb-zh-05",
+            "edgeai-zh-09",
+            "seekdb-zh-02",
+            "seekdb-zh-08",
+            "powercontext-zh-05",
+            "powercontext-zh-02",
+            "seekdb-zh-10"
+          ],
+          "recall5": 1,
+          "ndcg10": 0.8728543373822445,
+          "mrr": 1
+        },
+        {
+          "id": "q30",
+          "text": "怎么在界面上告诉用户当前用的是哪个推理后端",
+          "gold": [
+            "edgeai-zh-02",
+            "edgeai-zh-04"
+          ],
+          "ranked": [
+            "edgeai-zh-01",
+            "powercontext-zh-02",
+            "edgeai-zh-08",
+            "edgeai-zh-02",
+            "edgeai-zh-07",
+            "powercontext-zh-06",
+            "powercontext-zh-11",
+            "powercontext-zh-04",
+            "seekdb-zh-05"
+          ],
+          "recall5": 0.5,
+          "ndcg10": 0.3420661681354362,
+          "mrr": 0.25
+        }
+      ],
+      "evidence_sql": [
+        "SELECT ifnull(`_fts`.`_id`, `_vs`.`_id`) as `_id`, ifnull(`_fts`.`document`, `_vs`.`document`) as `document`, ifnull(`_fts`.`embedding`, `_vs`.`embedding`) as `embedding`, ifnull(`_fts`.`metadata`, `_vs`.`metadata`) as `metadata`, (ifnull(1 / (`_fts`.`_keyword_rank` + 60), 0) + ifnull(1 / (`_vs`.`_semantic_rank` + 60), 0)) as `_score` FROM ((SELECT *, RANK() over( ORDER BY `_keyword_score` DESC) as `_keyword_rank` FROM (SELECT /*+ opt_param('hidden_column_visible', 'true') */`__pk_increment`, `_id`, `document`, `embedding`, `metadata`, match(`document`) against('混合检索' in natural language mode) …",
+        "SELECT DBMS_HYBRID_SEARCH.GET_SQL('c$v2$171f4e941de711b2b65100ff540de82a', @search_parm) as query_sql FROM dual",
+        "SET @search_parm = '{\\\"query\\\":{\\\"query_string\\\":{\\\"fields\\\":[\\\"document\\\"],\\\"query\\\":\\\"混合检索\\\"}},\\\"knn\\\":{\\\"field\\\":\\\"embedding\\\",\\\"k\\\":60,\\\"query_vector\\\":[<query vector>]},\\\"rank\\\":{\\\"rrf\\\":{\\\"rank_window_size\\\":60,\\\"rank_constant\\\":60}},\\\"size\\\":3}'"
+      ]
+    },
+    {
+      "config": {
+        "key": "q8_wasm",
+        "label": "INT8(q8) + WASM",
+        "dtype": "q8",
+        "device": "wasm",
+        "on": true
+      },
+      "session": {
+        "device": "wasm",
+        "dtype": "q8",
+        "threads": 8,
+        "loadMs": 2390,
+        "buildMs": 1888,
+        "source": "local /models",
+        "notes": [],
+        "dimension": 512
+      },
+      "collection": "kb_eval_q8_wasm",
+      "sizes": {
+        "model": "Xenova/bge-small-zh-v1.5",
+        "core": [
+          {
+            "file": "Xenova/bge-small-zh-v1.5/onnx/model_quantized.onnx",
+            "bytes": 24010842
+          }
+        ],
+        "coreBytes": 24010842,
+        "sharedBytes": 550930,
+        "totalBytes": 24561772
+      },
+      "corpus": {
+        "documents": 51,
+        "chunks": 98,
+        "chars": 20899
+      },
+      "timing": {
+        "model_load_ms": 2390,
+        "embed_total_ms": 17180,
+        "embed_first_batch_ms": 4011.97,
+        "embed_warm_batch_ms": 2485.57,
+        "chunks_per_s": 6,
+        "chars_per_s": 1219,
+        "write_ms": 1136,
+        "refresh_ms": 417.12,
+        "search_ms_p50": {
+          "hybrid": 22.8,
+          "vector": 7.13,
+          "text": 17.26
+        },
+        "search_ms_p95": {
+          "hybrid": 43.830000000074506,
+          "vector": 8.96000000089407,
+          "text": 30.625
+        },
+        "e2e_first_ms": 82.82,
+        "e2e_median_ms": 83.75,
+        "warm_search_only_ms": 24.04,
+        "total_ms": 26665
+      },
+      "quality": {
+        "hybrid": {
+          "queries": 30,
+          "corpus_chunks": null,
+          "recall@1": 0.4444,
+          "recall@3": 0.6833,
+          "recall@5": 0.75,
+          "recall@10": 0.7722,
+          "ndcg@10": 0.724,
+          "mrr": 0.7556,
+          "hit@1": 0.6667
+        },
+        "vector": {
+          "queries": 30,
+          "corpus_chunks": null,
+          "recall@1": 0.4778,
+          "recall@3": 0.5667,
+          "recall@5": 0.6667,
+          "recall@10": 0.7611,
+          "ndcg@10": 0.6891,
+          "mrr": 0.737,
+          "hit@1": 0.6667
+        },
+        "text": {
+          "queries": 30,
+          "corpus_chunks": null,
+          "recall@1": 0.5444,
+          "recall@3": 0.7333,
+          "recall@5": 0.7889,
+          "recall@10": 0.8833,
+          "ndcg@10": 0.8119,
+          "mrr": 0.8398,
+          "hit@1": 0.7667
+        }
+      },
+      "perQuery": [
+        {
+          "id": "q01",
+          "text": "在浏览器里做向量化会不会把原始文档发到云端",
+          "gold": [
+            "edgeai-en-11",
+            "edgeai-zh-01"
+          ],
+          "ranked": [
+            "edgeai-zh-01",
+            "edgeai-zh-04",
+            "edgeai-zh-03",
+            "edgeai-zh-05",
+            "edgeai-zh-07",
+            "edgeai-zh-06",
+            "seekdb-zh-09",
+            "powercontext-zh-06",
+            "powercontext-zh-02",
+            "powercontext-zh-09"
+          ],
+          "recall5": 0.5,
+          "ndcg10": 0.5578858913022597,
+          "mrr": 1
+        },
+        {
+          "id": "q02",
+          "text": "怎样判断一次推理算的是端侧还是云端",
+          "gold": [
+            "edgeai-zh-01"
+          ],
+          "ranked": [
+            "edgeai-zh-01",
+            "powercontext-zh-11",
+            "seekdb-zh-09",
+            "seekdb-zh-07",
+            "edgeai-zh-05",
+            "seekdb-zh-06",
+            "edgeai-zh-07",
+            "edgeai-zh-08",
+            "seekdb-zh-08",
+            "edgeai-zh-06"
+          ],
+          "recall5": 1,
+          "ndcg10": 1,
+          "mrr": 1
+        },
+        {
+          "id": "q03",
+          "text": "WebGPU 后端需要哪个浏览器版本，不可用时怎么处理",
+          "gold": [
+            "edgeai-zh-02"
+          ],
+          "ranked": [
+            "powercontext-zh-06",
+            "edgeai-zh-05",
+            "powercontext-zh-10",
+            "powercontext-zh-11",
+            "edgeai-zh-04",
+            "powercontext-zh-02",
+            "seekdb-zh-10",
+            "powercontext-zh-09"
+          ],
+          "recall5": 0,
+          "ndcg10": 0,
+          "mrr": 0
+        },
+        {
+          "id": "q04",
+          "text": "INT8 和 FP16 量化能把模型压到多小，代价是什么",
+          "gold": [
+            "edgeai-zh-03",
+            "edgeai-en-12"
+          ],
+          "ranked": [
+            "edgeai-zh-03",
+            "powercontext-zh-08",
+            "edgeai-zh-04",
+            "edgeai-zh-06",
+            "powercontext-zh-10",
+            "edgeai-zh-05",
+            "seekdb-zh-08",
+            "seekdb-zh-06"
+          ],
+          "recall5": 0.5,
+          "ndcg10": 0.5578858913022597,
+          "mrr": 1
+        },
+        {
+          "id": "q05",
+          "text": "让模型文件从自己的服务器加载，不依赖外部 CDN",
+          "gold": [
+            "edgeai-zh-04"
+          ],
+          "ranked": [
+            "edgeai-zh-04",
+            "powercontext-zh-10",
+            "powercontext-zh-09",
+            "powercontext-zh-12",
+            "seekdb-zh-01",
+            "edgeai-zh-06",
+            "powercontext-zh-13",
+            "powercontext-zh-06",
+            "powercontext-zh-03"
+          ],
+          "recall5": 1,
+          "ndcg10": 1,
+          "mrr": 1
+        },
+        {
+          "id": "q06",
+          "text": "为什么批量编码比一条一条编码快很多",
+          "gold": [
+            "edgeai-zh-05"
+          ],
+          "ranked": [
+            "seekdb-zh-08",
+            "edgeai-zh-05",
+            "seekdb-zh-10",
+            "seekdb-zh-09",
+            "edgeai-zh-08",
+            "edgeai-zh-07",
+            "seekdb-zh-01",
+            "powercontext-zh-08",
+            "seekdb-zh-07",
+            "seekdb-zh-05"
+          ],
+          "recall5": 1,
+          "ndcg10": 0.7924812503605779,
+          "mrr": 0.5
+        },
+        {
+          "id": "q07",
+          "text": "句子向量应该用哪种池化方式",
+          "gold": [
+            "edgeai-zh-06"
+          ],
+          "ranked": [
+            "edgeai-zh-06",
+            "edgeai-zh-07",
+            "edgeai-zh-08",
+            "seekdb-zh-07",
+            "seekdb-zh-01",
+            "powercontext-zh-08",
+            "edgeai-zh-01",
+            "edgeai-zh-03",
+            "seekdb-zh-06",
+            "powercontext-zh-07"
+          ],
+          "recall5": 1,
+          "ndcg10": 1,
+          "mrr": 1
+        },
+        {
+          "id": "q08",
+          "text": "为什么两路检索结果要在数据库里融合而不是客户端拼",
+          "gold": [
+            "edgeai-zh-07",
+            "seekdb-en-12"
+          ],
+          "ranked": [
+            "edgeai-zh-07",
+            "edgeai-zh-06",
+            "edgeai-zh-09",
+            "edgeai-zh-08",
+            "seekdb-zh-05",
+            "seekdb-zh-07",
+            "seekdb-zh-09",
+            "powercontext-zh-06",
+            "seekdb-zh-10"
+          ],
+          "recall5": 0.5,
+          "ndcg10": 0.5578858913022597,
+          "mrr": 1
+        },
+        {
+          "id": "q09",
+          "text": "刚刚导入的文档检索不到，是不是索引没刷新",
+          "gold": [
+            "edgeai-zh-08",
+            "seekdb-zh-02"
+          ],
+          "ranked": [
+            "edgeai-zh-08",
+            "edgeai-zh-09",
+            "seekdb-zh-05",
+            "seekdb-zh-09",
+            "seekdb-zh-02",
+            "seekdb-zh-07",
+            "edgeai-zh-07",
+            "powercontext-zh-11",
+            "powercontext-zh-13",
+            "seekdb-zh-06"
+          ],
+          "recall5": 1,
+          "ndcg10": 0.8728543373822445,
+          "mrr": 1
+        },
+        {
+          "id": "q10",
+          "text": "多个知识库并存时怎样保证结果不串库",
+          "gold": [
+            "edgeai-zh-09"
+          ],
+          "ranked": [
+            "edgeai-zh-09",
+            "seekdb-zh-03",
+            "seekdb-zh-09",
+            "powercontext-zh-04",
+            "edgeai-zh-07",
+            "edgeai-zh-06",
+            "edgeai-zh-05",
+            "powercontext-zh-05",
+            "powercontext-zh-02",
+            "seekdb-zh-10"
+          ],
+          "recall5": 1,
+          "ndcg10": 1,
+          "mrr": 1
+        },
+        {
+          "id": "q11",
+          "text": "有没有客观指标可以衡量检索质量",
+          "gold": [
+            "edgeai-zh-10"
+          ],
+          "ranked": [
+            "edgeai-zh-08",
+            "edgeai-zh-06",
+            "edgeai-zh-07",
+            "seekdb-zh-08",
+            "seekdb-zh-05",
+            "powercontext-zh-08",
+            "edgeai-zh-03",
+            "seekdb-zh-06",
+            "seekdb-zh-07"
+          ],
+          "recall5": 0,
+          "ndcg10": 0,
+          "mrr": 0
+        },
+        {
+          "id": "q12",
+          "text": "How should I measure the size of a quantised model fairly?",
+          "gold": [
+            "edgeai-en-12"
+          ],
+          "ranked": [
+            "edgeai-en-11",
+            "edgeai-en-12",
+            "seekdb-en-11",
+            "seekdb-en-03",
+            "seekdb-en-09",
+            "seekdb-en-12",
+            "seekdb-en-05"
+          ],
+          "recall5": 1,
+          "ndcg10": 0.7924812503605779,
+          "mrr": 0.5
+        },
+        {
+          "id": "q13",
+          "text": "Does running embeddings in the browser expose my documents?",
+          "gold": [
+            "edgeai-en-11"
+          ],
+          "ranked": [
+            "seekdb-en-06",
+            "edgeai-en-12",
+            "edgeai-en-11",
+            "seekdb-en-05",
+            "seekdb-en-04",
+            "seekdb-en-09",
+            "seekdb-en-11",
+            "seekdb-en-07",
+            "seekdb-en-12",
+            "seekdb-en-03"
+          ],
+          "recall5": 1,
+          "ndcg10": 0.6826061944859853,
+          "mrr": 0.3333333333333333
+        },
+        {
+          "id": "q14",
+          "text": "seekdb 用一条 SQL 完成向量与全文混合检索",
+          "gold": [
+            "seekdb-en-12",
+            "seekdb-zh-01"
+          ],
+          "ranked": [
+            "seekdb-zh-06",
+            "seekdb-zh-05",
+            "seekdb-zh-01",
+            "seekdb-zh-11",
+            "edgeai-zh-07",
+            "edgeai-zh-08",
+            "seekdb-zh-07",
+            "seekdb-en-14",
+            "edgeai-zh-06",
+            "seekdb-zh-10"
+          ],
+          "recall5": 0.5,
+          "ndcg10": 0.3808163652192575,
+          "mrr": 0.3333333333333333
+        },
+        {
+          "id": "q15",
+          "text": "持续写入的同时做检索，P99 延迟为什么不抖动",
+          "gold": [
+            "seekdb-zh-02",
+            "seekdb-en-03",
+            "seekdb-zh-09"
+          ],
+          "ranked": [
+            "seekdb-zh-08",
+            "seekdb-zh-02",
+            "seekdb-zh-05",
+            "seekdb-zh-06",
+            "edgeai-zh-08",
+            "seekdb-zh-09",
+            "powercontext-zh-05",
+            "seekdb-zh-07"
+          ],
+          "recall5": 0.3333333333333333,
+          "ndcg10": 0.5336385535324697,
+          "mrr": 0.5
+        },
+        {
+          "id": "q16",
+          "text": "FORK DATABASE 秒级快照让 Agent 放心试错",
+          "gold": [
+            "seekdb-zh-03",
+            "seekdb-en-04",
+            "seekdb-zh-10"
+          ],
+          "ranked": [
+            "seekdb-zh-03",
+            "seekdb-zh-10",
+            "seekdb-zh-06",
+            "seekdb-zh-01",
+            "seekdb-zh-02",
+            "seekdb-en-04",
+            "seekdb-en-06",
+            "seekdb-en-14",
+            "powercontext-zh-06"
+          ],
+          "recall5": 0.6666666666666666,
+          "ndcg10": 0.937664682824234,
+          "mrr": 1
+        },
+        {
+          "id": "q17",
+          "text": "seekdb 是不是开源的，由哪个团队维护",
+          "gold": [
+            "seekdb-zh-11",
+            "seekdb-en-14"
+          ],
+          "ranked": [
+            "seekdb-zh-11",
+            "seekdb-zh-07",
+            "powercontext-zh-02",
+            "seekdb-en-14",
+            "seekdb-zh-06",
+            "seekdb-zh-01",
+            "powercontext-zh-12",
+            "seekdb-zh-08"
+          ],
+          "recall5": 1,
+          "ndcg10": 0.899952059437696,
+          "mrr": 1
+        },
+        {
+          "id": "q18",
+          "text": "seekdb 支持嵌入式和服务器两种部署形态吗",
+          "gold": [
+            "seekdb-en-05",
+            "seekdb-zh-01"
+          ],
+          "ranked": [
+            "seekdb-zh-01",
+            "seekdb-zh-11",
+            "powercontext-zh-07",
+            "seekdb-zh-06",
+            "powercontext-zh-13",
+            "powercontext-zh-10",
+            "seekdb-en-14",
+            "powercontext-zh-02",
+            "seekdb-zh-08"
+          ],
+          "recall5": 0.5,
+          "ndcg10": 0.5578858913022597,
+          "mrr": 1
+        },
+        {
+          "id": "q19",
+          "text": "一千万条七百六十八维向量的并发测试条件",
+          "gold": [
+            "seekdb-zh-08",
+            "seekdb-zh-07"
+          ],
+          "ranked": [
+            "seekdb-zh-08",
+            "powercontext-zh-08",
+            "seekdb-zh-07",
+            "seekdb-zh-02",
+            "seekdb-zh-09",
+            "edgeai-zh-07",
+            "seekdb-zh-06"
+          ],
+          "recall5": 1,
+          "ndcg10": 0.9387022565215173,
+          "mrr": 1
+        },
+        {
+          "id": "q20",
+          "text": "PowerContext 里的 Memory 存的是什么",
+          "gold": [
+            "powercontext-zh-03",
+            "powercontext-zh-02"
+          ],
+          "ranked": [
+            "powercontext-zh-02",
+            "powercontext-zh-03",
+            "powercontext-zh-11",
+            "powercontext-zh-06",
+            "powercontext-zh-04",
+            "seekdb-zh-08",
+            "seekdb-zh-01"
+          ],
+          "recall5": 1,
+          "ndcg10": 1,
+          "mrr": 1
+        },
+        {
+          "id": "q21",
+          "text": "Handoff 为什么不是把整段对话都存下来",
+          "gold": [
+            "powercontext-zh-04"
+          ],
+          "ranked": [
+            "powercontext-zh-04",
+            "powercontext-zh-02",
+            "powercontext-zh-06",
+            "powercontext-zh-03",
+            "seekdb-zh-09",
+            "seekdb-zh-10",
+            "powercontext-zh-05",
+            "edgeai-zh-09",
+            "edgeai-zh-05"
+          ],
+          "recall5": 1,
+          "ndcg10": 1,
+          "mrr": 1
+        },
+        {
+          "id": "q22",
+          "text": "长对话记忆基准上的准确率是多少",
+          "gold": [
+            "powercontext-zh-08"
+          ],
+          "ranked": [
+            "powercontext-zh-08",
+            "seekdb-zh-06",
+            "powercontext-zh-10",
+            "powercontext-zh-09",
+            "powercontext-zh-13",
+            "powercontext-zh-04",
+            "seekdb-zh-05",
+            "powercontext-zh-02",
+            "edgeai-zh-03",
+            "edgeai-zh-06"
+          ],
+          "recall5": 1,
+          "ndcg10": 1,
+          "mrr": 1
+        },
+        {
+          "id": "q23",
+          "text": "安装 PowerContext 并运行配置向导",
+          "gold": [
+            "powercontext-zh-10",
+            "powercontext-zh-09"
+          ],
+          "ranked": [
+            "powercontext-zh-10",
+            "powercontext-zh-09",
+            "powercontext-zh-13",
+            "powercontext-zh-11",
+            "powercontext-zh-12",
+            "powercontext-zh-06",
+            "seekdb-zh-02"
+          ],
+          "recall5": 1,
+          "ndcg10": 1,
+          "mrr": 1
+        },
+        {
+          "id": "q24",
+          "text": "Try seekdb in thirty seconds without a server",
+          "gold": [
+            "seekdb-en-02",
+            "seekdb-en-13"
+          ],
+          "ranked": [
+            "seekdb-en-11",
+            "seekdb-en-13",
+            "seekdb-en-04",
+            "seekdb-en-14",
+            "seekdb-en-02",
+            "seekdb-en-05",
+            "edgeai-en-11"
+          ],
+          "recall5": 1,
+          "ndcg10": 0.7570825547777251,
+          "mrr": 0.5
+        },
+        {
+          "id": "q25",
+          "text": "seekdb 与哪些 Agent 框架和生态做了集成",
+          "gold": [
+            "seekdb-en-08",
+            "seekdb-zh-05"
+          ],
+          "ranked": [
+            "seekdb-zh-11",
+            "seekdb-zh-07",
+            "seekdb-zh-06",
+            "seekdb-en-14",
+            "powercontext-zh-14",
+            "powercontext-zh-07",
+            "powercontext-zh-13",
+            "seekdb-zh-08",
+            "powercontext-zh-02"
+          ],
+          "recall5": 0,
+          "ndcg10": 0,
+          "mrr": 0
+        },
+        {
+          "id": "q26",
+          "text": "为什么用错误的基准去选向量数据库会踩坑",
+          "gold": [
+            "seekdb-zh-07",
+            "seekdb-zh-09"
+          ],
+          "ranked": [
+            "seekdb-zh-07",
+            "seekdb-zh-09",
+            "edgeai-zh-07",
+            "seekdb-zh-10",
+            "edgeai-zh-08",
+            "edgeai-zh-06",
+            "edgeai-zh-09",
+            "seekdb-zh-11"
+          ],
+          "recall5": 1,
+          "ndcg10": 1,
+          "mrr": 1
+        },
+        {
+          "id": "q27",
+          "text": "Copy-on-write sandbox lets agents explore freely",
+          "gold": [
+            "seekdb-en-04",
+            "seekdb-en-11"
+          ],
+          "ranked": [
+            "seekdb-en-11",
+            "seekdb-en-04",
+            "seekdb-en-01",
+            "seekdb-en-07",
+            "seekdb-en-03",
+            "seekdb-en-12",
+            "seekdb-en-05"
+          ],
+          "recall5": 1,
+          "ndcg10": 1,
+          "mrr": 1
+        },
+        {
+          "id": "q28",
+          "text": "查询语句需要加前缀提示吗，文档和查询要不要一样",
+          "gold": [
+            "edgeai-zh-06"
+          ],
+          "ranked": [
+            "edgeai-zh-06",
+            "edgeai-zh-07",
+            "powercontext-zh-09",
+            "edgeai-zh-09",
+            "seekdb-zh-09",
+            "seekdb-zh-06",
+            "powercontext-zh-11",
+            "powercontext-zh-13",
+            "seekdb-zh-10"
+          ],
+          "recall5": 1,
+          "ndcg10": 1,
+          "mrr": 1
+        },
+        {
+          "id": "q29",
+          "text": "写入数据之后事务提交了但索引还没建好",
+          "gold": [
+            "edgeai-zh-08",
+            "seekdb-zh-02"
+          ],
+          "ranked": [
+            "edgeai-zh-08",
+            "seekdb-zh-09",
+            "seekdb-zh-05",
+            "seekdb-zh-02",
+            "edgeai-zh-09",
+            "seekdb-zh-08",
+            "powercontext-zh-05",
+            "powercontext-zh-02",
+            "seekdb-zh-07",
+            "seekdb-zh-10"
+          ],
+          "recall5": 1,
+          "ndcg10": 0.899952059437696,
+          "mrr": 1
+        },
+        {
+          "id": "q30",
+          "text": "怎么在界面上告诉用户当前用的是哪个推理后端",
+          "gold": [
+            "edgeai-zh-02",
+            "edgeai-zh-04"
+          ],
+          "ranked": [
+            "edgeai-zh-01",
+            "powercontext-zh-02",
+            "edgeai-zh-08",
+            "edgeai-zh-07",
+            "powercontext-zh-11",
+            "powercontext-zh-06",
+            "edgeai-zh-06",
+            "seekdb-zh-05"
+          ],
+          "recall5": 0,
+          "ndcg10": 0,
+          "mrr": 0
+        }
+      ],
+      "evidence_sql": [
+        "SELECT ifnull(`_fts`.`_id`, `_vs`.`_id`) as `_id`, ifnull(`_fts`.`document`, `_vs`.`document`) as `document`, ifnull(`_fts`.`embedding`, `_vs`.`embedding`) as `embedding`, ifnull(`_fts`.`metadata`, `_vs`.`metadata`) as `metadata`, (ifnull(1 / (`_fts`.`_keyword_rank` + 60), 0) + ifnull(1 / (`_vs`.`_semantic_rank` + 60), 0)) as `_score` FROM ((SELECT *, RANK() over( ORDER BY `_keyword_score` DESC) as `_keyword_rank` FROM (SELECT /*+ opt_param('hidden_column_visible', 'true') */`__pk_increment`, `_id`, `document`, `embedding`, `metadata`, match(`document`) against('混合检索' in natural language mode) …",
+        "SELECT DBMS_HYBRID_SEARCH.GET_SQL('c$v2$2853d92f1de711b2b65100ff540de82a', @search_parm) as query_sql FROM dual",
+        "SET @search_parm = '{\\\"query\\\":{\\\"query_string\\\":{\\\"fields\\\":[\\\"document\\\"],\\\"query\\\":\\\"混合检索\\\"}},\\\"knn\\\":{\\\"field\\\":\\\"embedding\\\",\\\"k\\\":60,\\\"query_vector\\\":[<query vector>]},\\\"rank\\\":{\\\"rrf\\\":{\\\"rank_window_size\\\":60,\\\"rank_constant\\\":60}},\\\"size\\\":3}'"
+      ]
+    }
+  ],
+  "failures": [],
+  "ablation": null
+}

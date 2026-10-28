@@ -1,0 +1,1 @@
+Build from Source。Before building, please install the required toolchain and dependencies for your operating system. See Install Toolchain for detailed instructions. In this example, the working directory is $HOME/seekdb, please use a fresh directory for testing. Please see the Developer Guide for detailed instructions.

@@ -1,0 +1,1 @@
+PowerContext。· *让上下文跟着工作走 —— 跨越会话、跨 Agent、跨人。** [](https://pypi.org/project/powercontext/) [](LICENSE) [](https://discord.com/invite/74cF8vbNEs) [](https://deepwiki.com/oceanbase/powercontext) · English · 中文 · 日本語* 网站 · 快速开始 · 手动启动 · 接入 Agent · 评测 · 接口

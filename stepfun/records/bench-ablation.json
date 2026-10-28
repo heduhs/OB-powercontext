@@ -1,0 +1,96 @@
+{
+  "kind": "edgekb-benchmark",
+  "started_at": "2026-10-28T08:38:22.029Z",
+  "environment": {
+    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/156.0.0.0 Safari/537.36",
+    "platform": "Win32",
+    "hardwareConcurrency": 8,
+    "deviceMemoryGB": 4,
+    "isSecureContext": true,
+    "crossOriginIsolated": true,
+    "sharedArrayBuffer": true,
+    "webgpu": {
+      "f16": true,
+      "vendor": "amd",
+      "architecture": "gcn-5",
+      "description": ""
+    },
+    "seekdb": {
+      "connected": true,
+      "mode": "server",
+      "database": "stepfun_kb",
+      "serverVersion": "5.7.25-OceanBase seekdb-v1.3.0.0",
+      "dimension": 512,
+      "distance": "cosine",
+      "analyzer": "ik",
+      "collections": []
+    },
+    "app": {
+      "dbMode": "server",
+      "database": "stepfun_kb",
+      "dimension": 512,
+      "distance": "cosine",
+      "analyzer": "ik",
+      "ikMode": "smart",
+      "maxBatchRows": 500,
+      "server": "127.0.0.1:8630",
+      "seekdbSdkVersion": "1.4.0",
+      "node": "v22.20.0"
+    },
+    "chunking": {
+      "size": 320,
+      "overlap": 48
+    },
+    "transformers_js": "4.3.2 (/vendor 或 jsDelivr)"
+  },
+  "corpus": {
+    "documents": 51,
+    "chunks": 98
+  },
+  "runs": [],
+  "failures": [],
+  "ablation": {
+    "config": "FP16 + WebGPU",
+    "batch_sweep": [
+      {
+        "batch": 1,
+        "total_ms": 3309,
+        "chunks_per_s": 10
+      },
+      {
+        "batch": 4,
+        "total_ms": 3191,
+        "chunks_per_s": 10
+      },
+      {
+        "batch": 16,
+        "total_ms": 3638,
+        "chunks_per_s": 9
+      }
+    ],
+    "thread_sweep": [
+      {
+        "requested": 1,
+        "threads": 1,
+        "total_ms": 11568,
+        "chunks_per_s": 3
+      },
+      {
+        "requested": 8,
+        "threads": 8,
+        "total_ms": 5762,
+        "chunks_per_s": 6
+      }
+    ],
+    "refresh_strategy": [
+      {
+        "mode": "每批刷新",
+        "total_ms": 4462
+      },
+      {
+        "mode": "末尾一次刷新",
+        "total_ms": 945
+      }
+    ]
+  }
+}

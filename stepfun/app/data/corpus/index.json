@@ -1,0 +1,466 @@
+{
+  "name": "seekdb 与端侧 AI 技术资料（示例语料）",
+  "built_at": "2026-10-27T19:51:31.661Z",
+  "licence_note": "语料节选自 OceanBase seekdb / PowerContext 开源仓库文档（Apache-2.0）以及本项目作者撰写的端侧推理笔记，仅用于检索演示。",
+  "documents": [
+    {
+      "id": "seekdb-zh-01",
+      "title": "写入 · 搜索 · Fork · AI Agent 的状态存储（seekdb README（中文））",
+      "lang": "zh",
+      "topic": "seekdb",
+      "source": "seekdb README（中文） · README_CN.md",
+      "file": "seekdb-zh-01.md",
+      "chars": 350
+    },
+    {
+      "id": "seekdb-zh-02",
+      "title": "流式写入  并发搜索P99 零毛刺（seekdb README（中文））",
+      "lang": "zh",
+      "topic": "seekdb",
+      "source": "seekdb README（中文） · README_CN.md",
+      "file": "seekdb-zh-02.md",
+      "chars": 415
+    },
+    {
+      "id": "seekdb-zh-03",
+      "title": "写时复制沙箱Agent 自由探索（seekdb README（中文））",
+      "lang": "zh",
+      "topic": "seekdb",
+      "source": "seekdb README（中文） · README_CN.md",
+      "file": "seekdb-zh-03.md",
+      "chars": 199
+    },
+    {
+      "id": "seekdb-zh-04",
+      "title": "安装（seekdb README（中文））",
+      "lang": "zh",
+      "topic": "seekdb",
+      "source": "seekdb README（中文） · README_CN.md",
+      "file": "seekdb-zh-04.md",
+      "chars": 179
+    },
+    {
+      "id": "seekdb-zh-05",
+      "title": "更多示例（seekdb README（中文））",
+      "lang": "zh",
+      "topic": "seekdb",
+      "source": "seekdb README（中文） · README_CN.md",
+      "file": "seekdb-zh-05.md",
+      "chars": 224
+    },
+    {
+      "id": "seekdb-zh-06",
+      "title": "使用场景（seekdb README（中文））",
+      "lang": "zh",
+      "topic": "seekdb",
+      "source": "seekdb README（中文） · README_CN.md",
+      "file": "seekdb-zh-06.md",
+      "chars": 678
+    },
+    {
+      "id": "seekdb-en-01",
+      "title": "Write Search Fork The State Store for AI Agents（seekdb README（英文））",
+      "lang": "en",
+      "topic": "seekdb",
+      "source": "seekdb README（英文） · README.md",
+      "file": "seekdb-en-01.md",
+      "chars": 553
+    },
+    {
+      "id": "seekdb-en-02",
+      "title": "30-Second Try（seekdb README（英文））",
+      "lang": "en",
+      "topic": "seekdb",
+      "source": "seekdb README（英文） · README.md",
+      "file": "seekdb-en-02.md",
+      "chars": 185
+    },
+    {
+      "id": "seekdb-en-03",
+      "title": "Streaming Write  Concurrent Search Without the P99 Spike（seekdb README（英文））",
+      "lang": "en",
+      "topic": "seekdb",
+      "source": "seekdb README（英文） · README.md",
+      "file": "seekdb-en-03.md",
+      "chars": 850
+    },
+    {
+      "id": "seekdb-en-04",
+      "title": "Copy-on-Write Sandboxes for Agent Exploration（seekdb README（英文））",
+      "lang": "en",
+      "topic": "seekdb",
+      "source": "seekdb README（英文） · README.md",
+      "file": "seekdb-en-04.md",
+      "chars": 354
+    },
+    {
+      "id": "seekdb-en-05",
+      "title": "MySQL-Compatible ACID Embeddable（seekdb README（英文））",
+      "lang": "en",
+      "topic": "seekdb",
+      "source": "seekdb README（英文） · README.md",
+      "file": "seekdb-en-05.md",
+      "chars": 248
+    },
+    {
+      "id": "seekdb-en-06",
+      "title": "Installation（seekdb README（英文））",
+      "lang": "en",
+      "topic": "seekdb",
+      "source": "seekdb README（英文） · README.md",
+      "file": "seekdb-en-06.md",
+      "chars": 367
+    },
+    {
+      "id": "seekdb-en-07",
+      "title": "More Examples（seekdb README（英文））",
+      "lang": "en",
+      "topic": "seekdb",
+      "source": "seekdb README（英文） · README.md",
+      "file": "seekdb-en-07.md",
+      "chars": 489
+    },
+    {
+      "id": "seekdb-en-08",
+      "title": "Ecosystem  Integrations（seekdb README（英文））",
+      "lang": "en",
+      "topic": "seekdb",
+      "source": "seekdb README（英文） · README.md",
+      "file": "seekdb-en-08.md",
+      "chars": 191
+    },
+    {
+      "id": "seekdb-en-09",
+      "title": "Next Steps  Community（seekdb README（英文））",
+      "lang": "en",
+      "topic": "seekdb",
+      "source": "seekdb README（英文） · README.md",
+      "file": "seekdb-en-09.md",
+      "chars": 290
+    },
+    {
+      "id": "seekdb-en-10",
+      "title": "Build from Source（seekdb README（英文））",
+      "lang": "en",
+      "topic": "seekdb",
+      "source": "seekdb README（英文） · README.md",
+      "file": "seekdb-en-10.md",
+      "chars": 321
+    },
+    {
+      "id": "seekdb-zh-07",
+      "title": "你在用错误的 Benchmark 选 Agent 的向量数据库（seekdb 发布博客（中文））",
+      "lang": "zh",
+      "topic": "seekdb",
+      "source": "seekdb 发布博客（中文） · docs/blog/launch_blog_zh.md",
+      "file": "seekdb-zh-07.md",
+      "chars": 435
+    },
+    {
+      "id": "seekdb-zh-08",
+      "title": "一个被忽略的指标并发下你的 P99 会涨多少（seekdb 发布博客（中文））",
+      "lang": "zh",
+      "topic": "seekdb",
+      "source": "seekdb 发布博客（中文） · docs/blog/launch_blog_zh.md",
+      "file": "seekdb-zh-08.md",
+      "chars": 493
+    },
+    {
+      "id": "seekdb-zh-09",
+      "title": "为什么 streaming 负载下 P99 会炸（seekdb 发布博客（中文））",
+      "lang": "zh",
+      "topic": "seekdb",
+      "source": "seekdb 发布博客（中文） · docs/blog/launch_blog_zh.md",
+      "file": "seekdb-zh-09.md",
+      "chars": 793
+    },
+    {
+      "id": "seekdb-zh-10",
+      "title": "Agent 需要的不只是快——还需要后悔药（seekdb 发布博客（中文））",
+      "lang": "zh",
+      "topic": "seekdb",
+      "source": "seekdb 发布博客（中文） · docs/blog/launch_blog_zh.md",
+      "file": "seekdb-zh-10.md",
+      "chars": 332
+    },
+    {
+      "id": "seekdb-zh-11",
+      "title": "关于 seekdb（seekdb 发布博客（中文））",
+      "lang": "zh",
+      "topic": "seekdb",
+      "source": "seekdb 发布博客（中文） · docs/blog/launch_blog_zh.md",
+      "file": "seekdb-zh-11.md",
+      "chars": 391
+    },
+    {
+      "id": "seekdb-en-11",
+      "title": "Agents Need More Than Speed — They Need an Undo Button（seekdb 发布博客（英文））",
+      "lang": "en",
+      "topic": "seekdb",
+      "source": "seekdb 发布博客（英文） · docs/blog/launch_blog_en.md",
+      "file": "seekdb-en-11.md",
+      "chars": 831
+    },
+    {
+      "id": "seekdb-en-12",
+      "title": "Hybrid Retrieval in a Single SQL Statement（seekdb 发布博客（英文））",
+      "lang": "en",
+      "topic": "seekdb",
+      "source": "seekdb 发布博客（英文） · docs/blog/launch_blog_en.md",
+      "file": "seekdb-en-12.md",
+      "chars": 481
+    },
+    {
+      "id": "seekdb-en-13",
+      "title": "Try It in 30 Seconds（seekdb 发布博客（英文））",
+      "lang": "en",
+      "topic": "seekdb",
+      "source": "seekdb 发布博客（英文） · docs/blog/launch_blog_en.md",
+      "file": "seekdb-en-13.md",
+      "chars": 422
+    },
+    {
+      "id": "seekdb-en-14",
+      "title": "About seekdb（seekdb 发布博客（英文））",
+      "lang": "en",
+      "topic": "seekdb",
+      "source": "seekdb 发布博客（英文） · docs/blog/launch_blog_en.md",
+      "file": "seekdb-en-14.md",
+      "chars": 747
+    },
+    {
+      "id": "powercontext-zh-01",
+      "title": "PowerContext（PowerContext README（中文））",
+      "lang": "zh",
+      "topic": "powercontext",
+      "source": "PowerContext README（中文） · README_CN.md",
+      "file": "powercontext-zh-01.md",
+      "chars": 252
+    },
+    {
+      "id": "powercontext-zh-02",
+      "title": "PowerContext 是什么（PowerContext README（中文））",
+      "lang": "zh",
+      "topic": "powercontext",
+      "source": "PowerContext README（中文） · README_CN.md",
+      "file": "powercontext-zh-02.md",
+      "chars": 746
+    },
+    {
+      "id": "powercontext-zh-03",
+      "title": "Memory —— 活得比会话更久的决定与约束（PowerContext README（中文））",
+      "lang": "zh",
+      "topic": "powercontext",
+      "source": "PowerContext README（中文） · README_CN.md",
+      "file": "powercontext-zh-03.md",
+      "chars": 305
+    },
+    {
+      "id": "powercontext-zh-04",
+      "title": "Handoff —— 当前状态不是整段对话记录（PowerContext README（中文））",
+      "lang": "zh",
+      "topic": "powercontext",
+      "source": "PowerContext README（中文） · README_CN.md",
+      "file": "powercontext-zh-04.md",
+      "chars": 271
+    },
+    {
+      "id": "powercontext-zh-05",
+      "title": "Experience —— 有用的做法评审后再复用（PowerContext README（中文））",
+      "lang": "zh",
+      "topic": "powercontext",
+      "source": "PowerContext README（中文） · README_CN.md",
+      "file": "powercontext-zh-05.md",
+      "chars": 229
+    },
+    {
+      "id": "powercontext-zh-06",
+      "title": "为什么选 PowerContext（PowerContext README（中文））",
+      "lang": "zh",
+      "topic": "powercontext",
+      "source": "PowerContext README（中文） · README_CN.md",
+      "file": "powercontext-zh-06.md",
+      "chars": 853
+    },
+    {
+      "id": "powercontext-zh-07",
+      "title": "横向对比（PowerContext README（中文））",
+      "lang": "zh",
+      "topic": "powercontext",
+      "source": "PowerContext README（中文） · README_CN.md",
+      "file": "powercontext-zh-07.md",
+      "chars": 349
+    },
+    {
+      "id": "powercontext-zh-08",
+      "title": "效果怎么样（PowerContext README（中文））",
+      "lang": "zh",
+      "topic": "powercontext",
+      "source": "PowerContext README（中文） · README_CN.md",
+      "file": "powercontext-zh-08.md",
+      "chars": 655
+    },
+    {
+      "id": "powercontext-zh-09",
+      "title": "快速开始（PowerContext README（中文））",
+      "lang": "zh",
+      "topic": "powercontext",
+      "source": "PowerContext README（中文） · README_CN.md",
+      "file": "powercontext-zh-09.md",
+      "chars": 586
+    },
+    {
+      "id": "powercontext-zh-10",
+      "title": "1 安装并运行配置向导（PowerContext README（中文））",
+      "lang": "zh",
+      "topic": "powercontext",
+      "source": "PowerContext README（中文） · README_CN.md",
+      "file": "powercontext-zh-10.md",
+      "chars": 697
+    },
+    {
+      "id": "powercontext-zh-11",
+      "title": "2 验收第一条端到端结果（PowerContext README（中文））",
+      "lang": "zh",
+      "topic": "powercontext",
+      "source": "PowerContext README（中文） · README_CN.md",
+      "file": "powercontext-zh-11.md",
+      "chars": 430
+    },
+    {
+      "id": "powercontext-zh-12",
+      "title": "3 先用 Python 体验（PowerContext README（中文））",
+      "lang": "zh",
+      "topic": "powercontext",
+      "source": "PowerContext README（中文） · README_CN.md",
+      "file": "powercontext-zh-12.md",
+      "chars": 193
+    },
+    {
+      "id": "powercontext-zh-13",
+      "title": "常见问题（PowerContext README（中文））",
+      "lang": "zh",
+      "topic": "powercontext",
+      "source": "PowerContext README（中文） · README_CN.md",
+      "file": "powercontext-zh-13.md",
+      "chars": 517
+    },
+    {
+      "id": "powercontext-zh-14",
+      "title": "接入你的 Agent（PowerContext README（中文））",
+      "lang": "zh",
+      "topic": "powercontext",
+      "source": "PowerContext README（中文） · README_CN.md",
+      "file": "powercontext-zh-14.md",
+      "chars": 388
+    },
+    {
+      "id": "edgeai-zh-01",
+      "title": "端侧推理的定义与边界",
+      "lang": "zh",
+      "topic": "edgeai",
+      "source": "作者撰写的端侧推理笔记",
+      "file": "edgeai-zh-01.md",
+      "chars": 174
+    },
+    {
+      "id": "edgeai-zh-02",
+      "title": "WebGPU 与 WASM 两种后端怎么选",
+      "lang": "zh",
+      "topic": "edgeai",
+      "source": "作者撰写的端侧推理笔记",
+      "file": "edgeai-zh-02.md",
+      "chars": 230
+    },
+    {
+      "id": "edgeai-zh-03",
+      "title": "INT8 与 FP16 量化对模型体积的影响",
+      "lang": "zh",
+      "topic": "edgeai",
+      "source": "作者撰写的端侧推理笔记",
+      "file": "edgeai-zh-03.md",
+      "chars": 212
+    },
+    {
+      "id": "edgeai-zh-04",
+      "title": "Transformers.js 如何加载本地模型",
+      "lang": "zh",
+      "topic": "edgeai",
+      "source": "作者撰写的端侧推理笔记",
+      "file": "edgeai-zh-04.md",
+      "chars": 200
+    },
+    {
+      "id": "edgeai-zh-05",
+      "title": "嵌入模型批处理与吞吐",
+      "lang": "zh",
+      "topic": "edgeai",
+      "source": "作者撰写的端侧推理笔记",
+      "file": "edgeai-zh-05.md",
+      "chars": 195
+    },
+    {
+      "id": "edgeai-zh-06",
+      "title": "向量检索的池化与归一化",
+      "lang": "zh",
+      "topic": "edgeai",
+      "source": "作者撰写的端侧推理笔记",
+      "file": "edgeai-zh-06.md",
+      "chars": 207
+    },
+    {
+      "id": "edgeai-zh-07",
+      "title": "混合检索为什么要在数据库里融合",
+      "lang": "zh",
+      "topic": "edgeai",
+      "source": "作者撰写的端侧推理笔记",
+      "file": "edgeai-zh-07.md",
+      "chars": 165
+    },
+    {
+      "id": "edgeai-zh-08",
+      "title": "索引刷新与新数据可见性",
+      "lang": "zh",
+      "topic": "edgeai",
+      "source": "作者撰写的端侧推理笔记",
+      "file": "edgeai-zh-08.md",
+      "chars": 190
+    },
+    {
+      "id": "edgeai-zh-09",
+      "title": "知识库会话状态与集合隔离",
+      "lang": "zh",
+      "topic": "edgeai",
+      "source": "作者撰写的端侧推理笔记",
+      "file": "edgeai-zh-09.md",
+      "chars": 162
+    },
+    {
+      "id": "edgeai-zh-10",
+      "title": "怎么量化检索质量",
+      "lang": "zh",
+      "topic": "edgeai",
+      "source": "作者撰写的端侧推理笔记",
+      "file": "edgeai-zh-10.md",
+      "chars": 181
+    },
+    {
+      "id": "edgeai-en-11",
+      "title": "On-device embeddings keep documents private",
+      "lang": "en",
+      "topic": "edgeai",
+      "source": "作者撰写的端侧推理笔记",
+      "file": "edgeai-en-11.md",
+      "chars": 459
+    },
+    {
+      "id": "edgeai-en-12",
+      "title": "Measuring model size after quantisation",
+      "lang": "en",
+      "topic": "edgeai",
+      "source": "作者撰写的端侧推理笔记",
+      "file": "edgeai-en-12.md",
+      "chars": 451
+    }
+  ]
+}

@@ -1,0 +1,1 @@
+写入 · 搜索 · Fork · AI Agent 的状态存储。MySQL 兼容 · 嵌入式 / 服务器双模式 · 向量 + 全文混合搜索 · COW 沙箱 ⚡ 流式写入 + 搜索达 1,523 QPS（10× Milvus，3× Elasticsearch） 🌿 FORK/MERGE 沙箱，Agent 安全探索、自由回滚 🔍 向量 + 全文 + 标量，一条 SQL 搞定 🐬 完整 ACID，MySQL 协议，原生对接 LangChain / LlamaIndex / Dify English **中文版** 日本語 30 秒体验 · 快速开始 · 为什么选择 seekdb · 生态系统 · 开发 如果你觉得 seekdb 有用，请给一个 star — 让更多人发现这个项目。 · --

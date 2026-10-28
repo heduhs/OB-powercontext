@@ -1,0 +1,77 @@
+{
+  "licence_note": "以下条目由本作品作者撰写，用于演示端侧推理与检索技术主题，可自由使用。",
+  "documents": [
+    {
+      "id": "edgeai-zh-01",
+      "title": "端侧推理的定义与边界",
+      "text": "端侧推理指模型的前向计算发生在用户自己的设备上完成。在浏览器里通常由 Transformers.js 搭配 ONNX Runtime Web 执行，算力来自用户的 CPU 或 GPU。判断标准很简单：张量运算在哪台机器上跑，推理就在哪一侧。模型文件的下载或从本地目录加载并不改变推理位置，但把向量交给云端接口算好再返回，就属于云端推理，不属于端侧。",
+      "tags": "端侧推理,浏览器,隐私"
+    },
+    {
+      "id": "edgeai-zh-02",
+      "title": "WebGPU 与 WASM 两种后端怎么选",
+      "text": "ONNX Runtime Web 提供两条执行路径。WebGPU 后端把矩阵运算放到独立显卡或集成显卡上，适合批量前向，通常需要 Chrome 或 Edge 一百一十三以上版本，并能在适配器特性中查询是否支持 fp16 着色器。WASM 后端在 CPU 上执行，兼容性最好，配合 SIMD 与多线程可以显著提高吞吐，但依赖跨源隔离响应头才能使用共享内存。稳妥的做法是优先探测 WebGPU，失败时自动降级到 WASM，并在界面上明确告诉用户当前用的是哪个后端。",
+      "tags": "WebGPU,WASM,降级,后端选择"
+    },
+    {
+      "id": "edgeai-zh-03",
+      "title": "INT8 与 FP16 量化对模型体积的影响",
+      "text": "量化把权重从三十位浮点换成更低精度。FP16 每个权重两个字节，体积约为原始模型的一半，在支持半精度的 GPU 上还能加速计算。INT8 每个权重一个字节，体积大约降到原来的四分之一，同时保持每向量两倍的缓存命中率，特别适合在浏览器里通过 WASM 分发。代价是精度损失：动态整型量化会把激活值也量化，检索任务上通常表现为相似度排名的小幅抖动，因此量化前后必须在同一评测集上比较 Recall 与 nDCG，而不是只看体积。",
+      "tags": "量化,INT8,FP16,模型体积"
+    },
+    {
+      "id": "edgeai-zh-04",
+      "title": "Transformers.js 如何加载本地模型",
+      "text": "Transformers.js 默认同时允许本地与远程模型，浏览器环境下会把本地模型根目录指向同源的 models 路径，目录结构按仓库标识符加文件名排列，例如 models 下再放仓库名与 onnx 子目录，其中按精度区分文件名：原始浮点模型、半精度模型与量化模型各有独立后缀。运行时还可以把 WASM 二进制路径改指向自己的服务器，这样整个应用就不依赖外部 CDN，离线也能跑，评审时更容易复现。",
+      "tags": "Transformers.js,模型加载,离线"
+    },
+    {
+      "id": "edgeai-zh-05",
+      "title": "嵌入模型批处理与吞吐",
+      "text": "在浏览器里逐条编码文本非常浪费，因为每次前向都包含固定的图执行开销。把切片按批大小打包成一次推理，GPU 后端能把多个序列填满同一个计算图，CPU 后端则减少重复的内存分配，吞吐通常可以提升数倍。批大小不宜过大，受序列长度与显存限制，实践中常从八到三十二之间实测取最优。测量吞吐时应区分首批与稳态：首批包含着色器编译与缓存预热，稳态批次才反映真实速度，报告里最好给出中位数而不是一次最快值。",
+      "tags": "批处理,吞吐,推理延迟"
+    },
+    {
+      "id": "edgeai-zh-06",
+      "title": "向量检索的池化与归一化",
+      "text": "语言模型输出的是每个 token 的隐藏状态，要得到一个句子向量必须做池化。句对句检索常用的做法有两种：取首个特殊标记的输出作为句子表示，或者对所有有效 token 做带掩码的均值池化。选择要与模型发布时的说明一致，用错池化会明显伤害检索质量。之后再做 L2 归一化，这样余弦相似度就等价于内积，数据库里用余弦距离度量时也更稳定。查询语句有时还需要按模型要求加上固定前缀，检索类模型通常对查询与文档使用不同的提示。",
+      "tags": "池化,归一化,余弦相似度"
+    },
+    {
+      "id": "edgeai-zh-07",
+      "title": "混合检索为什么要在数据库里融合",
+      "text": "纯向量检索擅长语义近似，但对专有名词、编号、罕见词的精确匹配不稳定；全文检索恰好相反。把两路结果取回来在客户端拼接，需要各自排序再对齐分数，跨量纲的分数很难公平合并，而且两次网络往返也拖慢响应。更好的方式是在数据库内部完成融合，例如用倒数排名融合，只依赖两路各自的排名而不依赖分数尺度，一条语句就能得到最终排序，客户端只负责展示。",
+      "tags": "混合检索,RRF,全文检索"
+    },
+    {
+      "id": "edgeai-zh-08",
+      "title": "索引刷新与新数据可见性",
+      "text": "向量索引与全文索引往往是异步构建的：数据写入后事务立即提交，但索引结构可能还没纳入最新行，此时检索会漏掉刚刚导入的内容。数据库通常提供显式刷新接口，让最新写入立刻可被检索。工程上要在批量导入结束后统一刷新一次，避免每写一条就刷新造成大量小段索引；同时对用户体验敏感的路径可以在写入后立即刷新并验证。无论采用哪种策略，都应当在界面上报告刷新耗时以及刷新前后的命中差异，让语义可验证。",
+      "tags": "索引刷新,可见性,增量写入"
+    },
+    {
+      "id": "edgeai-zh-09",
+      "title": "知识库会话状态与集合隔离",
+      "text": "多个知识库并存时，检索结果必须只对应当前选中的那一个。常见的做法是按会话与知识库名称创建独立集合，并在服务进程内缓存集合句柄，切换知识库时切换到另一个集合，删除知识库时一并删除其集合与索引。写入采用增量方式，同一文档重复导入用切片标识覆盖。这样连续导入、切换、清空之后，集合行数与检索结果都仍与当前知识库一致，不会出现串库。",
+      "tags": "会话,集合,增量写入"
+    },
+    {
+      "id": "edgeai-zh-10",
+      "title": "怎么量化检索质量",
+      "text": "只看几条示例容易得出错误结论。可复现的做法是准备一组查询与人工标注的相关文档集合，然后用指标衡量：Recall at K 看前 K 条里覆盖了多少应命中文档，nDCG at K 还要考虑命中的排名位置，倒数排名衡量第一条正确结果出现在什么位置。比较量化前后或不同后端时，必须固定语料、查询集、切片参数与设备，只改变被考察的变量，并重复多次取中位数，报告原始数据。",
+      "tags": "Recall,nDCG,评测方法"
+    },
+    {
+      "id": "edgeai-en-11",
+      "title": "On-device embeddings keep documents private",
+      "text": "When a knowledge base is vectorised in the browser, the raw documents never leave the machine as text and no inference service sees them. Only the resulting vectors and metadata are sent to the database. This is the main privacy argument for edge inference, and it also removes per-token API cost. The trade-off is a smaller model budget: browser-friendly encoders are typically under a hundred million parameters and are distributed as quantised ONNX graphs.",
+      "tags": "privacy,edge,ONNX"
+    },
+    {
+      "id": "edgeai-en-12",
+      "title": "Measuring model size after quantisation",
+      "text": "Report the total size of the files the runtime actually downloads, measured with the same rule before and after quantisation. Count the ONNX graph together with its external data files, the tokenizer and the configuration, because those are part of what the browser fetches. Compression ratio is the baseline size divided by the quantised size. Recording a checksum for every file makes the measurement auditable and lets another machine reproduce it.",
+      "tags": "model size,compression,checksum"
+    }
+  ]
+}

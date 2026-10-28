@@ -1,0 +1,128 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>EdgeKB · 端侧向量化 + seekdb 混合检索</title>
+<link rel="stylesheet" href="/styles.css" />
+</head>
+<body>
+<header class="bar">
+  <div class="brand">
+    <span class="logo">⚡</span>
+    <div>
+      <h1>EdgeKB</h1>
+      <p>浏览器本地向量化的迷你知识库 · seekdb × 阶跃星辰赛题</p>
+    </div>
+  </div>
+  <div class="badges">
+    <span id="badge-backend" class="badge">后端检测中…</span>
+    <span id="badge-model" class="badge">模型 —</span>
+    <span id="badge-db" class="badge">seekdb —</span>
+    <a class="badge link" href="/eval.html">性能与质量评测 →</a>
+  </div>
+</header>
+
+<main>
+  <section class="card">
+    <h2>1 · 推理配置</h2>
+    <div class="grid">
+      <label>模型
+        <select id="model">
+          <option value="Xenova/bge-small-zh-v1.5">Xenova/bge-small-zh-v1.5（512 维，中英）</option>
+        </select>
+      </label>
+      <label>精度 / 量化
+        <select id="dtype">
+          <option value="auto">auto（WebGPU→fp16，WASM→q8）</option>
+          <option value="q8">q8 = INT8 量化</option>
+          <option value="fp16">fp16 半精度</option>
+          <option value="fp32">fp32（量化前基线）</option>
+        </select>
+      </label>
+      <label>推理后端
+        <select id="device">
+          <option value="auto">auto（优先 WebGPU，否则 WASM）</option>
+          <option value="webgpu">强制 WebGPU</option>
+          <option value="wasm">强制 WASM（降级路径）</option>
+        </select>
+      </label>
+      <label>批大小
+        <input id="batch" type="number" min="1" max="64" value="16" />
+      </label>
+      <label>分块长度
+        <input id="chunk-size" type="number" min="64" max="512" value="320" />
+      </label>
+      <label>分块重叠
+        <input id="chunk-overlap" type="number" min="0" max="256" value="48" />
+      </label>
+    </div>
+    <div class="row">
+      <button id="btn-load" class="primary">加载模型</button>
+      <span id="load-status" class="muted">未加载</span>
+    </div>
+    <div id="engine-info" class="kv"></div>
+  </section>
+
+  <section class="card">
+    <h2>2 · 知识库与语料</h2>
+    <div class="row">
+      <label>知识库（seekdb collection）
+        <select id="collection"></select>
+      </label>
+      <button id="btn-new-kb">新建</button>
+      <button id="btn-drop-kb" class="danger">删除</button>
+    </div>
+    <div class="row">
+      <button id="btn-sample">载入示例语料（seekdb / 端侧 AI 技术资料）</button>
+      <label class="file">
+        导入 .txt / .md 文件
+        <input id="files" type="file" accept=".txt,.md" multiple />
+      </label>
+    </div>
+    <textarea id="paste" rows="5" placeholder="也可以把文本粘贴到这里，点击“向量化并写入”"></textarea>
+    <div class="row">
+      <button id="btn-ingest" class="primary" disabled>向量化并写入 seekdb</button>
+      <button id="btn-refresh" disabled>索引刷新</button>
+      <span id="ingest-status" class="muted">待写入</span>
+    </div>
+    <progress id="progress" max="100" value="0"></progress>
+    <div id="ingest-metrics" class="kv"></div>
+  </section>
+
+  <section class="card">
+    <h2>3 · 混合检索</h2>
+    <div class="row">
+      <input id="query" type="search" placeholder="例如：seekdb 如何做向量与全文混合检索？" />
+      <select id="mode">
+        <option value="hybrid">hybrid（seekdb 内 RRF 融合）</option>
+        <option value="vector">vector（仅向量）</option>
+        <option value="text">text（仅全文）</option>
+      </select>
+      <label class="inline">topK <input id="topk" type="number" min="1" max="20" value="6" /></label>
+      <label class="inline" title="RRF 融合常数（seekdb 内计算）">rrf_c <input id="rrf-c" type="number" min="1" max="200" value="60" /></label>
+      <label class="inline" title="RRF 候选窗口">rrf_w <input id="rrf-w" type="number" min="1" max="100" value="60" /></label>
+      <button id="btn-search" class="primary">检索</button>
+      <label class="inline"><input id="explain" type="checkbox" /> 显示 seekdb 侧 SQL 证据</label>
+    </div>
+    <div id="query-metrics" class="kv"></div>
+    <ol id="results" class="results"></ol>
+    <details id="evidence-box" hidden>
+      <summary>seekdb 侧执行语句（gv$ob_sql_audit 抓取）</summary>
+      <pre id="evidence"></pre>
+    </details>
+  </section>
+
+  <section class="card">
+    <h2>4 · 状态</h2>
+    <div id="state" class="kv"></div>
+  </section>
+</main>
+
+<footer class="bar foot">
+  <span>向量化 100% 在本机浏览器完成（Transformers.js / ONNX Runtime Web）· 存储与混合检索由 seekdb 完成 · 无云端推理 API</span>
+</footer>
+
+<script type="module" src="/app.js"></script>
+</body>
+</html>
