@@ -9,7 +9,8 @@
 | --- | --- | --- | --- |
 | Skill 上传 | 已将自己的 Skill 成功上传到魔搭社区 | `records/upload_cli.log`（`Created skill: heduhs/seekdb-retrieval-eval`）；`records/openapi_skill_detail.json`（`private: false`）；`records/screenshots/` | 达成 |
 | 信息有效 | 网址或编号能准确定位到该 Skill，并可查看上传内容 | 网址 https://modelscope.cn/skills/heduhs/seekdb-retrieval-eval ；**清空凭证后**匿名 `download_skill()` 回读成功，47 个文件、`SKILL.md` 12145 字节完整 | 达成 |
-| 平台提交 | 已在测试平台的魔搭社区赛题入口提交网址或编号 | 见下方「提测结果」 | 进行中 |
+| 平台提交 | 已在测试平台的魔搭社区赛题入口提交网址或编号 | 提测记录：执行成功，成绩 **20.000/20**（2026-10-28 19:35，首次提测） | 达成 |
+| 验证行（平台弹窗新增要求） | 本队验证行原样、独立一行写入 `SKILL.md` 正文末尾后重新发布 | 末行 `<!-- OB-S:kA4XusNzrex2ZMHHwEpG6g -->`；匿名 `download_skill()` 与 `resolve/master/SKILL.md` 均回读到该行（魔搭提交 `7e2b2fc`） | 达成 |
 
 ## 二、赛题 2.1 步骤对照
 
@@ -43,7 +44,23 @@
 
 | 项 | 内容 |
 | --- | --- |
-| 提测赛题 | 魔搭社区 |
-| 提交内容 | `https://modelscope.cn/skills/heduhs/seekdb-retrieval-eval` |
-| 提交时间 | SUBMIT_TIME_PLACEHOLDER |
-| 判题结果 | PENDING |
+| 提测赛题 | ModelScope（魔搭 Skill 发布，20 分） · questionId=600075 |
+| 报名仓库地址 | https://github.com/heduhs/OB-seekdb#ob-seekdb（平台锁定，不可改） |
+| 作品验证行 | `<!-- OB-S:kA4XusNzrex2ZMHHwEpG6g -->`（本队共用，已原样独立一行追加到 `SKILL.md` 正文末尾） |
+| 作品链接 | https://modelscope.cn/skills/heduhs/seekdb-retrieval-eval |
+| 提交时间 | 2026-10-28 19:35 |
+| 判题结果 | **执行成功 · 成绩 20.000 / 20**（最高成绩 20.000，最新成绩 20.000，提测次数 1，成功 1 / 失败 0） |
+
+截图：`records/screenshots/test_record_20.png`（提测记录页）、`skill_page_top.png` / `skill_page_files.png`（魔搭详情页）。
+
+## 五、给后来者的流程提醒（语雀文档未覆盖）
+
+语雀《赛题》页只写了"上传 → 拿网址 → 提测"，但**平台的实际提测弹窗多一步强制校验**：
+
+1. 先在「立即提测」弹窗点 **获取验证行**（此时不用填作品链接）；
+2. 把验证行**原样、独立一行**追加到 `SKILL.md` 正文末尾，再重新发布公开 Skill；
+3. 然后把作品页面地址填进「作品链接」提交，链接不要带查询参数或锚点；
+4. 平台自动校验三件事：作品公开可访问 + `SKILL.md` 有效 + 含本队验证行。同一作品只能被一队认领。
+
+重新发布的方式：魔搭 Skill 本质是 git 仓库，`git clone https://www.modelscope.cn/skills/<owner>/<name>.git` 后改 `SKILL.md` 再 push（用 `oauth2:<token>@` 形式的鉴权地址）即可，比重新上传 zip 更省事，也不会换掉网址。
+

@@ -8,7 +8,7 @@
 | 总分 | 20 |
 | 我们的 Skill | **seekdb-retrieval-eval**（seekdb 检索质量评测） |
 | 魔搭网址 | https://modelscope.cn/skills/heduhs/seekdb-retrieval-eval |
-| 状态 | 已上传并通过页面可访问性校验 |
+| 状态 | **已提测通过：执行成功，20.000 / 20（2026-10-28 19:35，首次提测）** |
 
 ## 一、为什么选这个 Skill
 
@@ -75,7 +75,7 @@ docker run -d --name seekdb -p 2881:2881 oceanbase/seekdb:latest
 2. **融合权重存在内部最优，且 recall 与 MRR 峰值不重合**：`w_vec=0.3` 时 recall@10 达峰 0.9167（高于两条单腿），MRR 却在 `w_vec=0.7` 达峰 0.9271。
 3. **评测口径本身会骗人**：同一个 `--filter category=hybrid`，配 `--only-tag hybrid` 时 recall@10=1.0，不配时只有 0.125——工具会把"过滤后的 recall 上限 17%"直接算出来打在报告里。
 
-## 五、上传过程
+## 五、上传与提测过程
 
 见 `records/upload.md`。核心命令（官方 `modelscope` CLI，`ms create --repo-type skill`）：
 
@@ -87,3 +87,23 @@ ms create <owner>/seekdb-retrieval-eval --repo-type skill \
   --category developer-tools --visibility public \
   --description "<技能简介>"
 ```
+
+平台弹窗要求把**本队验证行**追加到 `SKILL.md` 正文末尾后重新发布，再填作品链接：
+
+```bash
+printf '\n<!-- OB-S:<本队验证行> -->\n' >> skill/SKILL.md
+git clone https://www.modelscope.cn/skills/<owner>/seekdb-retrieval-eval.git
+# 提交后推送到 oauth2:<token>@www.modelscope.cn 形式的鉴权地址即可，网址不变
+```
+
+## 六、提测结果
+
+| 项 | 结果 |
+| --- | --- |
+| 提测时间 | 2026-10-28 19:35 |
+| 任务状态 | 执行成功 |
+| 成绩 | **20.000 / 20**（最高=最新=20.000，提测次数 1） |
+| 作品链接 | https://modelscope.cn/skills/heduhs/seekdb-retrieval-eval |
+
+证据见 `records/screenshots/test_record_20.png` 与 `VALIDATION.md`。
+

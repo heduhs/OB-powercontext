@@ -65,7 +65,43 @@ CLI 内部走的是魔搭 OpenAPI：`POST /files/upload`（拿到 file id）→ 
 
 截图见 `screenshots/`。
 
-## 5. 结果
+## 5. 追加验证行并重新发布（平台弹窗的强制步骤）
+
+提测弹窗「获取验证行」返回本队验证行：
+
+```
+<!-- OB-S:kA4XusNzrex2ZMHHwEpG6g -->
+```
+
+要求"原样、独立一行添加到 SKILL.md 正文末尾，再到魔搭社区发布公开的 Skill"。
+魔搭 Skill 底层是 git 仓库，因此直接改文件推送，网址不变：
+
+```bash
+printf '\n<!-- OB-S:kA4XusNzrex2ZMHHwEpG6g -->\n' >> SKILL.md
+git clone https://www.modelscope.cn/skills/heduhs/seekdb-retrieval-eval.git
+git commit -am "docs: 追加大赛作品验证行到 SKILL.md 正文末尾"
+git push "https://oauth2:${MODELSCOPE_API_TOKEN}@www.modelscope.cn/skills/heduhs/seekdb-retrieval-eval.git" master
+# remote: new_oid=7e2b2fcb5da289e0b7c7f8cbbe95c15a782c1550  result=SKIPPED(not_targeted) → 推送成功
+```
+
+复核（不带任何凭证）：
+
+```bash
+curl -s https://www.modelscope.cn/skills/heduhs/seekdb-retrieval-eval/resolve/master/SKILL.md | tail -3
+# → <!-- OB-S:kA4XusNzrex2ZMHHwEpG6g -->
+```
+
+## 6. 提测与结果
+
+| 项 | 内容 |
+| --- | --- |
+| 提测入口 | https://open.oceanbase.com/train/detail/21?questionId=600075 （ModelScope 页签 → 立即提测） |
+| 报名仓库地址 | `https://github.com/heduhs/OB-seekdb#ob-seekdb`（平台锁定，与 powercontext 题用的是不同仓库） |
+| 作品链接 | `https://modelscope.cn/skills/heduhs/seekdb-retrieval-eval`（无查询参数、无锚点） |
+| 提交时间 | 2026-10-28 19:35 |
+| 结果 | **执行成功，成绩 20.000 / 20**，提测次数 1，成功 1 / 失败 0 |
+
+## 7. 结果
 
 | 项 | 值 |
 | --- | --- |

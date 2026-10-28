@@ -206,3 +206,5 @@ references/diagnostics.md    症状-根因-动作手册
 references/metrics-and-tuning.md  指标定义与调参方法
 assets/sample/               36 篇语料 + 16 条标注查询，可直接跑
 ```
+
+<!-- OB-S:kA4XusNzrex2ZMHHwEpG6g -->
