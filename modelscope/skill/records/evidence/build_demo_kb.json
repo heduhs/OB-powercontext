@@ -1,0 +1,24 @@
+{
+  "table": "demo_kb",
+  "docs_in_corpus": 36,
+  "rows_inserted": 36,
+  "rows_stored": 36,
+  "vector_dim": 256,
+  "backend": "local",
+  "fulltext_parser": "ik",
+  "indexes": [
+    {
+      "name": "PRIMARY",
+      "column": "BTREE"
+    },
+    {
+      "name": "ftidx",
+      "column": "FULLTEXT"
+    },
+    {
+      "name": "vidx",
+      "column": "VECTOR"
+    }
+  ],
+  "seconds": 0.18
+}

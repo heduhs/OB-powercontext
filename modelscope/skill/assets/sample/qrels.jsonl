@@ -1,0 +1,16 @@
+{"query_id":"q01","query":"创建向量索引的 SQL 怎么写","relevant":["d08","d07"],"tags":["vector"]}
+{"query_id":"q02","query":"中文全文检索查不到东西","relevant":["d13","d31"],"tags":["fulltext","pitfall"]}
+{"query_id":"q03","query":"怎么让数据库自己在 SQL 里调用大模型","relevant":["d21","d22"],"tags":["ai-function"]}
+{"query_id":"q04","query":"RRF 融合的权重怎么定","relevant":["d18","d17","d19"],"tags":["hybrid"]}
+{"query_id":"q05","query":"seekdb 默认端口是多少","relevant":["d04","d02"],"tags":["deployment"]}
+{"query_id":"q06","query":"日志把磁盘写满了怎么办","relevant":["d05"],"tags":["deployment"]}
+{"query_id":"q07","query":"怎么看查询有没有走向量索引","relevant":["d27","d09"],"tags":["observability"]}
+{"query_id":"q08","query":"近似最近邻怎么写才能命中索引","relevant":["d09","d11"],"tags":["vector"]}
+{"query_id":"q09","query":"同一张表既要全文索引又要向量索引","relevant":["d33","d08","d13"],"tags":["pitfall"]}
+{"query_id":"q10","query":"灌数据太慢怎么优化","relevant":["d29"],"tags":["performance"]}
+{"query_id":"q11","query":"评测检索效果应该用什么指标","relevant":["d24","d25"],"tags":["evaluation"]}
+{"query_id":"q12","query":"limit 10 和候选池是什么关系","relevant":["d30"],"tags":["pitfall"]}
+{"query_id":"q13","query":"embedding 维度和表定义对不上","relevant":["d32","d07"],"tags":["pitfall"]}
+{"query_id":"q14","query":"从 MySQL 迁到 seekdb 要注意什么","relevant":["d28"],"tags":["compat"]}
+{"query_id":"q15","query":"多租户知识库怎么防止越权检索","relevant":["d35"],"tags":["rag"]}
+{"query_id":"q16","query":"召回之后再做一遍精排有意义吗","relevant":["d36","d17"],"tags":["hybrid"]}

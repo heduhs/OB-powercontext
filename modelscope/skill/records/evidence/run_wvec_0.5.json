@@ -1,0 +1,992 @@
+{
+  "args": {
+    "qrels": "assets/sample/qrels.jsonl",
+    "table": "demo_kb",
+    "backend": "local",
+    "model": null,
+    "dim": 256,
+    "strategies": "vector,fulltext,hybrid_weighted",
+    "k": 10,
+    "depth": 50,
+    "rrf_k0": 60.0,
+    "w_vec": 0.5,
+    "boolean_mode": false,
+    "filter": null,
+    "only_tag": null,
+    "out": "records/evidence/run_wvec_0.5"
+  },
+  "meta": {
+    "filter_ceiling": null
+  },
+  "summary": {
+    "vector": {
+      "n_queries": 16,
+      "recall@1": 0.4583,
+      "precision@1": 0.75,
+      "hit@1": 0.75,
+      "recall@5": 0.7708,
+      "precision@5": 0.275,
+      "hit@5": 0.9375,
+      "recall@10": 0.8021,
+      "precision@10": 0.1438,
+      "hit@10": 0.9375,
+      "nDCG@10": 0.7477,
+      "MRR": 0.8234,
+      "empty_result_rate": 0.0,
+      "avg_latency_ms": 2.0
+    },
+    "fulltext": {
+      "n_queries": 16,
+      "recall@1": 0.5417,
+      "precision@1": 0.8125,
+      "hit@1": 0.8125,
+      "recall@5": 0.8333,
+      "precision@5": 0.2875,
+      "hit@5": 1.0,
+      "recall@10": 0.8542,
+      "precision@10": 0.15,
+      "hit@10": 1.0,
+      "nDCG@10": 0.81,
+      "MRR": 0.8854,
+      "empty_result_rate": 0.0,
+      "avg_latency_ms": 2.0
+    },
+    "hybrid_weighted": {
+      "n_queries": 16,
+      "recall@1": 0.5417,
+      "precision@1": 0.8125,
+      "hit@1": 0.8125,
+      "recall@5": 0.8333,
+      "precision@5": 0.2875,
+      "hit@5": 1.0,
+      "recall@10": 0.8958,
+      "precision@10": 0.1562,
+      "hit@10": 1.0,
+      "nDCG@10": 0.8427,
+      "MRR": 0.8906,
+      "empty_result_rate": 0.0,
+      "avg_latency_ms": 2.0
+    }
+  },
+  "detail": [
+    {
+      "query_id": "q01",
+      "query": "创建向量索引的 SQL 怎么写",
+      "n_relevant": 2,
+      "vector": {
+        "top": [
+          "d08",
+          "d33",
+          "d29",
+          "d09",
+          "d20",
+          "d12",
+          "d18",
+          "d14",
+          "d27",
+          "d28"
+        ],
+        "found@k": 1,
+        "missed": [
+          "d07"
+        ],
+        "first_rank": 1
+      },
+      "fulltext": {
+        "top": [
+          "d10",
+          "d09",
+          "d07",
+          "d27",
+          "d33",
+          "d21",
+          "d28",
+          "d29",
+          "d20",
+          "d12"
+        ],
+        "found@k": 1,
+        "missed": [
+          "d08"
+        ],
+        "first_rank": 3
+      },
+      "hybrid_weighted": {
+        "top": [
+          "d09",
+          "d10",
+          "d33",
+          "d08",
+          "d29",
+          "d27",
+          "d20",
+          "d28",
+          "d12",
+          "d07"
+        ],
+        "found@k": 2,
+        "missed": [],
+        "first_rank": 4
+      }
+    },
+    {
+      "query_id": "q02",
+      "query": "中文全文检索查不到东西",
+      "n_relevant": 2,
+      "vector": {
+        "top": [
+          "d13",
+          "d31",
+          "d17",
+          "d36",
+          "d24",
+          "d34",
+          "d28",
+          "d09",
+          "d15",
+          "d01"
+        ],
+        "found@k": 2,
+        "missed": [],
+        "first_rank": 1
+      },
+      "fulltext": {
+        "top": [
+          "d13",
+          "d31",
+          "d01",
+          "d17",
+          "d28",
+          "d14",
+          "d15",
+          "d09",
+          "d35",
+          "d30"
+        ],
+        "found@k": 2,
+        "missed": [],
+        "first_rank": 1
+      },
+      "hybrid_weighted": {
+        "top": [
+          "d13",
+          "d31",
+          "d17",
+          "d28",
+          "d01",
+          "d36",
+          "d24",
+          "d34",
+          "d09",
+          "d15"
+        ],
+        "found@k": 2,
+        "missed": [],
+        "first_rank": 1
+      }
+    },
+    {
+      "query_id": "q03",
+      "query": "怎么让数据库自己在 SQL 里调用大模型",
+      "n_relevant": 2,
+      "vector": {
+        "top": [
+          "d21",
+          "d22",
+          "d33",
+          "d23",
+          "d07",
+          "d01",
+          "d36",
+          "d26",
+          "d11",
+          "d29"
+        ],
+        "found@k": 2,
+        "missed": [],
+        "first_rank": 1
+      },
+      "fulltext": {
+        "top": [
+          "d21",
+          "d20",
+          "d01",
+          "d36",
+          "d22",
+          "d09",
+          "d07",
+          "d33",
+          "d26",
+          "d30"
+        ],
+        "found@k": 2,
+        "missed": [],
+        "first_rank": 1
+      },
+      "hybrid_weighted": {
+        "top": [
+          "d21",
+          "d22",
+          "d01",
+          "d20",
+          "d36",
+          "d33",
+          "d07",
+          "d26",
+          "d23",
+          "d11"
+        ],
+        "found@k": 2,
+        "missed": [],
+        "first_rank": 1
+      }
+    },
+    {
+      "query_id": "q04",
+      "query": "RRF 融合的权重怎么定",
+      "n_relevant": 3,
+      "vector": {
+        "top": [
+          "d03",
+          "d18",
+          "d19",
+          "d30",
+          "d17",
+          "d24",
+          "d20",
+          "d29",
+          "d15",
+          "d33"
+        ],
+        "found@k": 3,
+        "missed": [],
+        "first_rank": 2
+      },
+      "fulltext": {
+        "top": [
+          "d17",
+          "d36",
+          "d19",
+          "d20",
+          "d18",
+          "d24",
+          "d12",
+          "d07",
+          "d10",
+          "d15"
+        ],
+        "found@k": 3,
+        "missed": [],
+        "first_rank": 1
+      },
+      "hybrid_weighted": {
+        "top": [
+          "d17",
+          "d19",
+          "d20",
+          "d18",
+          "d36",
+          "d03",
+          "d24",
+          "d30",
+          "d29",
+          "d15"
+        ],
+        "found@k": 3,
+        "missed": [],
+        "first_rank": 1
+      }
+    },
+    {
+      "query_id": "q05",
+      "query": "seekdb 默认端口是多少",
+      "n_relevant": 2,
+      "vector": {
+        "top": [
+          "d04",
+          "d02",
+          "d08",
+          "d26",
+          "d27",
+          "d13",
+          "d36",
+          "d07",
+          "d01",
+          "d31"
+        ],
+        "found@k": 2,
+        "missed": [],
+        "first_rank": 1
+      },
+      "fulltext": {
+        "top": [
+          "d02",
+          "d04",
+          "d05",
+          "d08",
+          "d13",
+          "d06",
+          "d21",
+          "d28",
+          "d01"
+        ],
+        "found@k": 2,
+        "missed": [],
+        "first_rank": 1
+      },
+      "hybrid_weighted": {
+        "top": [
+          "d04",
+          "d02",
+          "d05",
+          "d08",
+          "d13",
+          "d26",
+          "d27",
+          "d36",
+          "d07",
+          "d01"
+        ],
+        "found@k": 2,
+        "missed": [],
+        "first_rank": 1
+      }
+    },
+    {
+      "query_id": "q06",
+      "query": "日志把磁盘写满了怎么办",
+      "n_relevant": 1,
+      "vector": {
+        "top": [
+          "d05",
+          "d28",
+          "d04",
+          "d10",
+          "d03",
+          "d06",
+          "d15",
+          "d11",
+          "d23",
+          "d22"
+        ],
+        "found@k": 1,
+        "missed": [],
+        "first_rank": 1
+      },
+      "fulltext": {
+        "top": [
+          "d05",
+          "d09",
+          "d07",
+          "d16",
+          "d22",
+          "d36",
+          "d20",
+          "d23"
+        ],
+        "found@k": 1,
+        "missed": [],
+        "first_rank": 1
+      },
+      "hybrid_weighted": {
+        "top": [
+          "d05",
+          "d28",
+          "d04",
+          "d10",
+          "d09",
+          "d03",
+          "d06",
+          "d15",
+          "d11",
+          "d22"
+        ],
+        "found@k": 1,
+        "missed": [],
+        "first_rank": 1
+      }
+    },
+    {
+      "query_id": "q07",
+      "query": "怎么看查询有没有走向量索引",
+      "n_relevant": 2,
+      "vector": {
+        "top": [
+          "d09",
+          "d27",
+          "d33",
+          "d08",
+          "d28",
+          "d12",
+          "d14",
+          "d18",
+          "d20",
+          "d17"
+        ],
+        "found@k": 2,
+        "missed": [],
+        "first_rank": 1
+      },
+      "fulltext": {
+        "top": [
+          "d27",
+          "d09",
+          "d12",
+          "d33",
+          "d28",
+          "d10",
+          "d29",
+          "d31",
+          "d25",
+          "d32"
+        ],
+        "found@k": 2,
+        "missed": [],
+        "first_rank": 1
+      },
+      "hybrid_weighted": {
+        "top": [
+          "d27",
+          "d09",
+          "d33",
+          "d28",
+          "d12",
+          "d08",
+          "d29",
+          "d31",
+          "d14",
+          "d20"
+        ],
+        "found@k": 2,
+        "missed": [],
+        "first_rank": 1
+      }
+    },
+    {
+      "query_id": "q08",
+      "query": "近似最近邻怎么写才能命中索引",
+      "n_relevant": 2,
+      "vector": {
+        "top": [
+          "d09",
+          "d08",
+          "d27",
+          "d12",
+          "d34",
+          "d22",
+          "d36",
+          "d14",
+          "d23",
+          "d03"
+        ],
+        "found@k": 1,
+        "missed": [
+          "d11"
+        ],
+        "first_rank": 1
+      },
+      "fulltext": {
+        "top": [
+          "d12",
+          "d27",
+          "d09",
+          "d08",
+          "d02",
+          "d31",
+          "d07",
+          "d14",
+          "d29",
+          "d28"
+        ],
+        "found@k": 1,
+        "missed": [
+          "d11"
+        ],
+        "first_rank": 3
+      },
+      "hybrid_weighted": {
+        "top": [
+          "d12",
+          "d09",
+          "d08",
+          "d27",
+          "d02",
+          "d14",
+          "d34",
+          "d07",
+          "d23",
+          "d22"
+        ],
+        "found@k": 1,
+        "missed": [
+          "d11"
+        ],
+        "first_rank": 2
+      }
+    },
+    {
+      "query_id": "q09",
+      "query": "同一张表既要全文索引又要向量索引",
+      "n_relevant": 3,
+      "vector": {
+        "top": [
+          "d33",
+          "d09",
+          "d27",
+          "d29",
+          "d01",
+          "d31",
+          "d14",
+          "d36",
+          "d35",
+          "d28"
+        ],
+        "found@k": 1,
+        "missed": [
+          "d08",
+          "d13"
+        ],
+        "first_rank": 1
+      },
+      "fulltext": {
+        "top": [
+          "d33",
+          "d27",
+          "d09",
+          "d07",
+          "d28",
+          "d29",
+          "d12",
+          "d10",
+          "d08",
+          "d31"
+        ],
+        "found@k": 2,
+        "missed": [
+          "d13"
+        ],
+        "first_rank": 1
+      },
+      "hybrid_weighted": {
+        "top": [
+          "d33",
+          "d09",
+          "d27",
+          "d29",
+          "d28",
+          "d31",
+          "d14",
+          "d01",
+          "d07",
+          "d36"
+        ],
+        "found@k": 1,
+        "missed": [
+          "d08",
+          "d13"
+        ],
+        "first_rank": 1
+      }
+    },
+    {
+      "query_id": "q10",
+      "query": "灌数据太慢怎么优化",
+      "n_relevant": 1,
+      "vector": {
+        "top": [
+          "d29",
+          "d19",
+          "d20",
+          "d02",
+          "d24",
+          "d01",
+          "d26",
+          "d15",
+          "d14",
+          "d05"
+        ],
+        "found@k": 1,
+        "missed": [],
+        "first_rank": 1
+      },
+      "fulltext": {
+        "top": [
+          "d29",
+          "d09",
+          "d03",
+          "d02",
+          "d22",
+          "d21",
+          "d31"
+        ],
+        "found@k": 1,
+        "missed": [],
+        "first_rank": 1
+      },
+      "hybrid_weighted": {
+        "top": [
+          "d29",
+          "d09",
+          "d19",
+          "d02",
+          "d20",
+          "d24",
+          "d01",
+          "d03",
+          "d26",
+          "d15"
+        ],
+        "found@k": 1,
+        "missed": [],
+        "first_rank": 1
+      }
+    },
+    {
+      "query_id": "q11",
+      "query": "评测检索效果应该用什么指标",
+      "n_relevant": 2,
+      "vector": {
+        "top": [
+          "d15",
+          "d18",
+          "d24",
+          "d34",
+          "d09",
+          "d33",
+          "d25",
+          "d31",
+          "d01",
+          "d36"
+        ],
+        "found@k": 2,
+        "missed": [],
+        "first_rank": 3
+      },
+      "fulltext": {
+        "top": [
+          "d34",
+          "d25",
+          "d26",
+          "d14",
+          "d01",
+          "d09",
+          "d15",
+          "d35",
+          "d30",
+          "d11"
+        ],
+        "found@k": 1,
+        "missed": [
+          "d24"
+        ],
+        "first_rank": 2
+      },
+      "hybrid_weighted": {
+        "top": [
+          "d34",
+          "d25",
+          "d26",
+          "d15",
+          "d18",
+          "d24",
+          "d01",
+          "d09",
+          "d14",
+          "d33"
+        ],
+        "found@k": 2,
+        "missed": [],
+        "first_rank": 2
+      }
+    },
+    {
+      "query_id": "q12",
+      "query": "limit 10 和候选池是什么关系",
+      "n_relevant": 1,
+      "vector": {
+        "top": [
+          "d06",
+          "d26",
+          "d11",
+          "d18",
+          "d02",
+          "d29",
+          "d10",
+          "d19",
+          "d25",
+          "d14"
+        ],
+        "found@k": 0,
+        "missed": [
+          "d30"
+        ],
+        "first_rank": 11
+      },
+      "fulltext": {
+        "top": [
+          "d30",
+          "d09",
+          "d11",
+          "d12",
+          "d26",
+          "d10",
+          "d28",
+          "d01",
+          "d05",
+          "d19"
+        ],
+        "found@k": 1,
+        "missed": [],
+        "first_rank": 1
+      },
+      "hybrid_weighted": {
+        "top": [
+          "d30",
+          "d11",
+          "d12",
+          "d26",
+          "d09",
+          "d06",
+          "d18",
+          "d10",
+          "d02",
+          "d29"
+        ],
+        "found@k": 1,
+        "missed": [],
+        "first_rank": 1
+      }
+    },
+    {
+      "query_id": "q13",
+      "query": "embedding 维度和表定义对不上",
+      "n_relevant": 2,
+      "vector": {
+        "top": [
+          "d32",
+          "d07",
+          "d16",
+          "d33",
+          "d06",
+          "d19",
+          "d02",
+          "d21",
+          "d10",
+          "d23"
+        ],
+        "found@k": 2,
+        "missed": [],
+        "first_rank": 1
+      },
+      "fulltext": {
+        "top": [
+          "d07",
+          "d32",
+          "d09",
+          "d22",
+          "d33",
+          "d08",
+          "d34",
+          "d10",
+          "d28",
+          "d01"
+        ],
+        "found@k": 2,
+        "missed": [],
+        "first_rank": 1
+      },
+      "hybrid_weighted": {
+        "top": [
+          "d32",
+          "d07",
+          "d33",
+          "d22",
+          "d09",
+          "d16",
+          "d10",
+          "d08",
+          "d06",
+          "d19"
+        ],
+        "found@k": 2,
+        "missed": [],
+        "first_rank": 1
+      }
+    },
+    {
+      "query_id": "q14",
+      "query": "从 MySQL 迁到 seekdb 要注意什么",
+      "n_relevant": 1,
+      "vector": {
+        "top": [
+          "d13",
+          "d19",
+          "d30",
+          "d28",
+          "d24",
+          "d01",
+          "d31",
+          "d15",
+          "d25",
+          "d03"
+        ],
+        "found@k": 1,
+        "missed": [],
+        "first_rank": 4
+      },
+      "fulltext": {
+        "top": [
+          "d28",
+          "d04",
+          "d26",
+          "d01",
+          "d12",
+          "d02",
+          "d36",
+          "d05",
+          "d06",
+          "d21"
+        ],
+        "found@k": 1,
+        "missed": [],
+        "first_rank": 1
+      },
+      "hybrid_weighted": {
+        "top": [
+          "d28",
+          "d04",
+          "d01",
+          "d13",
+          "d26",
+          "d12",
+          "d19",
+          "d36",
+          "d30",
+          "d24"
+        ],
+        "found@k": 1,
+        "missed": [],
+        "first_rank": 1
+      }
+    },
+    {
+      "query_id": "q15",
+      "query": "多租户知识库怎么防止越权检索",
+      "n_relevant": 1,
+      "vector": {
+        "top": [
+          "d35",
+          "d29",
+          "d19",
+          "d28",
+          "d21",
+          "d24",
+          "d34",
+          "d09",
+          "d13",
+          "d01"
+        ],
+        "found@k": 1,
+        "missed": [],
+        "first_rank": 1
+      },
+      "fulltext": {
+        "top": [
+          "d35",
+          "d01",
+          "d14",
+          "d15",
+          "d09",
+          "d30",
+          "d11",
+          "d34",
+          "d28",
+          "d17"
+        ],
+        "found@k": 1,
+        "missed": [],
+        "first_rank": 1
+      },
+      "hybrid_weighted": {
+        "top": [
+          "d35",
+          "d01",
+          "d29",
+          "d19",
+          "d28",
+          "d21",
+          "d24",
+          "d09",
+          "d34",
+          "d13"
+        ],
+        "found@k": 1,
+        "missed": [],
+        "first_rank": 1
+      }
+    },
+    {
+      "query_id": "q16",
+      "query": "召回之后再做一遍精排有意义吗",
+      "n_relevant": 2,
+      "vector": {
+        "top": [
+          "d36",
+          "d20",
+          "d10",
+          "d06",
+          "d12",
+          "d30",
+          "d28",
+          "d25",
+          "d21",
+          "d31"
+        ],
+        "found@k": 1,
+        "missed": [
+          "d17"
+        ],
+        "first_rank": 1
+      },
+      "fulltext": {
+        "top": [
+          "d36",
+          "d11",
+          "d16",
+          "d35",
+          "d30",
+          "d20"
+        ],
+        "found@k": 1,
+        "missed": [
+          "d17"
+        ],
+        "first_rank": 1
+      },
+      "hybrid_weighted": {
+        "top": [
+          "d36",
+          "d20",
+          "d10",
+          "d11",
+          "d06",
+          "d30",
+          "d12",
+          "d28",
+          "d25",
+          "d21"
+        ],
+        "found@k": 1,
+        "missed": [
+          "d17"
+        ],
+        "first_rank": 1
+      }
+    }
+  ],
+  "diagnosis": [
+    "混合检索最优，相对最好单腿 +0.0416 recall@10。",
+    "当前 backend=local（离线自检后端），指标只用于验证链路，不要当作检索质量结论。"
+  ],
+  "seconds": 0.1
+}

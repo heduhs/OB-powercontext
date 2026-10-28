@@ -1,0 +1,159 @@
+{
+  "args": {
+    "qrels": "assets/sample/qrels.jsonl",
+    "table": "demo_kb",
+    "backend": "local",
+    "model": null,
+    "dim": 256,
+    "strategies": "vector,fulltext,hybrid_weighted",
+    "k": 10,
+    "depth": 50,
+    "rrf_k0": 60.0,
+    "w_vec": 0.5,
+    "boolean_mode": false,
+    "filter": "category=hybrid",
+    "only_tag": "hybrid",
+    "out": "records/evidence/run_filter_matched"
+  },
+  "meta": {
+    "filter_ceiling": 1.0
+  },
+  "summary": {
+    "vector": {
+      "n_queries": 2,
+      "recall@1": 0.4167,
+      "precision@1": 1.0,
+      "hit@1": 1.0,
+      "recall@5": 1.0,
+      "precision@5": 0.5,
+      "hit@5": 1.0,
+      "recall@10": 1.0,
+      "precision@10": 0.25,
+      "hit@10": 1.0,
+      "nDCG@10": 0.9599,
+      "MRR": 1.0,
+      "empty_result_rate": 0.0,
+      "avg_latency_ms": 5.3
+    },
+    "fulltext": {
+      "n_queries": 2,
+      "recall@1": 0.4167,
+      "precision@1": 1.0,
+      "hit@1": 1.0,
+      "recall@5": 0.75,
+      "precision@5": 0.4,
+      "hit@5": 1.0,
+      "recall@10": 0.75,
+      "precision@10": 0.2,
+      "hit@10": 1.0,
+      "nDCG@10": 0.7493,
+      "MRR": 1.0,
+      "empty_result_rate": 0.0,
+      "avg_latency_ms": 5.3
+    },
+    "hybrid_weighted": {
+      "n_queries": 2,
+      "recall@1": 0.4167,
+      "precision@1": 1.0,
+      "hit@1": 1.0,
+      "recall@5": 1.0,
+      "precision@5": 0.5,
+      "hit@5": 1.0,
+      "recall@10": 1.0,
+      "precision@10": 0.25,
+      "hit@10": 1.0,
+      "nDCG@10": 0.9599,
+      "MRR": 1.0,
+      "empty_result_rate": 0.0,
+      "avg_latency_ms": 5.3
+    }
+  },
+  "detail": [
+    {
+      "query_id": "q04",
+      "query": "RRF 融合的权重怎么定",
+      "n_relevant": 3,
+      "vector": {
+        "top": [
+          "d18",
+          "d19",
+          "d17",
+          "d20",
+          "d36"
+        ],
+        "found@k": 3,
+        "missed": [],
+        "first_rank": 1
+      },
+      "fulltext": {
+        "top": [
+          "d17",
+          "d36",
+          "d19",
+          "d20",
+          "d18"
+        ],
+        "found@k": 3,
+        "missed": [],
+        "first_rank": 1
+      },
+      "hybrid_weighted": {
+        "top": [
+          "d17",
+          "d19",
+          "d18",
+          "d20",
+          "d36"
+        ],
+        "found@k": 3,
+        "missed": [],
+        "first_rank": 1
+      }
+    },
+    {
+      "query_id": "q16",
+      "query": "召回之后再做一遍精排有意义吗",
+      "n_relevant": 2,
+      "vector": {
+        "top": [
+          "d36",
+          "d20",
+          "d17",
+          "d18",
+          "d19"
+        ],
+        "found@k": 2,
+        "missed": [],
+        "first_rank": 1
+      },
+      "fulltext": {
+        "top": [
+          "d36",
+          "d20"
+        ],
+        "found@k": 1,
+        "missed": [
+          "d17"
+        ],
+        "first_rank": 1
+      },
+      "hybrid_weighted": {
+        "top": [
+          "d36",
+          "d20",
+          "d17",
+          "d18",
+          "d19"
+        ],
+        "found@k": 2,
+        "missed": [],
+        "first_rank": 1
+      }
+    }
+  ],
+  "diagnosis": [
+    "纯向量已经最好：混合检索的关键词腿目前没有增益，检查分词与停用词，或把候选池 --depth 加大后再比。",
+    "当前 backend=local（离线自检后端），指标只用于验证链路，不要当作检索质量结论。"
+  ],
+  "seconds": 0.06
+}

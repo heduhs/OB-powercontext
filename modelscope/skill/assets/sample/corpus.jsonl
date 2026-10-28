@@ -1,0 +1,36 @@
+{"doc_id":"d01","title":"seekdb 简介","body":"seekdb 是 OceanBase 开源的 AI 原生单机数据库，兼容 MySQL 协议，在一个实例里同时支持向量检索、全文检索、标量过滤和 AI 函数，常用于 RAG、知识库和语义搜索原型。","category":"overview"}
+{"doc_id":"d02","title":"Docker 部署 seekdb","body":"最省事的部署方式是 docker run -d --name seekdb -p 2881:2881 oceanbase/seekdb:latest，容器内默认监听 2881 端口，数据目录在 /var/lib/seekdb。","category":"deployment"}
+{"doc_id":"d03","title":"Windows 本机启动 seekdb","body":"Windows 上没有 Docker 时可直接用 seekdb.exe --nodaemon --base-dir=<数据目录> --port=2881 --parameter memory_limit=2G --log-level=WARN 启动，首次初始化大约需要两分钟。","category":"deployment"}
+{"doc_id":"d04","title":"连接参数与端口","body":"seekdb 使用 MySQL 协议，默认端口 2881，默认用户 root、空密码，任何 MySQL 客户端或驱动都能连上去，pymysql 连接时建议显式指定 charset=utf8mb4。","category":"deployment"}
+{"doc_id":"d05","title":"日志级别与磁盘占用","body":"seekdb 默认日志级别会高速刷写磁盘，单机压测时每分钟可写出数百 MB 日志，启动时加上 --log-level=WARN 或 ERROR 可以把磁盘和 IO 压力降下来。","category":"deployment"}
+{"doc_id":"d06","title":"内存参数 memory_limit","body":"单机实例内存不足会启动失败或频繁限流，用 --parameter memory_limit=2G 指定上限，容器部署时用 -m 限制后 seekdb 会自动推导，注意预留操作系统缓存空间。","category":"deployment"}
+{"doc_id":"d07","title":"向量列类型定义","body":"建表时用 vector(768) 这样的类型声明向量列，括号里是维度，必须和 embedding 模型输出维度一致；写入时可以直接给 '[0.1,0.2,...]' 形式的字符串字面量。","category":"vector"}
+{"doc_id":"d08","title":"创建 HNSW 向量索引","body":"create vector index vidx on docs(embedding) with (distance=cosine, type=hnsw) 建立近似索引，LIB 默认 VSAG，M 控制图度，EF_CONSTRUCTION 控制构建期搜索宽度。","category":"vector"}
+{"doc_id":"d09","title":"近似最近邻查询写法","body":"向量检索要写 order by cosine_distance(embedding, '[...]') approx limit 10，approx 关键字让优化器走向量索引，不写则会退化成全表精确计算。","category":"vector"}
+{"doc_id":"d10","title":"距离函数一览","body":"内置距离函数包括 l2_distance（欧氏距离）、cosine_distance（余弦距离）和 inner_product（内积），索引创建时 WITH (distance=...) 必须和查询使用的距离一致。","category":"vector"}
+{"doc_id":"d11","title":"HNSW 调参 M 与 ef_search","body":"M 越大召回率越高但内存和构建时间上升，检索期可以调 ef_search（会话变量或 hint）扩大候选，召回不足时优先加大 ef_search 而不是盲目提高 limit。","category":"vector"}
+{"doc_id":"d12","title":"向量索引与过滤条件","body":"带 where 标量过滤的向量查询要注意过滤与近似索引的执行顺序：过滤率很高时先过滤再取近邻更稳，必要时扩大候选池 depth 再在结果集上过滤。","category":"vector"}
+{"doc_id":"d13","title":"全文索引与中文分词","body":"中文全文检索必须显式指定分词器：fulltext index ftx (body) with parser ik。不加 with parser ik 时默认按空格切词，中文整句会被当成一个词，match against 查询往往一条都命中不了。","category":"fulltext"}
+{"doc_id":"d14","title":"match against 与相关度","body":"命中判断用 where match(body) against('向量检索')，取分数用 select match(body) against('向量检索') relevance，按 relevance 倒序就是 BM25 风格的关键词排序。","category":"fulltext"}
+{"doc_id":"d15","title":"布尔模式检索","body":"match(body) against('+向量 +检索' in boolean mode) 支持必须包含、排除等运算符，适合做精确的关键词约束，比自然语言模式更容易解释结果。","category":"fulltext"}
+{"doc_id":"d16","title":"停用词与分词自定义","body":"ft_stopword_file 控制停用词，中英文混排时建议把业务同义词写进自定义词典，否则专有名词会被切成无意义子串，导致关键词腿召回偏低。","category":"fulltext"}
+{"doc_id":"d17","title":"混合检索总体思路","body":"混合检索通常先分别取向量 topN 和全文 topN，再融合排序。RRF 只用名次不用分数，天然规避两路分数不同尺度的问题；加权求和需要先做 min-max 归一化。","category":"hybrid"}
+{"doc_id":"d18","title":"RRF 公式","body":"Reciprocal Rank Fusion 的打分是 score(d)=sum over legs of w_leg/(k0+rank(d))，k0 常用 60，它的作用是抑制第一名次的过度优势，k0 越小越偏向头部。","category":"hybrid"}
+{"doc_id":"d19","title":"加权融合的尺度问题","body":"余弦相似度和 BM25 分数不可直接相加，融合前先归一化再加权：score = a*vec_norm + (1-a)*ft_norm。a 建议在 0.3 到 0.7 之间用带标注的查询集扫描。","category":"hybrid"}
+{"doc_id":"d20","title":"单条 SQL 完成混合检索","body":"把两路召回写成子查询或 CTE，再用 union all 与 group by 聚合出 RRF 分数，一条 SQL 就能返回混合结果，省去客户端两次往返，也方便上层只做一次网络调用。","category":"hybrid"}
+{"doc_id":"d21","title":"AI 函数在 SQL 内调用模型","body":"seekdb 提供 ai_embed、ai_complete 这类 AI 函数，可以在 SQL 里直接对列做向量化或文本生成，派生列配合 AI 函数能让模型输出随数据自动维护。","category":"ai-function"}
+{"doc_id":"d22","title":"AI 列与派生数据","body":"把 embedding、摘要、标签这类模型输出定义为派生列后，插入或更新原文时数据库自动重算，避免应用侧维护异步任务造成数据不一致。","category":"ai-function"}
+{"doc_id":"d23","title":"文档切块与入库","body":"RAG 入库时把长文档切成 300 到 800 字的块，每块单独一行并保留标题和来源 URL，检索粒度是块而不是整篇文档，命中后再把相邻块拼回上下文。","category":"rag"}
+{"doc_id":"d24","title":"评测指标 recall 与 MRR","body":"评估检索质量常用 recall@k（标注相关文档被取回的比例）、MRR（第一条正确结果名次的倒数均值）和 nDCG@10（考虑位置折扣的归一化增益），三者对不齐时优先看 recall@k。","category":"evaluation"}
+{"doc_id":"d25","title":"如何构造查询标注集","body":"评测集要覆盖同义改写、专有名词、口语化提问和跨类目歧义四类查询，每条查询标注所有应命中的文档 id；没有标注集时任何调参都是在凭感觉改。","category":"evaluation"}
+{"doc_id":"d26","title":"SQL 审计视图","body":"想知道数据库真正执行了什么，可以查 oceanbase.gv$ob_sql_audit：select query_sql from oceanbase.gv$ob_sql_audit where is_inner_sql=0 order by request_time desc limit 20。","category":"observability"}
+{"doc_id":"d27","title":"执行计划与索引命中","body":"explain 里确认是否走向量索引或全文索引，是排查“结果不对”还是“索引没用上”的第一步，approx 查询没走近似索引时耗时随数据量线性增长。","category":"observability"}
+{"doc_id":"d28","title":"MySQL 迁移兼容性","body":"从 MySQL 迁移时绝大多数 DDL 和 DML 可直接复用，差异集中在少数保留字、分区语法和全文检索建索引写法上，向量列与向量索引是 seekdb 独有语法。","category":"compat"}
+{"doc_id":"d29","title":"批量导入优化","body":"逐行 insert 很慢，改成多值批量插入或 load 语句、并在导入期间暂缓向量索引构建，导入完成后再建索引，可以显著缩短灌数据时间。","category":"performance"}
+{"doc_id":"d30","title":"topK 语义陷阱","body":"limit k 只决定返回条数，不保证召回质量；候选池 depth 太小会让混合检索看不到第二名以后的相关文档，评测时 depth 至少要大于等于 k。","category":"pitfall"}
+{"doc_id":"d31","title":"全文查询静默返回空","body":"中文查询在 match against 下返回空却没有任何报错，通常是分词器缺失而不是数据没命中；先用一个英文词验证全文腿是否工作，再检查建索引时的 with parser 选项。","category":"pitfall"}
+{"doc_id":"d32","title":"向量维度不一致报错","body":"写入向量与列定义维度不同会直接失败或结果错乱；混用两个 embedding 模型（例如文档用 1024 维、查询用 768 维）时距离计算毫无意义，重建库统一维度。","category":"pitfall"}
+{"doc_id":"d33","title":"同表多个索引的顺序","body":"一张表同时需要全文索引和向量索引时，推荐在同一个 create table 语句里一起声明；在已有全文索引的表上再单独补建向量索引曾触发实例异常退出。","category":"pitfall"}
+{"doc_id":"d34","title":"embedding 服务与离线自检","body":"生产评测要用真实 embedding 模型（API 或库内 ai_embed），离线只需要跑通链路时可用哈希 n-gram 词法向量做自检，但它的指标不能当成语义检索质量结论。","category":"evaluation"}
+{"doc_id":"d35","title":"知识库检索的过滤与权限","body":"多租户知识库检索要把 tenant_id、可见性作为标量过滤条件下推到召回阶段，先过滤再排序，否则会在 topK 里混入无权限文档造成越权。","category":"rag"}
+{"doc_id":"d36","title":"检索结果重排","body":"召回 50 条后用交叉编码器或大模型做重排，是把精度从 0.7 提到 0.9 的常见手段；重排发生在融合之后，不要用它替代召回阶段的调参。","category":"hybrid"}

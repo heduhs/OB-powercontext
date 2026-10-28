@@ -1,0 +1,14 @@
+| strategy | recall@1 | recall@10 | precision@10 | MRR | nDCG@10 | empty_result_rate | avg_latency_ms |
+|---|---|---|---|---|---|---|---|
+| vector | 0.4167 | 1.0000 | 0.2500 | 1.0000 | 0.9599 | 0.0000 | 5.3 |
+| fulltext | 0.4167 | 0.7500 | 0.2000 | 1.0000 | 0.7493 | 0.0000 | 5.3 |
+| hybrid_weighted | 0.4167 | 1.0000 | 0.2500 | 1.0000 | 0.9599 | 0.0000 | 5.3 |
+
+queries=2 table=demo_kb depth=50 k=10 backend=local filter=category=hybrid seconds=0.06
+best on recall@10: vector
+
+## 诊断
+- 纯向量已经最好：混合检索的关键词腿目前没有增益，检查分词与停用词，或把候选池 --depth 加大后再比。
+- 当前 backend=local（离线自检后端），指标只用于验证链路，不要当作检索质量结论。
+
+写出 records/evidence/run_filter_matched.md / records/evidence/run_filter_matched.json
