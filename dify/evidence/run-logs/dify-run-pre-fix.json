@@ -1,0 +1,343 @@
+{
+  "user": "laozhang",
+  "generated_at": "2026-10-28 11:12:37",
+  "api_base": "https://api.dify.ai/v1",
+  "rounds": [
+    {
+      "round": 1,
+      "secret": "苹果",
+      "category": "食物",
+      "questions": 5,
+      "hit": true,
+      "turns": 7,
+      "settled": true,
+      "transcript": [
+        {
+          "turn": 0,
+          "player": "开局",
+          "host": "「把酒杯往前一推。」来，开一局。你上回在物品类磨了九问才逮到手机，这回换个方向——你这次想的是食物吗？",
+          "message_id": "388e4135-5cf1-4791-9e06-d239d21efbfd",
+          "elapsed": null,
+          "total_tokens": null
+        },
+        {
+          "turn": 1,
+          "player": "是",
+          "host": "「给你倒上半杯。」那它是不是水果？",
+          "message_id": "6d5e35e7-dd25-47ca-9294-d05c202912c6",
+          "elapsed": null,
+          "total_tokens": null
+        },
+        {
+          "turn": 2,
+          "player": "是",
+          "host": "「杯子轻轻一响。」它能不能生吃？",
+          "message_id": "33ecb140-c5fa-4035-9e9f-7f106ce789df",
+          "elapsed": null,
+          "total_tokens": null
+        },
+        {
+          "turn": 3,
+          "player": "不是",
+          "host": "「指尖敲了敲杯沿。」你心里想的是水果本身，而不是用水果做成的食物吗？",
+          "message_id": "0d96de06-3fc6-4a08-a677-ac3e587627b5",
+          "elapsed": null,
+          "total_tokens": null
+        },
+        {
+          "turn": 4,
+          "player": "是",
+          "host": "「把酒壶挪远半寸。」你这次想的是蔬菜吗？",
+          "message_id": "c7d15682-336d-4f2e-9d8a-77b5a291fc50",
+          "elapsed": null,
+          "total_tokens": null
+        },
+        {
+          "turn": 5,
+          "player": "不知道",
+          "host": "「我在酒牌上写下三个名字：苹果、橘子、香蕉；我押苹果。你想的是苹果吗？」",
+          "message_id": "c93cab25-4ddf-4e0a-aa6a-56828f1f9552",
+          "elapsed": null,
+          "total_tokens": null
+        },
+        {
+          "turn": 6,
+          "player": "猜中了,我想的就是苹果",
+          "host": "「把账本往酒瓶旁一放。」好，这局六问落袋，答案还是苹果。食物、水果一路收窄，最后这注押中了——旧账里也有你连续想苹果的记录。\n\n📔 老周翻开账本记了一笔:第5局,5 个问题,入账 1 条(PowerContext /v1/memory/remember)。下回你推门进来,他还想提这个。",
+          "message_id": "303fe67e-1f08-49f7-9b50-f43737f314f2",
+          "elapsed": null,
+          "total_tokens": null
+        }
+      ],
+      "conversation_id": "e389b398-5665-49b9-a3e0-331a8050ae8d"
+    },
+    {
+      "round": 2,
+      "secret": "锅贴",
+      "category": "食物",
+      "questions": 0,
+      "hit": true,
+      "turns": 14,
+      "settled": true,
+      "transcript": [
+        {
+          "turn": 0,
+          "player": "开局",
+          "host": "「上回你想的是手机，我问了九下才摸中；不过你心里落“吃的”的时候更多。规矩你熟：定一个具体名词，只答那五句，最多十二问。」\n\n这回想的是吃的吗？",
+          "message_id": "aa0291e1-21fe-4298-9607-ec8ef55b645a",
+          "elapsed": null,
+          "total_tokens": null
+        },
+        {
+          "turn": 1,
+          "player": "是",
+          "host": "「上回你在杯底压着的好几样，可都是苹果。这回想的也是苹果吗？」",
+          "message_id": "8ee9d14e-1360-4fb7-a726-41962fb7e39e",
+          "elapsed": null,
+          "total_tokens": null
+        },
+        {
+          "turn": 2,
+          "player": "不知道",
+          "host": "你心里这个吃的，是水果吗？",
+          "message_id": "3584461c-871c-40f6-97ca-3cf8194704ef",
+          "elapsed": null,
+          "total_tokens": null
+        },
+        {
+          "turn": 3,
+          "player": "不是",
+          "host": "「先不碰水果，免得又绕回苹果。」它是蔬菜吗？",
+          "message_id": "3dac5f67-f056-4467-8774-936dd86b75ad",
+          "elapsed": null,
+          "total_tokens": null
+        },
+        {
+          "turn": 4,
+          "player": "不是",
+          "host": "「水果和蔬菜都排掉了。」它是肉吗？",
+          "message_id": "5f5edfd7-d81f-4fb4-9713-1578e6a31241",
+          "elapsed": null,
+          "total_tokens": null
+        },
+        {
+          "turn": 5,
+          "player": "不是",
+          "host": "「肉也排除了。它是蛋类食物吗？」",
+          "message_id": "b94a5204-04bb-49e4-a647-e099a66c31dd",
+          "elapsed": null,
+          "total_tokens": null
+        },
+        {
+          "turn": 6,
+          "player": "是",
+          "host": "「那就窄了。你想的是鸡蛋吗？」",
+          "message_id": "a6b7a391-c3b8-4452-961c-dab7c345e4fb",
+          "elapsed": null,
+          "total_tokens": null
+        },
+        {
+          "turn": 7,
+          "player": "不知道",
+          "host": "「蛋类就那几个，我押鸡蛋，鸭蛋和鹅蛋留作备选——是鸡蛋吗？」",
+          "message_id": "25b11878-8b3b-42f5-93ff-278242b09c71",
+          "elapsed": null,
+          "total_tokens": null
+        },
+        {
+          "turn": 8,
+          "player": "不知道",
+          "host": "「蛋类里，鹌鹑蛋最小。」它比普通鸡蛋小吗？",
+          "message_id": "58b4d240-e1f9-488a-82c6-b9f8c7a84414",
+          "elapsed": null,
+          "total_tokens": null
+        },
+        {
+          "turn": 9,
+          "player": "不知道",
+          "host": "蛋类还剩鹌鹑蛋、鸭蛋和鹅蛋。它是鹌鹑蛋吗？",
+          "message_id": "a9554744-fa49-44b1-97f1-868f471fe187",
+          "elapsed": null,
+          "total_tokens": null
+        },
+        {
+          "turn": 10,
+          "player": "不知道",
+          "host": "「我押鹌鹑蛋，备选鸭蛋、鹅蛋。你想的是鹌鹑蛋吗？」",
+          "message_id": "a2faee60-bc01-45db-8ed8-a9ae6133f696",
+          "elapsed": null,
+          "total_tokens": null
+        },
+        {
+          "turn": 11,
+          "player": "不知道",
+          "host": "「最后一注，我押鸡蛋；候选是鸡蛋、煎蛋、蛋糕。你想的是鸡蛋吗？」",
+          "message_id": "7cb58398-4827-4c5a-a6c0-60b49700c720",
+          "elapsed": null,
+          "total_tokens": null
+        },
+        {
+          "turn": 12,
+          "player": "没猜中,其实我想的是锅贴,换一局",
+          "host": "「锅贴记上。手机那局问了九下才摸中，你这心思倒常往吃的上跑。新局来——这回想的东西还是吃的吗？」",
+          "message_id": "f55837ff-3a17-4d4c-8c3a-1c635197baf1",
+          "elapsed": null,
+          "total_tokens": null
+        },
+        {
+          "turn": 13,
+          "player": "猜中了,我想的就是锅贴",
+          "host": "「行，锅贴算这局的答案。上一局你到最后才交底，这回一开口又露了馅——连着两局都是锅贴。」\n\n📔 老周翻开账本记了一笔:第6局,0 个问题,入账 1 条(PowerContext /v1/memory/remember)。下回你推门进来,他还想提这个。",
+          "message_id": "336a86af-6505-45e6-8c1e-9a15f323ff9e",
+          "elapsed": null,
+          "total_tokens": null
+        }
+      ],
+      "conversation_id": "5e65ef26-fe8c-4e61-85b5-acbc60e7751d"
+    },
+    {
+      "round": 3,
+      "secret": "手机",
+      "category": "物品",
+      "questions": 7,
+      "hit": true,
+      "turns": 8,
+      "settled": true,
+      "transcript": [
+        {
+          "turn": 0,
+          "player": "开局",
+          "host": "「老张，第六局那笔锅贴我还记着呢。」老张，这回先问一句：这次想的是不是吃的？",
+          "message_id": "8baeee48-12a0-4ff3-ad6b-abd96f6b32e6",
+          "elapsed": null,
+          "total_tokens": null
+        },
+        {
+          "turn": 1,
+          "player": "不是",
+          "host": "「老周把酒杯往旁边挪了挪。」行，不是吃的。那它是不是动物？",
+          "message_id": "423b162d-1d79-4a20-aede-527e50ec66bb",
+          "elapsed": null,
+          "total_tokens": null
+        },
+        {
+          "turn": 2,
+          "player": "不是",
+          "host": "「老周点了点头。」那就排除食物和动物了。它是不是东西？",
+          "message_id": "741f0064-2879-4762-a21c-5d77fcb59f9c",
+          "elapsed": null,
+          "total_tokens": null
+        },
+        {
+          "turn": 3,
+          "player": "不是",
+          "host": "「老周在账本上划掉三行。」那你这次想的是不是一个地方？",
+          "message_id": "bd00aa4a-4c76-41e6-98cd-ebda76d359fc",
+          "elapsed": null,
+          "total_tokens": null
+        },
+        {
+          "turn": 4,
+          "player": "不是",
+          "host": "「老周把“地点”也划掉。」那你这次想的是不是一个人物？",
+          "message_id": "7750f5c8-9a50-48cf-b851-e3f7ad15df35",
+          "elapsed": null,
+          "total_tokens": null
+        },
+        {
+          "turn": 5,
+          "player": "不是",
+          "host": "「老周把五类都划掉了。」候选是孙悟空、哈利·波特、哆啦A梦，我押孙悟空。是不是孙悟空？",
+          "message_id": "6916e1d2-ccde-4f80-aca5-74d72ee090f5",
+          "elapsed": null,
+          "total_tokens": null
+        },
+        {
+          "turn": 6,
+          "player": "没猜中,其实我想的是手机,换一局",
+          "host": "「上局十二问，最后还是栽在手机上，这笔记上了。账上你食物类赢得不少，新局先收窄：这次想的是不是吃的？」",
+          "message_id": "6d3aed1a-b559-40bb-b2a7-093f387f7655",
+          "elapsed": null,
+          "total_tokens": null
+        },
+        {
+          "turn": 7,
+          "player": "猜中了,我想的就是手机",
+          "host": "「老周把账本合上：这一局你亲口报出手机，算命中；前前后后，想的仍是同一部手机。」\n\n📔 老周翻开账本记了一笔:第6局,7 个问题,入账 1 条(PowerContext /v1/memory/remember)。下回你推门进来,他还想提这个。",
+          "message_id": "1669f8a7-6a7a-45de-83d3-9657af43b735",
+          "elapsed": null,
+          "total_tokens": null
+        }
+      ],
+      "conversation_id": "f14070e0-61ca-4012-968c-c548e26febcf"
+    },
+    {
+      "round": 4,
+      "secret": "西湖",
+      "category": "地点",
+      "questions": 6,
+      "hit": true,
+      "turns": 7,
+      "settled": true,
+      "transcript": [
+        {
+          "turn": 0,
+          "player": "开局",
+          "host": "老客，上回你想的是手机，7问就中了。这回先从老方向下手——你心里想的具体名词，是不是食物？",
+          "message_id": "e137338d-7bb6-4714-9622-d50203dcfd20",
+          "elapsed": null,
+          "total_tokens": null
+        },
+        {
+          "turn": 1,
+          "player": "不是",
+          "host": "行，先把吃的排掉。你想的具体名词，是物品吗？",
+          "message_id": "7e4f200c-ef68-4a93-8168-7bc9700150f1",
+          "elapsed": null,
+          "total_tokens": null
+        },
+        {
+          "turn": 2,
+          "player": "不是",
+          "host": "食物和物品都排除了。你想的这东西，有生命吗？",
+          "message_id": "c9b416ea-bf7b-40bc-8cea-76ac58d24e54",
+          "elapsed": null,
+          "total_tokens": null
+        },
+        {
+          "turn": 3,
+          "player": "不是",
+          "host": "你心里想的那个名词，是个地点吗？",
+          "message_id": "496692de-4b06-417d-9891-f04b09e77938",
+          "elapsed": null,
+          "total_tokens": null
+        },
+        {
+          "turn": 4,
+          "player": "是",
+          "host": "那就往地点里收。你想到的地点，是个城市吗？",
+          "message_id": "6d7c1d99-f96a-4ffc-8619-835ef01b49fb",
+          "elapsed": null,
+          "total_tokens": null
+        },
+        {
+          "turn": 5,
+          "player": "是",
+          "host": "你想到的城市，是西湖吗？",
+          "message_id": "86b9606e-0d03-4cd8-8b65-3929377869e8",
+          "elapsed": null,
+          "total_tokens": null
+        },
+        {
+          "turn": 6,
+          "player": "猜中了,我想的就是西湖",
+          "host": "「老周把杯垫往旁边一推。」中了，地点——西湖，6问。账本里也有西湖，你这老客确实惦记这地方。\n\n📔 老周翻开账本记了一笔:第6局,6 个问题,入账 1 条(PowerContext /v1/memory/remember)。下回你推门进来,他还想提这个。",
+          "message_id": "e93cfc76-1f54-47ea-8868-623c9a13488d",
+          "elapsed": null,
+          "total_tokens": null
+        }
+      ],
+      "conversation_id": "18b66448-c7bc-4986-aab6-f4792be48810"
+    }
+  ]
+}

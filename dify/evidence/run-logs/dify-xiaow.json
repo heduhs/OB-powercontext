@@ -1,0 +1,51 @@
+{
+  "user": "xiaow",
+  "generated_at": "2026-10-28 11:53:47",
+  "api_base": "https://api.dify.ai/v1",
+  "rounds": [
+    {
+      "round": 1,
+      "secret": "苹果",
+      "category": "食物",
+      "questions": 3,
+      "hit": true,
+      "turns": 4,
+      "settled": true,
+      "transcript": [
+        {
+          "turn": 0,
+          "player": "开局",
+          "host": "「老周把杯子往吧台上一放。」\n成，开一局。心里想一个具体名词：食物、动物、物品、地点、人物或虚构。只回“是、不是、看情况、不知道、跳过”。最多十二问，第五问起可以试注，第十二问必须押。\n先收大类：你心里想的是食物吗？",
+          "message_id": "43ce1e24-0ef6-4e55-ba17-d4171b792044",
+          "elapsed": null,
+          "total_tokens": null
+        },
+        {
+          "turn": 1,
+          "player": "是",
+          "host": "「老周点点头。」\n是水果吗？",
+          "message_id": "52607a28-dfc4-4bdf-8815-e731c2fcb794",
+          "elapsed": null,
+          "total_tokens": null
+        },
+        {
+          "turn": 2,
+          "player": "是",
+          "host": "「老周在杯沿敲了敲。」\n是苹果吗？",
+          "message_id": "bd046789-9665-4a07-b20a-c8ca0d64ecf9",
+          "elapsed": null,
+          "total_tokens": null
+        },
+        {
+          "turn": 3,
+          "player": "猜中了,我想的就是苹果",
+          "host": "「老周把“苹果”记进账本。」\n三问就中：食物、水果、苹果。这局结清。\n\n📔 老周翻开账本记了一笔:第1局,3 个问题,入账 1 条(PowerContext /v1/memory/remember)。下回你推门进来,他还想提这个。",
+          "message_id": "3cdb5aca-4c48-4492-b801-db5c08112064",
+          "elapsed": null,
+          "total_tokens": null
+        }
+      ],
+      "conversation_id": "4d934564-b032-4a7e-a90a-a3db177666e3"
+    }
+  ]
+}

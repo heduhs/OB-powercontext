@@ -1,0 +1,7 @@
+# 本地运行产物,不要提交
+PC_TOKEN.txt
+.pc-data/
+.venv-powercontext/
+.replay-state/
+__pycache__/
+*.pyc
