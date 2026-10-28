@@ -6,6 +6,8 @@
 >
 > **项目网站（未登录可访问）**：https://zhiyan-study-msv6fmmokx6.qoder.zone/
 > **代码仓库**：https://github.com/heduhs/OB-powercontext （分支 `2026-competition-ecosystem`，目录 `qoder/zhiyan/`）
+> **提测结果**：commit `332ac5e0` 判题**执行成功，成绩 20.000 / 20**，返回「基础验收通过。」
+> （2026-10-28 22:43；此前一次 0 分的原因是平台必填项「作品链接」漏填，见 `DEV_RECORD.md`）
 
 ---
 

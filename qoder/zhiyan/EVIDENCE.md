@@ -22,7 +22,7 @@
 | 13 | 单条 SQL 也能完成 RRF 融合（可下推到数据库） | `records/verification*.json` → `hybrid.explain.single_sql_rrf` | `GET /api/explain` |
 | 14 | 网站公开、未登录可访问 | 站点 https://zhiyan-study-msv6fmmokx6.qoder.zone/ 返回 HTTP 200（未登录）；`site/` 为待发布的最新构建 | 无痕窗口打开站点 |
 | 15 | 实时模式可核对（非纯静态演示） | `records/screenshots/live-hybrid-legs.png`（徽标显示 `seekdb(local) · 回答:extractive`，结果带两腿名次） | `python -m backend.app` 后打开 `127.0.0.1:8010` |
-| 16 | 提测与判题结果 | `DEV_RECORD.md` 末表；平台提测记录页 | `https://open.oceanbase.com/train/TestRecord?questionId=600078` |
+| 16 | 提测与判题结果 | `records/screenshots/test-record-20.png`；`DEV_RECORD.md` 末表（4 次提测对照） | `https://open.oceanbase.com/train/TestRecord?questionId=600078` |
 | 17 | 开发过程由 Qoder 完成 | `records/qoder-conversation-log.md`、`records/qoder-screenshots/`、`DEV_RECORD.md`（含 Qoder UID） | Qoder 侧按 UID 核对 |
 
 ## 说明与边界
