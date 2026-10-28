@@ -27,6 +27,20 @@
 | 降级路径验证 | 评测集合同时跑 `fp32/q8 + WASM` 与 `fp16/q8 + WebGPU`；`npm run degrade` 专门验证强制 WASM 的完整流程 |
 | 建议表格 | `/eval.html` 第 3–6 节渲染出的正是题面建议的「配置 / 体积 / 吞吐 / 检索延迟 / 端到端 / 质量」表 |
 
+## 提测结果
+
+| 项 | 值 |
+| --- | --- |
+| 赛题 | 生态伙伴 2026 年数据库大赛题目：阶跃星辰（questionId 600073） |
+| 仓库 | `https://github.com/heduhs/OB-powercontext`（大赛报名登记的团队仓库） |
+| Branch | `2026-competition-ecosystem` |
+| Commit | `8b9eb01646e0783b53d7a822e3eabb3c0eaf85fe` |
+| 提测时间 | 2026-10-28 16:46 |
+| 任务状态 | 执行成功（结果：1 成功 / 0 失败） |
+| 成绩 | **20.000 / 20**（最高成绩 = 最新成绩，提测次数 1） |
+
+可在平台「查看提测记录」页复核：`https://open.oceanbase.com/train/TestRecord?questionId=600073`。
+
 ## 一键复现脚本
 
 ```bash
