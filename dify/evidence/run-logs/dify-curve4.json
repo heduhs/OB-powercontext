@@ -1,0 +1,367 @@
+{
+  "user": "zhang-04",
+  "generated_at": "2026-10-28 12:31:58",
+  "api_base": "https://api.dify.ai/v1",
+  "rounds": [
+    {
+      "round": 1,
+      "secret": "苹果",
+      "category": "食物",
+      "questions": 5,
+      "hit": true,
+      "turns": 6,
+      "settled": true,
+      "transcript": [
+        {
+          "turn": 0,
+          "player": "开局",
+          "host": "行，开一局。我是老周，这酒馆开了十一年。心里搁一个具体名词：食物、动物、物品、地点、人物或虚构都行；只答“是、不是、看情况、不知道、跳过”，我最多问十二问，第五问起可以下注。\n\n第一问：你心里想的属于食物吗？",
+          "message_id": "2f9c287b-a595-4455-b1a8-390de59ebd0d",
+          "elapsed": null,
+          "total_tokens": null
+        },
+        {
+          "turn": 1,
+          "player": "是",
+          "host": "行，记住是食物。第二问：是水果吗？",
+          "message_id": "d3589d40-7167-404f-b1d2-cddbf4d95ecb",
+          "elapsed": null,
+          "total_tokens": null
+        },
+        {
+          "turn": 2,
+          "player": "是",
+          "host": "第三问：是一种常见的早餐食物吗？",
+          "message_id": "405632a9-871d-47ba-986d-974dd7874675",
+          "elapsed": null,
+          "total_tokens": null
+        },
+        {
+          "turn": 3,
+          "player": "是",
+          "host": "好，食物里的水果，还是早餐常客。第四问：是甜的吗？",
+          "message_id": "293c2464-595b-4af3-9255-9b12c1e648c3",
+          "elapsed": null,
+          "total_tokens": null
+        },
+        {
+          "turn": 4,
+          "player": "是",
+          "host": "第五问了，我押香蕉。候选是香蕉、苹果、橙子——你心里想的是香蕉吗？",
+          "message_id": "40596ec9-6429-4e0d-8103-6e7d66c55cc6",
+          "elapsed": null,
+          "total_tokens": null
+        },
+        {
+          "turn": 5,
+          "player": "猜中了,我想的就是苹果",
+          "host": "行，这局算你赢：食物，苹果。前四问都点头，第五问虽押了香蕉，但你明确说猜中，我照实记账。\n\n📔 老周翻开账本记了一笔:第1局,5 个问题,入账 1 条(PowerContext /v1/memory/remember)。下回你推门进来,他还想提这个。",
+          "message_id": "bdf95602-426b-47bb-ad19-f72868326718",
+          "elapsed": null,
+          "total_tokens": null
+        }
+      ],
+      "conversation_id": "ce0ab87f-9e2e-4f83-92d2-dc7ae8c73c63"
+    },
+    {
+      "round": 2,
+      "secret": "锅贴",
+      "category": "食物",
+      "questions": 8,
+      "hit": true,
+      "turns": 10,
+      "settled": true,
+      "transcript": [
+        {
+          "turn": 0,
+          "player": "开局",
+          "host": "上回你想的是苹果，五个问题锁定食物，第五问还押成了香蕉，我可没忘；这回想的还是食物吗？",
+          "message_id": "e24f2898-879e-42db-8e6f-41644758f568",
+          "elapsed": null,
+          "total_tokens": null
+        },
+        {
+          "turn": 1,
+          "player": "是",
+          "host": "那它是水果吗？",
+          "message_id": "4791c309-a291-4061-9243-e6eadc2c6c8a",
+          "elapsed": null,
+          "total_tokens": null
+        },
+        {
+          "turn": 2,
+          "player": "不是",
+          "host": "「第五问了，候选是面包、牛肉、鸡蛋，我押面包。它是肉或肉制品吗？」",
+          "message_id": "9dffad35-7f4a-4e06-823a-f1e3cabca754",
+          "elapsed": null,
+          "total_tokens": null
+        },
+        {
+          "turn": 3,
+          "player": "没猜中,其实我想的是锅贴,换一局",
+          "host": "五问押面包，还是没中，答案是锅贴。重开，这回想的还是吃的吗？",
+          "message_id": "dee1ad9a-a2db-4309-99b2-f040eff8e7d9",
+          "elapsed": null,
+          "total_tokens": null
+        },
+        {
+          "turn": 4,
+          "player": "是",
+          "host": "主食吗？",
+          "message_id": "30871231-4b12-4317-aa84-07e903809c9b",
+          "elapsed": null,
+          "total_tokens": null
+        },
+        {
+          "turn": 5,
+          "player": "不知道",
+          "host": "它通常是咸的吗？",
+          "message_id": "157d2812-e259-408f-9236-42d7db758628",
+          "elapsed": null,
+          "total_tokens": null
+        },
+        {
+          "turn": 6,
+          "player": "是",
+          "host": "咸的吃的，那它是点心或小吃吗？",
+          "message_id": "e85e42b0-12eb-4076-b171-c9a8897b5d8a",
+          "elapsed": null,
+          "total_tokens": null
+        },
+        {
+          "turn": 7,
+          "player": "是",
+          "host": "「第五问了，候选是饺子、包子、蛋糕，我押饺子。它是包着馅儿吃的吗？」",
+          "message_id": "37189066-aa51-46d7-898d-227b71ce490b",
+          "elapsed": null,
+          "total_tokens": null
+        },
+        {
+          "turn": 8,
+          "player": "没猜中,其实我想的是锅贴,换一局",
+          "host": "「上回第五问押饺子，还是栽在锅贴上。」这回还是锅贴吗？",
+          "message_id": "f7db9129-363b-40e5-9a2e-ab18e8391268",
+          "elapsed": null,
+          "total_tokens": null
+        },
+        {
+          "turn": 9,
+          "player": "猜中了,我想的就是锅贴",
+          "host": "行，这回算你命中，答案是锅贴，记上了。上一局刚在锅贴上栽了跟头，这回倒认得利索。\n\n📔 老周翻开账本记了一笔:第2局,8 个问题,入账 1 条(PowerContext /v1/memory/remember)。下回你推门进来,他还想提这个。",
+          "message_id": "3a55b5d3-20c9-42db-92e6-1d2ccc19e59e",
+          "elapsed": null,
+          "total_tokens": null
+        }
+      ],
+      "conversation_id": "de091c49-08fa-4e79-ad77-d9ab4fc1c4cb"
+    },
+    {
+      "round": 3,
+      "secret": "米饭",
+      "category": "食物",
+      "questions": 9,
+      "hit": true,
+      "turns": 10,
+      "settled": true,
+      "transcript": [
+        {
+          "turn": 0,
+          "player": "开局",
+          "host": "老周记着呢：第二局你想锅贴，八问认领，押中了；这回答案还是食物吗？",
+          "message_id": "ebfca3ea-e8bf-4581-8758-071c18927bc3",
+          "elapsed": null,
+          "total_tokens": null
+        },
+        {
+          "turn": 1,
+          "player": "是",
+          "host": "行，食物。它是主食或点心，不是水果，对吧？",
+          "message_id": "1d1c0c39-08b1-4f38-8f4c-bf65ab15c6aa",
+          "elapsed": null,
+          "total_tokens": null
+        },
+        {
+          "turn": 2,
+          "player": "不是",
+          "host": "它是肉馅做的食物吗？",
+          "message_id": "101b4ab5-7eae-4138-be48-6852238803ed",
+          "elapsed": null,
+          "total_tokens": null
+        },
+        {
+          "turn": 3,
+          "player": "是",
+          "host": "那我收窄一点：它是煎出来、底部带点焦脆的肉馅食物吗？",
+          "message_id": "bd1512d1-638c-448b-8db5-819844aed947",
+          "elapsed": null,
+          "total_tokens": null
+        },
+        {
+          "turn": 4,
+          "player": "是",
+          "host": "我押锅贴，另两个候选是煎饺、生煎。它是锅贴吗？",
+          "message_id": "69e17545-8c72-4de0-aa29-6b4c1f591451",
+          "elapsed": null,
+          "total_tokens": null
+        },
+        {
+          "turn": 5,
+          "player": "没猜中,其实我想的是米饭,换一局",
+          "host": "好，上一局五问没中，答案是米饭，记上了。老周还记得你第二局想的是锅贴，八问命中；这回先往吃的收——是食物吗？",
+          "message_id": "6668345d-8282-4cf1-85a3-cf7cfaccb803",
+          "elapsed": null,
+          "total_tokens": null
+        },
+        {
+          "turn": 6,
+          "player": "是",
+          "host": "那就往主食里收：它是平时拿来当一顿饭的主食吗？",
+          "message_id": "5bf46d9e-3f2b-4326-bb85-249b15ad2427",
+          "elapsed": null,
+          "total_tokens": null
+        },
+        {
+          "turn": 7,
+          "player": "不知道",
+          "host": "它是能冷藏、之后直接加热就吃的主食吗？",
+          "message_id": "aac7c0b4-451a-4e28-84c6-5fc0e4e1948c",
+          "elapsed": null,
+          "total_tokens": null
+        },
+        {
+          "turn": 8,
+          "player": "是",
+          "host": "它是散装米饭、可以一勺一勺吃的食物吗？",
+          "message_id": "f245aada-8c01-43e0-8d12-a10939b3faa5",
+          "elapsed": null,
+          "total_tokens": null
+        },
+        {
+          "turn": 9,
+          "player": "猜中了,我想的就是米饭",
+          "host": "「老周把账本一合。」这局四问就锁定，答案是米饭，跟上一局又想到一块儿了。\n\n📔 老周翻开账本记了一笔:第3局,9 个问题,入账 1 条(PowerContext /v1/memory/remember)。下回你推门进来,他还想提这个。",
+          "message_id": "6819159c-80f0-462f-8347-87b91af7559a",
+          "elapsed": null,
+          "total_tokens": null
+        }
+      ],
+      "conversation_id": "1b82ef7e-a362-492b-a6b4-a3ebfb78743d"
+    },
+    {
+      "round": 4,
+      "secret": "生菜",
+      "category": "食物",
+      "questions": 12,
+      "hit": true,
+      "turns": 13,
+      "settled": true,
+      "transcript": [
+        {
+          "turn": 0,
+          "player": "开局",
+          "host": "行，开一局。上回你第九问才认出米饭，这回想的也是食物吗？",
+          "message_id": "e6607153-ce84-41ac-8c42-001ee531cec2",
+          "elapsed": null,
+          "total_tokens": null
+        },
+        {
+          "turn": 1,
+          "player": "是",
+          "host": "这回想的是主食吗？",
+          "message_id": "79a7ba51-5203-4845-a6fa-a1ce800af6c5",
+          "elapsed": null,
+          "total_tokens": null
+        },
+        {
+          "turn": 2,
+          "player": "不知道",
+          "host": "是咸食吗？",
+          "message_id": "7b8fc33f-cf50-499e-97d2-597312205e37",
+          "elapsed": null,
+          "total_tokens": null
+        },
+        {
+          "turn": 3,
+          "player": "不是",
+          "host": "是甜食吗？",
+          "message_id": "18e44fa0-908c-44c8-b985-7af51af35417",
+          "elapsed": null,
+          "total_tokens": null
+        },
+        {
+          "turn": 4,
+          "player": "不是",
+          "host": "那我押饺子，备选是馒头和面条——你想到的是饺子吗？",
+          "message_id": "ec0d2eef-802c-4ac0-a521-e912e0a0362e",
+          "elapsed": null,
+          "total_tokens": null
+        },
+        {
+          "turn": 5,
+          "player": "没猜中,其实我想的是生菜,换一局",
+          "host": "行，上一局没中，答案是生菜。老账上你三局想的都是吃的，这回也是食物吗？",
+          "message_id": "6ceb1f52-4df7-49d0-aabc-f0df1de1435f",
+          "elapsed": null,
+          "total_tokens": null
+        },
+        {
+          "turn": 6,
+          "player": "是",
+          "host": "是水果吗？",
+          "message_id": "1b8eae42-c77b-47d4-976f-c188ec3693f0",
+          "elapsed": null,
+          "total_tokens": null
+        },
+        {
+          "turn": 7,
+          "player": "不是",
+          "host": "是蔬菜吗？",
+          "message_id": "853cff37-1575-49f4-b57c-eb17c0650e3b",
+          "elapsed": null,
+          "total_tokens": null
+        },
+        {
+          "turn": 8,
+          "player": "不知道",
+          "host": "是叶菜吗？",
+          "message_id": "61d035ed-9118-4770-8d03-f80f2fe3c211",
+          "elapsed": null,
+          "total_tokens": null
+        },
+        {
+          "turn": 9,
+          "player": "不知道",
+          "host": "那我押苹果，备选是香蕉和橙子——你想到的是苹果吗？",
+          "message_id": "ba70cde5-41d4-4e2c-9d8c-1be2a1c2167a",
+          "elapsed": null,
+          "total_tokens": null
+        },
+        {
+          "turn": 10,
+          "player": "没猜中,其实我想的是生菜,换一局",
+          "host": "上一局五问没中，答案是生菜，你接连两局都想到了它。行，新账开：这回还是食物吗？",
+          "message_id": "258fd8ae-72b7-4513-9329-a17c38f0aa13",
+          "elapsed": null,
+          "total_tokens": null
+        },
+        {
+          "turn": 11,
+          "player": "是",
+          "host": "你连着两局都想到生菜，这回也是生菜吗？",
+          "message_id": "0511f4aa-2104-4eca-ab64-188d2d115bba",
+          "elapsed": null,
+          "total_tokens": null
+        },
+        {
+          "turn": 12,
+          "player": "猜中了,我想的就是生菜",
+          "host": "「他提笔记账。」这回两问就认出来了：食物，生菜。连同前头几局，你连续四回想的都是生菜，我记上了。\n\n📔 老周翻开账本记了一笔:第4局,12 个问题,入账 1 条(PowerContext /v1/memory/remember)。下回你推门进来,他还想提这个。",
+          "message_id": "77e36f76-7351-4104-bc00-6536718006ec",
+          "elapsed": null,
+          "total_tokens": null
+        }
+      ],
+      "conversation_id": "27475644-992f-41be-bdcf-3e6f3fa28c3c"
+    }
+  ]
+}
